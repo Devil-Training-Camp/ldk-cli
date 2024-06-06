@@ -3,14 +3,20 @@
   "version": "0.0.0",
   "private": false,
   "description": "a vue cli",
-  "main": "",
+  "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "type": "module",
   "files": [
-    "lib"
+    "lib",
+    "bin.js"
   ],
+  "bin": {
+    "ldk-cli": "./bin.js"
+  },
   "scripts": {
-    "dev": "pnpm build && node ./bin.js create",
+    "dev:tsnode": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./src/index.ts create",
+    "dev:node": "pnpm build && node ./bin.js create",
+    "dev:tsx": "tsx ./src/index.ts create",
     "build": "rimraf ./lib && tsc"
   },
   "keywords": [
@@ -29,6 +35,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "rimraf": "^5.0.7"
+    "rimraf": "^5.0.7",
+    "tsx": "^4.12.0"
   }
 }

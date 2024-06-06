@@ -8,7 +8,8 @@
     "lib/**/*"
   ], // 排除的文件
   "compilerOptions": {
-    "target": "ES2019", // 编译后的目标
+    "target": "ESNext", // 编译后的目标
     "outDir": "./lib",
+    "declaration": true
   }
 }

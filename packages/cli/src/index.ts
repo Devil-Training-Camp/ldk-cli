@@ -1,15 +1,16 @@
-#!/usr/bin/env node
 import { Command } from 'commander';
-const program = new Command();
 
+const program = new Command();
 export interface CreateOptions {
   template: string;
 }
 program
   .command('create')
   .description('Create new project')
-  .option('-t --template', 'Install template')
+  .option('-t --template <templateUrl>', 'Install template')
   .action(async (options: CreateOptions) => {
-    const { create } = await import('./commands/create');
+    const { create } = await import('./commands/create.js');
     create(options);
   });
+
+program.parse();
