@@ -5,11 +5,13 @@
   "description": "a vue cli",
   "main": "",
   "types": "lib/index.d.ts",
+  "type": "module",
   "files": [
     "lib"
   ],
   "scripts": {
-    "build": "echo \"build @ldk/cli\" && exit 1"
+    "dev": "pnpm build && node ./bin.js create",
+    "build": "rimraf ./lib && tsc"
   },
   "keywords": [
     "vue3",
@@ -25,5 +27,8 @@
     "name": "grey-coat",
     "email": "461252486@qq.com"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "rimraf": "^5.0.7"
+  }
 }

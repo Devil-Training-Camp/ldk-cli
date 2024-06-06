@@ -20,11 +20,11 @@ ls:
     .spec.ts: kebab-case
 
 ignore:
-  - node_modules
-  - dist
-  - es
-  - lib
-  - .git
-  - .husky
-  - .vscode
-  - docs
+  - '**/node_modules'
+  - '**/dist'
+  - '**/es'
+  - '**/lib'
+  - '**/.git'
+  - '**/.husky'
+  - '**/.vscode'
+  - '**/docs'
