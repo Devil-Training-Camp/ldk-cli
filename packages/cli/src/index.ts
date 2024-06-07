@@ -2,15 +2,15 @@ import { Command } from 'commander';
 
 const program = new Command();
 export interface CreateOptions {
-  template: string;
+  template?: string;
 }
 program
-  .command('create')
+  .command('create <projectName>')
   .description('Create new project')
   .option('-t --template <templateUrl>', 'Install template')
-  .action(async (options: CreateOptions) => {
+  .action(async (projectName: string, options: CreateOptions) => {
     const { create } = await import('./commands/create.js');
-    create(options);
+    create(projectName, options);
   });
 
 program.parse();

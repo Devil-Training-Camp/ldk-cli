@@ -14,9 +14,10 @@
     "ldk-cli": "./bin.js"
   },
   "scripts": {
-    "dev:tsnode": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./src/index.ts create",
-    "dev:node": "pnpm build && node ./bin.js create",
-    "dev:tsx": "tsx ./src/index.ts create",
+    "dev": "pnpm dev:tsx",
+    "dev:tsnode": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./src/index.ts",
+    "dev:node": "pnpm build && node ./bin.js",
+    "dev:tsx": "tsx ./src/index.ts",
     "build": "rimraf ./lib && tsc"
   },
   "keywords": [
@@ -35,7 +36,11 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "fs-extra": "^11.2.0",
+    "inquirer": "^9.2.23",
+    "ora": "^8.0.1",
     "rimraf": "^5.0.7",
+    "simple-git": "^3.24.0",
     "tsx": "^4.12.0"
   }
 }
