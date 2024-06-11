@@ -3,40 +3,55 @@ import fs from 'fs';
 
 import inquirer from 'inquirer';
 // import { oraPromise } from 'ora';
-// import fse from 'fs-extra/esm';
+// import fse from 'fs-extra';
+// import chalk from 'chalk';
 
 import type { CreateOptions } from '..';
-// import { cloneRepo } from '../common/download.js';
+import { CWD } from '../common/constant.js';
+import { TemplateManager } from '../core/template.js';
+import { transToPromptChoices } from '../common/index.js';
 
-// e.g https://github.com/vuejs/vue-cli.git
+// e.g -t https://github.com/grey-coat/virtual-scroll-list-liudingkang-test.git
+// e.g pnpm dev create ../../lib -f
 export async function create(projectName: string, options: CreateOptions) {
-  const cwd = process.cwd();
-  const projectPath = path.resolve(cwd, projectName);
+  const projectPath = path.resolve(CWD, projectName);
   console.log(projectName, options, projectPath);
-  if (!options.template) {
-    return;
-  }
-  if (fs.existsSync(projectPath)) {
+  if (!options.force && fs.existsSync(projectPath)) {
     const { action }: { action: boolean } = await inquirer.prompt([
       {
         name: 'action',
         type: 'list',
-        // 提示信息
         message: `${projectName} is existed, overwrite it?`,
-        // 选项
         choices: [
           { name: 'overwrite', value: true },
           { name: 'cancel', value: false },
         ],
       },
     ]);
-    console.log(action);
+    if (!action) return;
   }
-  // try {
-  //   await oraPromise(cloneRepo(options.template, cwd));
-  //   // await cloneRepo(options.template, cwd);
-  //   console.log(`Repository cloned to ${options.template} successfully`);
-  // } catch (error) {
-  //   console.error('Failed to clone repository:', error);
-  // }
+  const templateManager = new TemplateManager(projectPath);
+  if (options.template) {
+    await templateManager.invokeTemplate(options.template);
+    return;
+  }
+  await templateManager.init();
+  const { template }: { template: string } = await inquirer.prompt([
+    {
+      name: 'template',
+      type: 'list',
+      message: `Choice template`,
+      choices: [
+        ...transToPromptChoices(templateManager.templates),
+        {
+          name: 'Custom',
+          value: '',
+        },
+      ],
+    },
+  ]);
+  console.log(template);
+  if (template) {
+    await templateManager.invokeTemplate(template);
+  }
 }
