@@ -10,6 +10,7 @@ const CACHE_DIR = localConfig.cacheDir || DEFAULT_CACHE_DIR;
 
 export const CWD = process.cwd();
 export const LOCAL_CONFIG_FILE = join(USER_HOME, '.ldkrc');
+export const CACHE_CONFIG_FILE = join(CACHE_DIR, '.ldk-cache.json');
 export const PLUGIN_CACHE_DIR = join(CACHE_DIR, 'plugins');
 export const TEMPLATE_CACHE_DIR = join(CACHE_DIR, 'templates');
 
