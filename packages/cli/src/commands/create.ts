@@ -13,6 +13,7 @@ import { transToPromptChoices } from '../common/index.js';
 
 // e.g -t https://github.com/grey-coat/virtual-scroll-list-liudingkang-test.git
 // e.g pnpm dev create ../../lib -f
+// e.g test
 export async function create(projectName: string, options: CreateOptions) {
   const projectPath = path.resolve(CWD, projectName);
   console.log(projectName, options, projectPath);
