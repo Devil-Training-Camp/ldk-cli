@@ -37,11 +37,11 @@ export function getRepoDirName(repoUrl: string) {
 export async function getLatestCommitId(tempPath: string, isRemote = false) {
   try {
     const git = simpleGit(tempPath);
-    // 拿默认分支 commitId
-    const log = await git.log();
     if (isRemote) {
       await git.fetch('origin');
     }
+    // 拿默认分支 commitId
+    const log = await git.log();
     const latestCommit = log.latest?.hash || '';
     return latestCommit;
   } catch (err) {

@@ -61,8 +61,9 @@ export class TemplateManager extends Action<TemplateConfig> {
       } catch (error) {
         return;
       }
+    } else {
+      await updateRepoWithOra(localTempPath);
     }
-    await updateRepoWithOra(localTempPath);
     await fse.remove(this.projectPath);
     await fse.copy(localTempPath, this.projectPath);
     console.log(chalk.green('Template invoked'));
