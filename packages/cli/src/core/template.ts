@@ -1,4 +1,4 @@
-import { join } from 'path';
+import { join, basename } from 'path';
 import { existsSync } from 'fs';
 
 import fse from 'fs-extra';
@@ -7,7 +7,12 @@ import chalk from 'chalk';
 
 import type { ActionTargetConfig } from '../common/action.js';
 import { Action } from '../common/action.js';
-import { OFFICIAL_TEMPLATES, TEMPLATE_CACHE_DIR } from '../common/constant.js';
+import {
+  OFFICIAL_TEMPLATES,
+  TEMPLATE_CACHE_DIR,
+  getCacheConfig,
+  setCacheConfigAsync,
+} from '../common/constant.js';
 import {
   cloneRepoWithOra,
   formatRepoUrl,
@@ -15,7 +20,7 @@ import {
   parseRepoUrl,
   updateRepoWithOra,
 } from '../common/repository.js';
-import { isPath, isRemotePath } from '../common/index.js';
+import { isPath } from '../common/index.js';
 
 export interface TemplateConfig extends ActionTargetConfig {
   url: string;
@@ -26,7 +31,9 @@ export interface TemplateConfig extends ActionTargetConfig {
 export class TemplateManager extends Action<TemplateConfig> {
   templates: TemplateConfig[];
   constructor(public projectPath: string) {
-    const templates: TemplateConfig[] = [];
+    const cacheConfig = getCacheConfig();
+    console.log(cacheConfig);
+    const templates: TemplateConfig[] = cacheConfig.templates;
     super(templates);
     this.templates = templates;
   }
@@ -53,7 +60,7 @@ export class TemplateManager extends Action<TemplateConfig> {
       name: dirName,
       title: dirName,
       version: '',
-      path: tempPath,
+      path: '',
       url,
       branch,
       temp,
@@ -68,19 +75,24 @@ export class TemplateManager extends Action<TemplateConfig> {
     }
     const tempConfig = this.get(name);
     if (typeof tempConfig === 'undefined') return;
-    const { path: tempPath } = tempConfig;
-    const localTempPath = join(TEMPLATE_CACHE_DIR, name);
-    if (isRemotePath(tempPath) && !existsSync(localTempPath)) {
+    const { path: repoPath, url, temp } = tempConfig;
+    const localRepoPath = join(TEMPLATE_CACHE_DIR, basename(url));
+    if (repoPath === '') {
+      tempConfig.path = localRepoPath;
+    }
+    if (!existsSync(localRepoPath)) {
       try {
-        await cloneRepoWithOra(tempPath, localTempPath);
+        await cloneRepoWithOra(url, localRepoPath);
       } catch (error) {
         return;
       }
     } else {
-      await updateRepoWithOra(localTempPath);
+      await updateRepoWithOra(localRepoPath);
     }
     await fse.remove(this.projectPath);
+    const localTempPath = localRepoPath + temp;
     await fse.copy(localTempPath, this.projectPath);
     console.log(chalk.green('Template invoked'));
+    await setCacheConfigAsync();
   }
 }

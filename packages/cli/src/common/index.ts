@@ -12,4 +12,10 @@ export function transToPromptChoices(targetArr: ActionTargetConfig[]) {
 }
 export const isRemotePath = (str: string) => str.includes('https://');
 export const isPath = (str: string) => str.includes('/');
-export const isLocalPath = (str: string) => lstatSync(str).isDirectory();
+export const isLocalPath = (str: string) => {
+  try {
+    return lstatSync(str).isDirectory();
+  } catch (error) {
+    return false;
+  }
+};

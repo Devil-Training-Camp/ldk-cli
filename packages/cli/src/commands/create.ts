@@ -12,6 +12,7 @@ import { TemplateManager } from '../core/template.js';
 import { transToPromptChoices } from '../common/index.js';
 
 // e.g -t https://github.com/grey-coat/virtual-scroll-list-liudingkang-test.git
+// e.g -t https://github.com/Devil-Training-Camp/ldk-cli?temp=packages/cli-template-base#master
 // e.g pnpm dev create ../../lib -f
 // e.g test
 export async function create(projectName: string, options: CreateOptions) {

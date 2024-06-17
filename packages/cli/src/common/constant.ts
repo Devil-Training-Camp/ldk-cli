@@ -16,6 +16,7 @@ export const LOCAL_CONFIG_FILE = join(USER_HOME, '.ldkrc');
 export const OFFICIAL_TEMPLATES = [
   'https://github.com/grey-coat/virtual-scroll-list-liudingkang-test',
   'https://github.com/grey-coat/virtual-scroll-list-liudingkang-build-test',
+  'https://github.com/Devil-Training-Camp/ldk-cli?temp=packages/cli-template-base#main',
 ];
 
 export interface LocalConfig {
@@ -32,8 +33,8 @@ export const TEMPLATE_CACHE_DIR = join(CACHE_DIR, 'templates');
 export function getLocalConfig() {
   return localConfig;
 }
-export async function setLocalConfigAsync(config: LocalConfig) {
-  await setConfigAsync<LocalConfig>(LOCAL_CONFIG_FILE, config);
+export async function setLocalConfigAsync() {
+  await setConfigAsync<LocalConfig>(LOCAL_CONFIG_FILE, localConfig);
 }
 
 export interface CacheConfig {
@@ -48,8 +49,8 @@ const cacheConfig: CacheConfig = (await getConfigAsync(CACHE_CONFIG_FILE)) || de
 export function getCacheConfig() {
   return cacheConfig;
 }
-export async function setCacheConfigAsync(config: CacheConfig) {
-  await setConfigAsync<CacheConfig>(CACHE_CONFIG_FILE, config);
+export async function setCacheConfigAsync() {
+  await setConfigAsync<CacheConfig>(CACHE_CONFIG_FILE, cacheConfig);
 }
 
 async function getConfigAsync(path: string) {
