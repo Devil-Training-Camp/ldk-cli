@@ -8,10 +8,20 @@ import chalk from 'chalk';
 import type { ActionTargetConfig } from '../common/action.js';
 import { Action } from '../common/action.js';
 import { OFFICIAL_TEMPLATES, TEMPLATE_CACHE_DIR } from '../common/constant.js';
-import { cloneRepoWithOra, getRepoDirName, updateRepoWithOra } from '../common/repository.js';
+import {
+  cloneRepoWithOra,
+  formatRepoUrl,
+  getRepoDirName,
+  parseRepoUrl,
+  updateRepoWithOra,
+} from '../common/repository.js';
 import { isPath, isRemotePath } from '../common/index.js';
 
-export interface TemplateConfig extends ActionTargetConfig {}
+export interface TemplateConfig extends ActionTargetConfig {
+  url: string;
+  branch: string;
+  temp: string;
+}
 
 export class TemplateManager extends Action<TemplateConfig> {
   templates: TemplateConfig[];
@@ -35,13 +45,18 @@ export class TemplateManager extends Action<TemplateConfig> {
     return Promise.all(tempPaths.map(this.genTemplate.bind(this)));
   }
   async genTemplate(tempPath: string) {
+    tempPath = formatRepoUrl(tempPath);
     const dirName = getRepoDirName(tempPath);
     if (this.has(dirName)) return;
+    const { url, branch, temp } = parseRepoUrl(tempPath);
     this.add({
       name: dirName,
       title: dirName,
       version: '',
       path: tempPath,
+      url,
+      branch,
+      temp,
     });
   }
   async invokeTemplate(nameOrPath: string) {

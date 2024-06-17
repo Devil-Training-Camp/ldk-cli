@@ -1,4 +1,8 @@
+import fse from 'fs-extra';
+
 import type { ActionTargetConfig } from './action.js';
+
+const { lstatSync } = fse;
 
 export function transToPromptChoices(targetArr: ActionTargetConfig[]) {
   return targetArr.map(target => ({
@@ -8,3 +12,4 @@ export function transToPromptChoices(targetArr: ActionTargetConfig[]) {
 }
 export const isRemotePath = (str: string) => str.includes('https://');
 export const isPath = (str: string) => str.includes('/');
+export const isLocalPath = (str: string) => lstatSync(str).isDirectory();

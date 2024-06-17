@@ -4,6 +4,10 @@ import chalk from 'chalk';
 import { simpleGit } from 'simple-git';
 import { oraPromise } from 'ora';
 
+import { DEFAULT_BRANCH } from './constant.js';
+
+import { isLocalPath, isRemotePath } from './index.js';
+
 export async function cloneRepo(repoUrl: string, localPath: string) {
   const git = simpleGit();
   await git.clone(repoUrl, localPath);
@@ -20,18 +24,41 @@ export async function cloneRepoWithOra(repoUrl: string, localPath: string) {
     throw error;
   }
 }
-const REPO_NAME_RE = /\/([^/]*)\.git/;
 let tempId = 0;
 export function getRepoDirName(repoUrl: string) {
-  const remoteName = repoUrl.match(REPO_NAME_RE);
-  if (remoteName) {
-    return remoteName[1];
-  }
-  const localName = basename(repoUrl);
+  const base = basename(repoUrl);
+  const [localName] = base.split('#');
   if (localName) {
     return localName;
   }
   return `cli-tempalate-${tempId++}`;
+}
+
+const REPO_NAME_RE = /\/([^/]*)\.git/;
+export function formatRepoUrl(repoUrl: string) {
+  if (isLocalPath(repoUrl)) return repoUrl;
+  if (!isRemotePath(repoUrl)) {
+    repoUrl += 'http://github.com/';
+  }
+  if (REPO_NAME_RE.test(repoUrl)) {
+    repoUrl = repoUrl.replace('.git', '');
+  }
+  // branch
+  if (!repoUrl.includes('#')) {
+    repoUrl += `#${DEFAULT_BRANCH}`;
+  }
+  return repoUrl;
+}
+
+export function parseRepoUrl(repoUrl: string) {
+  const url = new URL(repoUrl);
+  const branch = url.hash.slice(1);
+  const temp = url.searchParams.get('temp') || '';
+  return {
+    branch,
+    temp,
+    url: url.origin + url.pathname,
+  };
 }
 
 export async function getLatestCommitId(tempPath: string, isRemote = false) {
