@@ -4,17 +4,20 @@ import chalk from 'chalk';
 import { simpleGit } from 'simple-git';
 import { oraPromise } from 'ora';
 
+import type { TemplateConfig } from '../core/template.js';
+
 import { DEFAULT_BRANCH } from './constant.js';
 
 import { isLocalPath, isRemotePath } from './index.js';
 
-export async function cloneRepo(repoUrl: string, localPath: string) {
+export async function cloneRepo(config: TemplateConfig) {
+  const { url, local, branch } = config;
   const git = simpleGit();
-  await git.clone(repoUrl, localPath);
+  await git.clone(url, local, ['--single-branch', '--branch', branch]);
 }
-export async function cloneRepoWithOra(repoUrl: string, localPath: string) {
+export async function cloneRepoWithOra(config: TemplateConfig) {
   try {
-    await oraPromise(cloneRepo(repoUrl, localPath), {
+    await oraPromise(cloneRepo(config), {
       successText: `Repository cloned successfully`,
       failText: `Failed to clone repository`,
       text: 'Loading clone',

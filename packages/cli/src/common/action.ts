@@ -1,6 +1,6 @@
 export interface ActionTargetConfig {
   version: string;
-  path: string;
+  local: string;
   name: string;
   title: string;
 }
