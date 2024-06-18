@@ -17,6 +17,8 @@ export const OFFICIAL_TEMPLATES = [
   'https://github.com/grey-coat/virtual-scroll-list-liudingkang-test',
   'https://github.com/grey-coat/virtual-scroll-list-liudingkang-build-test',
   'https://github.com/Devil-Training-Camp/ldk-cli?temp=packages/cli-template-base#main',
+  'https://github.com/Devil-Training-Camp/ldk-cli?temp=packages/cli#main',
+  'https://github.com/Devil-Training-Camp/ldk-cli?temp=packages/cli#main',
 ];
 
 export interface LocalConfig {

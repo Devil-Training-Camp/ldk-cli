@@ -14,7 +14,7 @@ import {
   setCacheConfigAsync,
 } from '../common/constant.js';
 import {
-  // cloneRepoWithOra,
+  cloneRepoWithOra,
   formatRepoUrl,
   getRepoDirName,
   parseRepoUrl,
@@ -82,12 +82,12 @@ export class TemplateManager extends Action<TemplateConfig> {
     }
     if (!existsSync(localRepoPath)) {
       try {
-        // await cloneRepoWithOra(url, localRepoPath);
+        await cloneRepoWithOra(tempConfig);
       } catch (error) {
         return;
       }
     } else {
-      await updateRepoWithOra(localRepoPath);
+      await updateRepoWithOra(tempConfig);
     }
     await fse.remove(this.projectPath);
     await fse.copy(localTempPath, this.projectPath);
