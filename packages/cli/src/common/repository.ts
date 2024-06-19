@@ -45,13 +45,12 @@ export function getRepoDirName(repoUrl: string) {
   return `cli-tempalate-${tempId++}`;
 }
 
-const REPO_NAME_RE = /\/([^/]*)\.git/;
 export function formatRepoUrl(repoUrl: string) {
   if (existsSync(repoUrl)) return repoUrl;
   if (!isRemotePath(repoUrl)) {
-    repoUrl = 'http://github.com/' + repoUrl;
+    repoUrl = 'https://github.com/' + repoUrl;
   }
-  if (REPO_NAME_RE.test(repoUrl)) {
+  if (repoUrl.includes('.git')) {
     repoUrl = repoUrl.replace('.git', '');
   }
   // branch

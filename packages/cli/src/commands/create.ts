@@ -34,11 +34,11 @@ export async function create(projectName: string, options: CreateOptions) {
     if (!action) return;
   }
   const templateManager = new TemplateManager(projectPath);
+  await templateManager.init();
   if (options.template) {
     await templateManager.invokeTemplate(options.template);
     return;
   }
-  await templateManager.init();
   const { template }: { template: string } = await inquirer.prompt([
     {
       name: 'template',

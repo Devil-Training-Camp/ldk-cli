@@ -8,6 +8,7 @@ import chalk from 'chalk';
 import type { ActionTargetConfig } from '../common/action.js';
 import { Action } from '../common/action.js';
 import {
+  DEFAULT_BRANCH,
   OFFICIAL_TEMPLATES,
   TEMPLATE_CACHE_DIR,
   TEMPLATE_IGNORE_DIRS_RE,
@@ -34,14 +35,13 @@ export class TemplateManager extends Action<TemplateConfig> {
   templates: TemplateConfig[];
   constructor(public projectPath: string) {
     const cacheConfig = getCacheConfig();
-    // console.log(cacheConfig);
     const templates: TemplateConfig[] = cacheConfig.templates;
     super(templates);
     this.templates = templates;
   }
   async init() {
     await this.initTemplates();
-    console.log(this.templates);
+    // console.log(this.templates);
   }
   async initTemplates() {
     await this.genTemplates(OFFICIAL_TEMPLATES);
@@ -52,11 +52,12 @@ export class TemplateManager extends Action<TemplateConfig> {
   async genTemplate(tempPath: string) {
     tempPath = formatRepoUrl(tempPath);
     const dirName = getRepoDirName(tempPath);
-    if (this.has(dirName)) return dirName;
+    if (this.has(tempPath)) return tempPath;
     const { url, branch, temp } = parseRepoUrl(tempPath);
+    const title = `${dirName}${DEFAULT_BRANCH === branch ? '' : `(${branch})`}`;
     this.add({
-      name: dirName,
-      title: dirName,
+      name: tempPath,
+      title,
       version: '',
       path: '',
       local: '',
@@ -64,7 +65,7 @@ export class TemplateManager extends Action<TemplateConfig> {
       branch,
       temp,
     });
-    return dirName;
+    return tempPath;
   }
   async invokeTemplate(nameOrPath: string) {
     let name = nameOrPath;
@@ -73,7 +74,6 @@ export class TemplateManager extends Action<TemplateConfig> {
       name = await this.genTemplate(nameOrPath);
     }
     const tempConfig = this.get(name);
-    console.log(this.templates);
     if (typeof tempConfig === 'undefined') return;
     const { local, url, temp } = tempConfig;
     const localRepoPath = join(TEMPLATE_CACHE_DIR, basename(url));
