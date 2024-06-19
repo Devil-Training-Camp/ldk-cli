@@ -1,5 +1,5 @@
 import path from 'path';
-import fs from 'fs';
+import { existsSync } from 'fs';
 
 import inquirer from 'inquirer';
 // import { oraPromise } from 'ora';
@@ -18,7 +18,8 @@ import { transToPromptChoices } from '../common/index.js';
 export async function create(projectName: string, options: CreateOptions) {
   const projectPath = path.resolve(CWD, projectName);
   console.log(projectName, options, projectPath);
-  if (!options.force && fs.existsSync(projectPath)) {
+
+  if (!options.force && existsSync(projectPath)) {
     const { action }: { action: boolean } = await inquirer.prompt([
       {
         name: 'action',
@@ -52,7 +53,6 @@ export async function create(projectName: string, options: CreateOptions) {
       ],
     },
   ]);
-  console.log(template);
   if (template) {
     await templateManager.invokeTemplate(template);
   }

@@ -1,4 +1,5 @@
 import { basename } from 'path';
+import { existsSync } from 'fs';
 
 import chalk from 'chalk';
 import type { SimpleGit } from 'simple-git';
@@ -9,15 +10,13 @@ import type { TemplateConfig } from '../core/template.js';
 
 import { DEFAULT_BRANCH } from './constant.js';
 
-import { isLocalPath, isRemotePath } from './index.js';
+import { isRemotePath } from './index.js';
 
 export async function cloneRepo(config: TemplateConfig) {
   const { url, local, branch } = config;
   const git = simpleGit();
-  console.log(local, 'clone');
   await git.clone(url, local, ['--single-branch', '--branch', branch]);
-  const latestRemoteCommitId = await getLatestCommitId(simpleGit(local), config);
-  config.version = latestRemoteCommitId;
+  await getLatestCommitId(simpleGit(local), config);
 }
 export async function cloneRepoWithOra(config: TemplateConfig) {
   try {
@@ -33,6 +32,11 @@ export async function cloneRepoWithOra(config: TemplateConfig) {
 }
 let tempId = 0;
 export function getRepoDirName(repoUrl: string) {
+  const [, searchStr] = repoUrl.split('?');
+  if (searchStr) {
+    const searchParams = new URLSearchParams(searchStr);
+    repoUrl = searchParams.get('temp') || repoUrl;
+  }
   const base = basename(repoUrl);
   const [localName] = base.split('#');
   if (localName) {
@@ -43,9 +47,9 @@ export function getRepoDirName(repoUrl: string) {
 
 const REPO_NAME_RE = /\/([^/]*)\.git/;
 export function formatRepoUrl(repoUrl: string) {
-  if (isLocalPath(repoUrl)) return repoUrl;
+  if (existsSync(repoUrl)) return repoUrl;
   if (!isRemotePath(repoUrl)) {
-    repoUrl += 'http://github.com/';
+    repoUrl = 'http://github.com/' + repoUrl;
   }
   if (REPO_NAME_RE.test(repoUrl)) {
     repoUrl = repoUrl.replace('.git', '');
@@ -54,6 +58,7 @@ export function formatRepoUrl(repoUrl: string) {
   if (!repoUrl.includes('#')) {
     repoUrl += `#${DEFAULT_BRANCH}`;
   }
+  repoUrl = repoUrl.replace(/\/([?#&])/g, '$1').replace(/\/$/, '');
   return repoUrl;
 }
 
@@ -72,13 +77,14 @@ export async function getLatestCommitId(git: SimpleGit, config: TemplateConfig) 
   const { branch, temp } = config;
   try {
     await git.fetch('origin', branch);
-    // 拿默认分支 commitId
+    // 拿分支 commitId
     const logParams = [`origin/${branch}`];
     if (temp) {
       logParams.push.apply(logParams, ['--', temp]);
     }
     const log = await git.log(logParams);
     const latestCommit = log.latest?.hash || '';
+    config.version = latestCommit;
     return latestCommit;
   } catch (err) {
     console.error(chalk.bgYellow('WARN') + chalk.red(' Failed to get repository version: '), err);
@@ -88,20 +94,24 @@ export async function getLatestCommitId(git: SimpleGit, config: TemplateConfig) 
 export async function checkRepoVersion(git: SimpleGit, config: TemplateConfig) {
   const latestCommitId = config.version;
   const latestRemoteCommitId = await getLatestCommitId(git, config);
-  config.version = latestRemoteCommitId;
-  console.log(latestCommitId, latestRemoteCommitId);
+  // console.log(latestCommitId, latestRemoteCommitId);
   return latestCommitId === latestRemoteCommitId;
 }
-export async function updateRepo(config: TemplateConfig) {
-  const { local } = config;
+export async function updateRepo(config: TemplateConfig, force = false) {
+  const { local, path } = config;
   const git = simpleGit(local);
-  if (await checkRepoVersion(git, config)) return;
+  if (force) {
+    // checkout 不仅可以切换/创建分支，还可以重置文件到 HEAD
+    await git.checkout('HEAD', [path]);
+    await getLatestCommitId(git, config);
+  } else if (await checkRepoVersion(git, config)) {
+    return;
+  }
   await git.pull();
-  console.log('pull', config.temp);
 }
-export async function updateRepoWithOra(config: TemplateConfig) {
+export async function updateRepoWithOra(config: TemplateConfig, force = false) {
   try {
-    await oraPromise(updateRepo(config), {
+    await oraPromise(updateRepo(config, force), {
       successText: `Repository updated successfully`,
       failText: `Failed to update repository`,
       text: 'Loading update',

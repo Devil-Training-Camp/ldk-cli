@@ -8,6 +8,7 @@ import chalk from 'chalk';
 import type { TemplateConfig } from '../core/template.js';
 
 const { remove, existsSync } = fse;
+
 const USER_HOME = os.homedir();
 const DEFAULT_CACHE_DIR = join(USER_HOME, '.ldk-cache');
 
@@ -20,6 +21,8 @@ export const OFFICIAL_TEMPLATES = [
   'https://github.com/Devil-Training-Camp/ldk-cli?temp=packages/cli#main',
   'https://github.com/Devil-Training-Camp/ldk-cli?temp=packages/cli#main',
 ];
+export const TEMPLATE_IGNORE_DIRS = ['.git'];
+export const TEMPLATE_IGNORE_DIRS_RE = new RegExp(`(\\/|\\\\)(${TEMPLATE_IGNORE_DIRS.join('|')})`);
 
 export interface LocalConfig {
   cacheDir?: string;
@@ -68,9 +71,8 @@ async function setConfigAsync<T>(path: string, config: T) {
     if (existsSync(path)) {
       await remove(path);
     }
-    const code = JSON.stringify(config);
+    const code = JSON.stringify(config, null, 2);
     await writeFile(path, code);
-    return JSON.parse(code);
   } catch (error) {
     console.error(chalk.bgYellow('WARN') + chalk.red(' Failed to update config: '), error);
   }
