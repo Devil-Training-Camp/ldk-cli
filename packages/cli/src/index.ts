@@ -15,4 +15,16 @@ program
     create(projectName, options);
   });
 
+program
+  .command('temp')
+  .description('Manage templates')
+  .option('--add <templateUrl>', 'Install template')
+  .option('--remove <templateName>', 'Remove template')
+  .option('--update <templateName>', 'Update template')
+  .option('--all', 'Manage all Templates', false)
+  .action(async (projectName: string, options: CreateOptions) => {
+    const { create } = await import('./commands/create.js');
+    create(projectName, options);
+  });
+
 program.parse();
