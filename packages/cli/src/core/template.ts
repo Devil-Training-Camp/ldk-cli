@@ -22,7 +22,6 @@ import {
   parseRepoUrl,
   updateRepoWithOra,
 } from '../common/repository.js';
-import { isPath } from '../common/index.js';
 
 export interface TemplateConfig extends ActionTargetConfig {
   url: string;
@@ -33,7 +32,7 @@ export interface TemplateConfig extends ActionTargetConfig {
 
 export class TemplateManager extends Action<TemplateConfig> {
   templates: TemplateConfig[];
-  constructor(public projectPath: string) {
+  constructor(public projectPath = 'template') {
     const cacheConfig = getCacheConfig();
     const templates: TemplateConfig[] = cacheConfig.templates;
     super(templates);
@@ -55,35 +54,50 @@ export class TemplateManager extends Action<TemplateConfig> {
     if (this.has(tempPath)) return tempPath;
     const { url, branch, temp } = parseRepoUrl(tempPath);
     const title = `${dirName}${DEFAULT_BRANCH === branch ? '' : `(${branch})`}`;
+    const local = join(TEMPLATE_CACHE_DIR, basename(url));
+    const path = join(local, temp);
     this.add({
       name: tempPath,
       title,
       version: '',
-      path: '',
-      local: '',
+      path,
+      local,
       url,
       branch,
       temp,
     });
     return tempPath;
   }
-  async invokeTemplate(nameOrPath: string) {
-    let name = nameOrPath;
-    // 处理未下载的模板
-    if (isPath(nameOrPath)) {
-      name = await this.genTemplate(nameOrPath);
-    }
+  async invokeTemplate(name: string) {
+    const tempConfig = await this.addTemplate(name);
+    if (tempConfig === undefined) return;
+    const { path } = tempConfig;
+    await fse.remove(this.projectPath);
+    await fse.copy(path, this.projectPath, {
+      filter: src => !TEMPLATE_IGNORE_DIRS_RE.test(src),
+    });
+    console.log(chalk.green('Template invoked'));
+    await setCacheConfigAsync();
+  }
+  async getTemplate(name: string) {
+    name = await this.genTemplate(name);
     const tempConfig = this.get(name);
-    if (typeof tempConfig === 'undefined') return;
-    const { local, url, temp } = tempConfig;
-    const localRepoPath = join(TEMPLATE_CACHE_DIR, basename(url));
-    const localTempPath = join(localRepoPath, temp);
-    if (local === '') {
-      tempConfig.local = localRepoPath;
-      tempConfig.path = localTempPath;
+    if (tempConfig === undefined) {
+      console.log(chalk.red('Template does not exist'));
+      return;
     }
-    if (existsSync(localRepoPath)) {
-      await updateRepoWithOra(tempConfig, !existsSync(localTempPath));
+    return tempConfig;
+  }
+  async addTemplate(name: string) {
+    name = await this.genTemplate(name);
+    const tempConfig = this.get(name);
+    if (tempConfig === undefined) {
+      console.log(chalk.red('Template does not exist'));
+      return;
+    }
+    const { local, path } = tempConfig;
+    if (existsSync(local)) {
+      await updateRepoWithOra(tempConfig, !existsSync(path));
     } else {
       try {
         await cloneRepoWithOra(tempConfig);
@@ -91,11 +105,7 @@ export class TemplateManager extends Action<TemplateConfig> {
         return;
       }
     }
-    await fse.remove(this.projectPath);
-    await fse.copy(localTempPath, this.projectPath, {
-      filter: src => !TEMPLATE_IGNORE_DIRS_RE.test(src),
-    });
-    console.log(chalk.green('Template invoked'));
-    await setCacheConfigAsync();
+    return tempConfig;
   }
+  // async removeTemplate(name: string) {}
 }

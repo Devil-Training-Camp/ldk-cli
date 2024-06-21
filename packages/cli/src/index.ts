@@ -15,16 +15,15 @@ program
     create(projectName, options);
   });
 
+export const tempActions = ['--add', '--remove', '--update', '--show'] as const;
+export type TempAction = (typeof tempActions)[number];
 program
-  .command('temp')
+  .command('temp <action> [nameOrPath]')
   .description('Manage templates')
-  .option('--add <templateUrl>', 'Install template')
-  .option('--remove <templateName>', 'Remove template')
-  .option('--update <templateName>', 'Update template')
-  .option('--all', 'Manage all Templates', false)
-  .action(async (projectName: string, options: CreateOptions) => {
-    const { create } = await import('./commands/create.js');
-    create(projectName, options);
+  .allowUnknownOption()
+  .action(async (action: TempAction, nameOrPath?: string) => {
+    const { template } = await import('./commands/template.js');
+    template(action, nameOrPath);
   });
 
 program.parse();

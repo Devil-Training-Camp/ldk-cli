@@ -15,6 +15,7 @@
   },
   "scripts": {
     "dev": "pnpm dev:tsx",
+    "c:temp": "pnpm dev temp",
     "c:create": "pnpm dev create ../../lib -f",
     "dev:tsnode": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./src/index.ts",
     "dev:node": "pnpm build && node ./bin.js",
