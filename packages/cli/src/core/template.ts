@@ -50,13 +50,13 @@ export class TemplateManager extends Action<TemplateConfig> {
   }
   async genTemplate(tempPath: string) {
     tempPath = formatRepoUrl(tempPath);
+    if (this.has(tempPath)) return this.get(tempPath) as TemplateConfig;
     const dirName = getRepoDirName(tempPath);
-    if (this.has(tempPath)) return tempPath;
     const { url, branch, temp } = parseRepoUrl(tempPath);
     const title = `${dirName}${DEFAULT_BRANCH === branch ? '' : `(${branch})`}`;
     const local = join(TEMPLATE_CACHE_DIR, basename(url));
     const path = join(local, temp);
-    this.add({
+    const tempConfig = {
       name: tempPath,
       title,
       version: '',
@@ -65,8 +65,9 @@ export class TemplateManager extends Action<TemplateConfig> {
       url,
       branch,
       temp,
-    });
-    return tempPath;
+    };
+    this.add(tempConfig);
+    return tempConfig;
   }
   async invokeTemplate(name: string) {
     const tempConfig = await this.addTemplate(name);
@@ -79,22 +80,8 @@ export class TemplateManager extends Action<TemplateConfig> {
     console.log(chalk.green('Template invoked'));
     await setCacheConfigAsync();
   }
-  async getTemplate(name: string) {
-    name = await this.genTemplate(name);
-    const tempConfig = this.get(name);
-    if (tempConfig === undefined) {
-      console.log(chalk.red('Template does not exist'));
-      return;
-    }
-    return tempConfig;
-  }
   async addTemplate(name: string) {
-    name = await this.genTemplate(name);
-    const tempConfig = this.get(name);
-    if (tempConfig === undefined) {
-      console.log(chalk.red('Template does not exist'));
-      return;
-    }
+    const tempConfig = await this.genTemplate(name);
     const { local, path } = tempConfig;
     if (existsSync(local)) {
       await updateRepoWithOra(tempConfig, !existsSync(path));
@@ -107,5 +94,29 @@ export class TemplateManager extends Action<TemplateConfig> {
     }
     return tempConfig;
   }
-  // async removeTemplate(name: string) {}
+  getTemplate(name: string) {
+    const tempConfig = this.get(name);
+    if (tempConfig === undefined) {
+      console.log(chalk.red(`${name} does not exist`));
+      return;
+    }
+    return tempConfig;
+  }
+  async removeTemplate(name: string) {
+    const tempConfig = this.getTemplate(name);
+    if (tempConfig === undefined) return;
+    const { path } = tempConfig;
+    if (!existsSync(path)) {
+      console.log(chalk.red(`${name} does not exist`));
+      return;
+    }
+    await fse.remove(path);
+    this.remove(name);
+  }
+  async removeAllTemplates() {
+    this.removeAll();
+    if (existsSync(TEMPLATE_CACHE_DIR)) {
+      await fse.remove(TEMPLATE_CACHE_DIR);
+    }
+  }
 }

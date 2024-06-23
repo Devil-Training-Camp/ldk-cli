@@ -10,6 +10,7 @@ import chalk from 'chalk';
 import { tempActions } from '..';
 import type { TempAction } from '..';
 import { TemplateManager } from '../core/template.js';
+import { setCacheConfigAsync } from '../common/constant';
 // import { transToPromptChoices } from '../common/index.js';
 
 // e.g -t https://github.com/grey-coat/virtual-scroll-list-liudingkang-test.git
@@ -29,18 +30,40 @@ export async function template(action: TempAction, nameOrPath?: string) {
   await templateManager.init();
   if (nameOrPath) {
     switch (action) {
-      case '--update' || '--add':
+      case '--add':
+      case '--update':
         await templateManager.addTemplate(nameOrPath);
         break;
       case '--remove':
-        await templateManager.addTemplate(nameOrPath);
+        await templateManager.removeTemplate(nameOrPath);
         break;
+      case '--show': {
+        const tempConfig = templateManager.getTemplate(nameOrPath);
+        if (tempConfig === undefined) return;
+        console.log(tempConfig);
+        return;
+      }
+      default:
+        break;
+    }
+  } else {
+    const tempNames = templateManager.templates.map(val => val.name);
+    switch (action) {
+      case '--add':
+        console.error(chalk.bgRed('ERROR') + chalk.red(' Missing template name'));
+        break;
+      case '--update':
+        tempNames.forEach(await templateManager.addTemplate.bind(templateManager));
+        break;
+      case '--remove':
+        await templateManager.removeAllTemplates();
+        break;
+      case '--show':
+        console.log(templateManager.templates);
+        return;
       default:
         break;
     }
   }
-  // if (add) {
-  // }
-  // if (remove !== undefined) {
-  // }
+  await setCacheConfigAsync();
 }

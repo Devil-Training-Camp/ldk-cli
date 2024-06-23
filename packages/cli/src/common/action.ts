@@ -10,8 +10,7 @@ export class Action<T extends ActionTargetConfig> {
     return this.targetArr.find(target => target.name === name);
   }
   add(target: T) {
-    const cur = this.get(target.name);
-    if (cur) return false;
+    if (this.has(target.name)) return false;
     this.targetArr.push(target);
     return true;
   }
@@ -19,9 +18,14 @@ export class Action<T extends ActionTargetConfig> {
     const curIdx = this.targetArr.findIndex(target => target.name === name);
     if (curIdx !== -1) {
       this.targetArr.splice(curIdx, 1);
+      return true;
     }
+    return false;
   }
   has(name: string) {
     return this.targetArr.findIndex(target => target.name === name) !== -1;
+  }
+  removeAll() {
+    this.targetArr.length = 0;
   }
 }
