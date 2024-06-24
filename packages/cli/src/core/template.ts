@@ -4,9 +4,9 @@ import { existsSync } from 'fs';
 import fse from 'fs-extra';
 // import { glob } from 'glob';
 import chalk from 'chalk';
+import type { ActionTargetConfig } from '@ldk/shared';
+import { Action } from '@ldk/shared';
 
-import type { ActionTargetConfig } from '../common/action.js';
-import { Action } from '../common/action.js';
 import {
   DEFAULT_BRANCH,
   OFFICIAL_TEMPLATES,

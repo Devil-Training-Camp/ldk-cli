@@ -1,0 +1,30 @@
+{
+  "name": "@ldk/shared",
+  "version": "1.0.0",
+  "private": false,
+  "description": "a vue cli",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "type": "module",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "vue3",
+    "cli"
+  ],
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Devil-Training-Camp/ldk-cli.git",
+    "directory": "packages/cli"
+  },
+  "author": {
+    "name": "grey-coat",
+    "email": "461252486@qq.com"
+  },
+  "license": "MIT"
+}

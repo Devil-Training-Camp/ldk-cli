@@ -37,6 +37,9 @@
     "email": "461252486@qq.com"
   },
   "license": "MIT",
+  "dependencies": {
+    "@ldk/shared": "workspace:^"
+  },
   "devDependencies": {
     "chalk": "^5.3.0",
     "fs-extra": "^11.2.0",
