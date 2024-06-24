@@ -12,7 +12,7 @@
     "stylelint": "stylelint \"packages/**/*.{css,scss,sass,vue}\"",
     "stylelint:fix": "stylelint \"packages/**/*.{css,scss,sass,vue}\" --fix",
     "prepare": "husky install",
-    "commit": "git cz",
+    "commit": "git add . && git cz && git push",
     "release": "release-it",
     "release:ci": "release-it --ci",
     "release:pre": "release-it --preRelease-alpha --ci",

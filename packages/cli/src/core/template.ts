@@ -54,14 +54,13 @@ export class TemplateManager extends Action<TemplateConfig> {
     const dirName = getRepoDirName(tempPath);
     const { url, branch, temp } = parseRepoUrl(tempPath);
     const title = `${dirName}${DEFAULT_BRANCH === branch ? '' : `(${branch})`}`;
-    const local = join(TEMPLATE_CACHE_DIR, basename(url));
-    const path = join(local, temp);
+
     const tempConfig = {
       name: tempPath,
       title,
       version: '',
-      path,
-      local,
+      path: '',
+      local: '',
       url,
       branch,
       temp,
@@ -82,7 +81,12 @@ export class TemplateManager extends Action<TemplateConfig> {
   }
   async addTemplate(name: string) {
     const tempConfig = await this.genTemplate(name);
-    const { local, path } = tempConfig;
+    const { url, temp } = tempConfig;
+    let { local, path } = tempConfig;
+    if (local === '') {
+      tempConfig.local = local = join(TEMPLATE_CACHE_DIR, basename(url));
+      tempConfig.path = path = join(local, temp);
+    }
     if (existsSync(local)) {
       await updateRepoWithOra(tempConfig, !existsSync(path));
     } else {
@@ -95,6 +99,7 @@ export class TemplateManager extends Action<TemplateConfig> {
     return tempConfig;
   }
   getTemplate(name: string) {
+    name = formatRepoUrl(name);
     const tempConfig = this.get(name);
     if (tempConfig === undefined) {
       console.log(chalk.red(`${name} does not exist`));

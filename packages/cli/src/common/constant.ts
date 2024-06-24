@@ -14,10 +14,12 @@ const DEFAULT_CACHE_DIR = join(USER_HOME, '.ldk-cache');
 
 export const CWD = process.cwd();
 export const LOCAL_CONFIG_FILE = join(USER_HOME, '.ldkrc');
+// 规范名称测试
+// 重复性测试
 export const OFFICIAL_TEMPLATES = [
-  'https://github.com/grey-coat/virtual-scroll-list-liudingkang-test',
+  'https://github.com/grey-coat/virtual-scroll-list-liudingkang-test.git',
   'https://github.com/grey-coat/virtual-scroll-list-liudingkang-build-test',
-  'https://github.com/Devil-Training-Camp/ldk-cli?temp=packages/cli-template-base#main',
+  'https://github.com/Devil-Training-Camp/ldk-cli/?temp=packages/cli-template-base/#main',
   'https://github.com/Devil-Training-Camp/ldk-cli?temp=packages/cli#main',
   'https://github.com/Devil-Training-Camp/ldk-cli?temp=packages/cli#main',
 ];
