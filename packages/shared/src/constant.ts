@@ -5,8 +5,6 @@ import { readFile, writeFile } from 'fs/promises';
 import fse from 'fs-extra';
 import chalk from 'chalk';
 
-import type { TemplateConfig } from '../core/template.js';
-
 const { remove, existsSync } = fse;
 
 const USER_HOME = os.homedir();
@@ -14,17 +12,6 @@ const DEFAULT_CACHE_DIR = join(USER_HOME, '.ldk-cache');
 
 export const CWD = process.cwd();
 export const LOCAL_CONFIG_FILE = join(USER_HOME, '.ldkrc');
-// 规范名称测试
-// 重复性测试
-export const OFFICIAL_TEMPLATES = [
-  'https://github.com/grey-coat/virtual-scroll-list-liudingkang-test.git',
-  'https://github.com/grey-coat/virtual-scroll-list-liudingkang-build-test',
-  'https://github.com/Devil-Training-Camp/ldk-cli/?temp=packages/cli-template-base/#main',
-  'https://github.com/Devil-Training-Camp/ldk-cli?temp=packages/cli#main',
-  'https://github.com/Devil-Training-Camp/ldk-cli?temp=packages/cli#main',
-];
-export const TEMPLATE_IGNORE_DIRS = ['.git'];
-export const TEMPLATE_IGNORE_DIRS_RE = new RegExp(`(\\/|\\\\)(${TEMPLATE_IGNORE_DIRS.join('|')})`);
 
 export interface LocalConfig {
   cacheDir?: string;
@@ -32,10 +19,9 @@ export interface LocalConfig {
 const defaultLocalConfig: LocalConfig = {};
 const localConfig: LocalConfig = (await getConfigAsync(LOCAL_CONFIG_FILE)) || defaultLocalConfig;
 
-const CACHE_DIR = localConfig.cacheDir || DEFAULT_CACHE_DIR;
+export const CACHE_DIR = localConfig.cacheDir || DEFAULT_CACHE_DIR;
 export const CACHE_CONFIG_FILE = join(CACHE_DIR, '.ldk-cache.json');
 export const PLUGIN_CACHE_DIR = join(CACHE_DIR, 'plugins');
-export const TEMPLATE_CACHE_DIR = join(CACHE_DIR, 'templates');
 
 export function getLocalConfig() {
   return localConfig;
@@ -45,7 +31,7 @@ export async function setLocalConfigAsync() {
 }
 
 export interface CacheConfig {
-  templates: TemplateConfig[];
+  templates: [];
   plugins: [];
 }
 const defaultCacheConfig: CacheConfig = {
@@ -79,5 +65,3 @@ async function setConfigAsync<T>(path: string, config: T) {
     console.error(chalk.bgYellow('WARN') + chalk.red(' Failed to update config: '), error);
   }
 }
-
-export const DEFAULT_BRANCH = 'main';

@@ -2,26 +2,22 @@ import { join, basename } from 'path';
 import { existsSync } from 'fs';
 
 import fse from 'fs-extra';
-// import { glob } from 'glob';
 import chalk from 'chalk';
-import type { ActionTargetConfig } from '@ldk/shared';
-import { Action } from '@ldk/shared';
+import { Action, getCacheConfig, setCacheConfigAsync, type ActionTargetConfig } from '@ldk/shared';
 
-import {
-  DEFAULT_BRANCH,
-  OFFICIAL_TEMPLATES,
-  TEMPLATE_CACHE_DIR,
-  TEMPLATE_IGNORE_DIRS_RE,
-  getCacheConfig,
-  setCacheConfigAsync,
-} from '../common/constant.js';
 import {
   cloneRepoWithOra,
   formatRepoUrl,
   getRepoDirName,
   parseRepoUrl,
   updateRepoWithOra,
-} from '../common/repository.js';
+} from './repository.js';
+import {
+  DEFAULT_BRANCH,
+  OFFICIAL_TEMPLATES,
+  TEMPLATE_CACHE_DIR,
+  TEMPLATE_IGNORE_DIRS_RE,
+} from './constant.js';
 
 export interface TemplateConfig extends ActionTargetConfig {
   url: string;

@@ -1,0 +1,1 @@
+@ldk/template-manager

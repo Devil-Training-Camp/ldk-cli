@@ -2,12 +2,11 @@ import path from 'path';
 import { existsSync } from 'fs';
 
 import inquirer from 'inquirer';
+import { CWD, transToPromptChoices } from '@ldk/shared';
+import { TemplateManager } from '@ldk/template-manager';
+import type { TemplateConfig } from '@ldk/template-manager';
 
-import type { CreateOptions } from '..';
-import { CWD } from '../common/constant.js';
-import type { TemplateConfig } from '../core/template.js';
-import { TemplateManager } from '../core/template.js';
-import { transToPromptChoices } from '../common/index.js';
+import type { CreateOptions } from '../index.js';
 
 async function templatePrompt(tempArr: TemplateConfig[]) {
   const { template }: { template: string } = await inquirer.prompt([

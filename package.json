@@ -7,6 +7,7 @@
   },
   "scripts": {
     "build": "echo \"build\" && exit 1",
+    "dev": "pnpm --dir ./packages/shared dev && pnpm --dir ./packages/template-manager dev",
     "eslint": "eslint --ext .vue,.ts,.js .",
     "eslint:fix": "eslint --ext .vue,.ts,.js . --fix",
     "stylelint": "stylelint \"packages/**/*.{css,scss,sass,vue}\"",
@@ -29,7 +30,7 @@
     "@types/inquirer": "^9.0.7",
     "@typescript-eslint/eslint-plugin": "^6.7.5",
     "@typescript-eslint/parser": "^6.7.5",
-    "commander": "^12.0.0",
+    "rimraf": "^5.0.7",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
     "esbuild": "^0.19.4",
@@ -40,8 +41,6 @@
     "eslint-plugin-import": "^2.28.1",
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-vue": "^9.17.0",
-    "fs-extra": "^11.2.0",
-    "glob": "^10.3.10",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
     "prettier": "^3.0.3",
@@ -54,7 +53,6 @@
     "stylelint-config-standard-vue": "^1.0.0",
     "stylelint-order": "^6.0.3",
     "stylelint-prettier": "^4.0.2",
-    "ts-node": "^10.9.2",
     "typescript": "~5.2.2",
     "vue-eslint-parser": "^9.3.2"
   }

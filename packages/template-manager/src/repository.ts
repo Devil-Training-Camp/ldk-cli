@@ -5,12 +5,11 @@ import chalk from 'chalk';
 import type { SimpleGit } from 'simple-git';
 import { simpleGit } from 'simple-git';
 import { oraPromise } from 'ora';
-
-import type { TemplateConfig } from '../core/template.js';
+import { isRemotePath } from '@ldk/shared';
 
 import { DEFAULT_BRANCH } from './constant.js';
 
-import { isRemotePath } from './index.js';
+import type { TemplateConfig } from './index.js';
 
 export async function cloneRepo(config: TemplateConfig) {
   const { url, local, branch } = config;

@@ -1,12 +1,11 @@
 import chalk from 'chalk';
 import inquirer from 'inquirer';
+import { TemplateManager } from '@ldk/template-manager';
+import type { TemplateConfig } from '@ldk/template-manager';
+import { setCacheConfigAsync, transToPromptChoices } from '@ldk/shared';
 
-import { tempActions } from '..';
-import type { TempAction } from '..';
-import type { TemplateConfig } from '../core/template.js';
-import { TemplateManager } from '../core/template.js';
-import { setCacheConfigAsync } from '../common/constant';
-import { transToPromptChoices } from '../common/index.js';
+import { tempActions } from '../index.js';
+import type { TempAction } from '../index.js';
 
 async function templatesPrompt(tempArr: TemplateConfig[]) {
   const { templates }: { templates: string[] } = await inquirer.prompt([

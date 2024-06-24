@@ -19,10 +19,5 @@
     "isolatedModules": true, // 确保每个文件都可以安全地传输，而不依赖于其他导入
     "skipLibCheck": true, // 跳过类型检查 .d.ts类型脚本中包含的ts文件
     "allowJs": true, // 允许 js
-    "paths": {
-      "@vue/*": [
-        "packages/*/src"
-      ],
-    }
   }
 }
