@@ -28,7 +28,7 @@ export interface TemplateConfig extends ActionTargetConfig {
 
 export class TemplateManager extends Action<TemplateConfig> {
   templates: TemplateConfig[];
-  constructor(public projectPath = 'template') {
+  constructor(public projectPath = 'project') {
     const cacheConfig = getCacheConfig();
     const templates: TemplateConfig[] = cacheConfig.templates;
     super(templates);

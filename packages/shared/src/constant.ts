@@ -21,7 +21,6 @@ const localConfig: LocalConfig = (await getConfigAsync(LOCAL_CONFIG_FILE)) || de
 
 export const CACHE_DIR = localConfig.cacheDir || DEFAULT_CACHE_DIR;
 export const CACHE_CONFIG_FILE = join(CACHE_DIR, '.ldk-cache.json');
-export const PLUGIN_CACHE_DIR = join(CACHE_DIR, 'plugins');
 
 export function getLocalConfig() {
   return localConfig;

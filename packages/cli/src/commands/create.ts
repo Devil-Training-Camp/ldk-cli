@@ -5,6 +5,7 @@ import inquirer from 'inquirer';
 import { CWD, transToPromptChoices } from '@ldk/shared';
 import { TemplateManager } from '@ldk/template-manager';
 import type { TemplateConfig } from '@ldk/template-manager';
+import { PluginManager } from '@ldk/plugin-manager';
 
 import type { CreateOptions } from '../index.js';
 
@@ -56,4 +57,5 @@ export async function create(projectName: string, options: CreateOptions) {
 
   const template = await templatePrompt(templateManager.templates);
   await templateManager.invokeTemplate(template);
+  new PluginManager();
 }

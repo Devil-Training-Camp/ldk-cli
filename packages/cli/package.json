@@ -16,7 +16,7 @@
   "scripts": {
     "dev": "pnpm dev:tsx",
     "c:temp": "pnpm dev temp",
-    "c:create": "pnpm dev create ../../lib -f",
+    "c:create": "cross-env NODE_ENV=development pnpm dev create ../../lib -f",
     "dev:tsnode": "node --no-warnings=ExperimentalWarning --loader ts-node/esm ./src/index.ts",
     "dev:node": "pnpm build && node ./bin.js",
     "dev:tsx": "tsx ./src/index.ts",
@@ -40,12 +40,15 @@
   "dependencies": {
     "@ldk/shared": "workspace:*",
     "@ldk/template-manager": "workspace:*",
+    "@ldk/plugin-manager": "workspace:*",
     "chalk": "^5.3.0",
-    "inquirer": "^9.2.23",
-    "commander": "^12.0.0"
+    "commander": "^12.0.0",
+    "cross-env": "^7.0.3",
+    "inquirer": "^9.2.23"
   },
   "devDependencies": {
-    "tsx": "^4.12.0",
-    "ts-node": "^10.9.2"
+    "@types/inquirer": "^9.0.7",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.12.0"
   }
 }
