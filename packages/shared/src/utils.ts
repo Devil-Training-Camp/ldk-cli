@@ -19,3 +19,5 @@ export const isLocalPath = (str: string) => {
     return false;
   }
 };
+export const mergeObject = <T extends object>(...args: Partial<T>[]): T =>
+  Object.assign({}, ...args) as T;

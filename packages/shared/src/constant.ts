@@ -5,6 +5,8 @@ import { readFile, writeFile } from 'fs/promises';
 import fse from 'fs-extra';
 import chalk from 'chalk';
 
+import { mergeObject } from './utils.js';
+
 const { remove, existsSync } = fse;
 
 const USER_HOME = os.homedir();
@@ -14,12 +16,20 @@ export const CWD = process.cwd();
 export const LOCAL_CONFIG_FILE = join(USER_HOME, '.ldkrc');
 
 export interface LocalConfig {
-  cacheDir?: string;
+  cacheDir: string;
+  pkgManager: 'npm' | 'pnpm' | 'yarn';
 }
-const defaultLocalConfig: LocalConfig = {};
-const localConfig: LocalConfig = (await getConfigAsync(LOCAL_CONFIG_FILE)) || defaultLocalConfig;
+const defaultLocalConfig: LocalConfig = {
+  pkgManager: 'pnpm',
+  cacheDir: DEFAULT_CACHE_DIR,
+};
+const localConfig = mergeObject<LocalConfig>(
+  defaultLocalConfig,
+  await getConfigAsync(LOCAL_CONFIG_FILE),
+);
 
-export const CACHE_DIR = localConfig.cacheDir || DEFAULT_CACHE_DIR;
+export const CACHE_DIR = localConfig.cacheDir;
+export const PKG_MANAGER = localConfig.pkgManager;
 export const CACHE_CONFIG_FILE = join(CACHE_DIR, '.ldk-cache.json');
 
 export function getLocalConfig() {
@@ -37,7 +47,10 @@ const defaultCacheConfig: CacheConfig = {
   templates: [],
   plugins: [],
 };
-const cacheConfig: CacheConfig = (await getConfigAsync(CACHE_CONFIG_FILE)) || defaultCacheConfig;
+const cacheConfig: CacheConfig = mergeObject(
+  defaultCacheConfig,
+  await getConfigAsync(CACHE_CONFIG_FILE),
+);
 export function getCacheConfig() {
   return cacheConfig;
 }
