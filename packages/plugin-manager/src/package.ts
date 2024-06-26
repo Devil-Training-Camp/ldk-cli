@@ -17,7 +17,7 @@ async function initPkgDir() {
     cwd: PLUGIN_CACHE_DIR,
   });
 }
-export async function installPkg(config?: PluginConfig) {
+export async function installPkg(config: PluginConfig) {
   console.log(config);
   await initPkgDir();
 }
