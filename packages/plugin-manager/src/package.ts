@@ -1,6 +1,6 @@
 import { execSync } from 'child_process';
 
-import { PKG_MANAGER } from '@ldk/shared';
+import { PKG_MANAGER, isDev } from '@ldk/shared';
 import fse from 'fs-extra';
 import { parseJson } from '@ldk/plugin-helper';
 
@@ -31,4 +31,8 @@ export async function installPkgs(configs: PluginConfig[]) {
   );
   jsonHepler.injectDependencies(deps);
   await fse.writeFile(PLUGIN_PKG_FILE, jsonHepler.tryStringify());
+  if (isDev()) return;
+  execSync(`${PKG_MANAGER} i`, {
+    cwd: PLUGIN_CACHE_DIR,
+  });
 }

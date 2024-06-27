@@ -22,8 +22,8 @@ export class PluginManager extends Action<PluginConfig> {
   async initPlugins() {
     await this.genPlugins(OFFICIAL_PLUGINS);
   }
-  async genPlugins(tempPaths: string[]) {
-    return Promise.all(tempPaths.map(this.genPlugin.bind(this)));
+  async genPlugins(names: string[]) {
+    return Promise.all(names.map(this.genPlugin.bind(this)));
   }
   async genPlugin(name: string) {
     if (this.has(name)) return this.get(name) as PluginConfig;
@@ -36,5 +36,7 @@ export class PluginManager extends Action<PluginConfig> {
     this.add(pluginConfig);
     return pluginConfig;
   }
-  // async installPlugins(names: string[]) {}
+  // async installPlugins() {
+  //   const configs = await this.genPlugins();
+  // }
 }
