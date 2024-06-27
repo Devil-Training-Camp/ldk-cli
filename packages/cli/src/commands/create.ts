@@ -5,17 +5,18 @@ import inquirer from 'inquirer';
 import { CWD, transToPromptChoices } from '@ldk/shared';
 import { TemplateManager } from '@ldk/template-manager';
 import type { TemplateConfig } from '@ldk/template-manager';
+import type { PluginConfig } from '@ldk/plugin-manager';
 import { PluginManager } from '@ldk/plugin-manager';
 
 import type { CreateOptions } from '../index.js';
 
-async function templatePrompt(tempArr: TemplateConfig[]) {
+async function templatePrompt(temps: TemplateConfig[]) {
   const { template }: { template: string } = await inquirer.prompt([
     {
       name: 'template',
       type: 'list',
       message: `Choice template`,
-      choices: transToPromptChoices(tempArr),
+      choices: transToPromptChoices(temps),
     },
   ]);
   return template;
@@ -35,6 +36,17 @@ async function actionPrompt(projectName: string) {
   ]);
   return action;
 }
+export async function pluginPrompt(allPlugins: PluginConfig[]) {
+  const { plugins }: { plugins: string[] } = await inquirer.prompt([
+    {
+      name: 'plugins',
+      type: 'checkbox',
+      message: `Choice plugins`,
+      choices: transToPromptChoices(allPlugins),
+    },
+  ]);
+  return plugins;
+}
 
 // e.g pnpm c:create
 // e.g -t https://github.com/grey-coat/virtual-scroll-list-liudingkang-test.git
@@ -51,12 +63,14 @@ export async function create(projectName: string, options: CreateOptions) {
   await templateManager.init();
 
   if (options.template) {
-    await templateManager.invokeTemplate(options.template);
+    await templateManager.installTemplate(options.template);
     return;
   }
 
   const template = await templatePrompt(templateManager.templates);
-  await templateManager.invokeTemplate(template);
+  await templateManager.installTemplate(template);
   const pluginManager = new PluginManager();
   await pluginManager.init();
+  const plugins = await pluginPrompt(pluginManager.plugins);
+  console.log(plugins);
 }

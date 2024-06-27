@@ -1,7 +1,8 @@
 import type { ActionTargetConfig } from '@ldk/shared';
 import { Action, getCacheConfig } from '@ldk/shared';
 
-import { OFFICIAL_PLUGINS } from './constant';
+import { OFFICIAL_PLUGINS } from './constant.js';
+import { installPkgs } from './package.js';
 
 export interface PluginConfig extends ActionTargetConfig {}
 
@@ -16,6 +17,7 @@ export class PluginManager extends Action<PluginConfig> {
   async init() {
     await this.initPlugins();
     console.log(this.plugins);
+    await installPkgs(this.plugins);
   }
   async initPlugins() {
     await this.genPlugins(OFFICIAL_PLUGINS);
@@ -34,4 +36,5 @@ export class PluginManager extends Action<PluginConfig> {
     this.add(pluginConfig);
     return pluginConfig;
   }
+  // async installPlugins(names: string[]) {}
 }
