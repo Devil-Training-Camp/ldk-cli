@@ -6,13 +6,28 @@ export type PkgJson = {
   devDependencies: Record<string, string>;
   scripts: Record<string, string>;
 };
+type InjectOption = {
+  replace: boolean;
+};
+const defaultInjectOption: InjectOption = {
+  replace: false,
+};
 export function injectJsonAttr<T extends keyof PkgJson, K extends PkgJson[T]>(
   json: Partial<PkgJson>,
   key: T,
   value: K,
+  option?: InjectOption,
 ) {
+  option = {
+    ...defaultInjectOption,
+    ...option,
+  };
+  if (option.replace) {
+    json[key] = value;
+    return json;
+  }
   if (typeof value === 'string') {
-    json[key as 'name'] = value;
+    json[key] = value;
     return json;
   }
   const oldValue = json[key as 'dependencies'];
@@ -22,14 +37,26 @@ export function injectJsonAttr<T extends keyof PkgJson, K extends PkgJson[T]>(
   };
   return json;
 }
-export function injectDependencies(json: Partial<PkgJson>, records: Record<string, string>) {
-  return injectJsonAttr(json, 'dependencies', records);
+export function injectDependencies(
+  json: Partial<PkgJson>,
+  records: Record<string, string>,
+  replace = false,
+) {
+  return injectJsonAttr(json, 'dependencies', records, { replace });
 }
-export function injectDevDependencies(json: Partial<PkgJson>, records: Record<string, string>) {
-  return injectJsonAttr(json, 'devDependencies', records);
+export function injectDevDependencies(
+  json: Partial<PkgJson>,
+  records: Record<string, string>,
+  replace = false,
+) {
+  return injectJsonAttr(json, 'devDependencies', records, { replace });
 }
-export function injectScripts(json: Partial<PkgJson>, records: Record<string, string>) {
-  return injectJsonAttr(json, 'scripts', records);
+export function injectScripts(
+  json: Partial<PkgJson>,
+  records: Record<string, string>,
+  replace = false,
+) {
+  return injectJsonAttr(json, 'scripts', records, { replace });
 }
 export function injectName(json: Partial<PkgJson>, name: string) {
   return injectJsonAttr(json, 'name', name);

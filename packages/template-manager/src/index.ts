@@ -64,7 +64,7 @@ export class TemplateManager extends Action<TemplateConfig> {
     this.add(tempConfig);
     return tempConfig;
   }
-  async installTemplate(name: string) {
+  async invokeTemplate(name: string) {
     const tempConfig = await this.addTemplate(name);
     if (tempConfig === undefined) return;
     const { path } = tempConfig;
@@ -72,7 +72,7 @@ export class TemplateManager extends Action<TemplateConfig> {
     await fse.copy(path, this.projectPath, {
       filter: src => !TEMPLATE_IGNORE_DIRS_RE.test(src),
     });
-    console.log(chalk.green('Template installed'));
+    console.log(chalk.green('Template invoked'));
     await setCacheConfigAsync();
   }
   async addTemplate(name: string) {
