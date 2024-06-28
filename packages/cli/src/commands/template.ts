@@ -4,8 +4,8 @@ import { TemplateManager } from '@ldk/template-manager';
 import type { TemplateConfig } from '@ldk/template-manager';
 import { setCacheConfigAsync, transToPromptChoices } from '@ldk/shared';
 
-import { tempActions } from '../index.js';
-import type { TempAction } from '../index.js';
+import { manageActions } from '../index.js';
+import type { ManageAction } from '../index.js';
 
 async function templatesPrompt(tempArr: TemplateConfig[]) {
   const { templates }: { templates: string[] } = await inquirer.prompt([
@@ -20,7 +20,7 @@ async function templatesPrompt(tempArr: TemplateConfig[]) {
 }
 async function withNameOrPath(
   templateManager: TemplateManager,
-  action: TempAction,
+  action: ManageAction,
   nameOrPath: string,
 ) {
   switch (action) {
@@ -41,7 +41,7 @@ async function withNameOrPath(
       break;
   }
 }
-async function withoutNameOrPath(templateManager: TemplateManager, action: TempAction) {
+async function withoutNameOrPath(templateManager: TemplateManager, action: ManageAction) {
   if (action === '--show') {
     console.log(templateManager.templates);
     return;
@@ -66,8 +66,8 @@ async function withoutNameOrPath(templateManager: TemplateManager, action: TempA
 
 // e.g pnpm c:temp
 // e.g --add https://github.com/Devil-Training-Camp/ldk-cli?temp=packages/cli-template-base#master
-export async function template(action: TempAction, nameOrPath?: string) {
-  if (!tempActions.includes(action)) {
+export async function template(action: ManageAction, nameOrPath?: string) {
+  if (!manageActions.includes(action)) {
     console.error(
       chalk.bgRed('ERROR') +
         chalk.red(' Only supports parameters such as --add / --remove / --update / --show'),

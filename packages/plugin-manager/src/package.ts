@@ -1,28 +1,47 @@
 import { execSync } from 'child_process';
-import { resolve } from 'path';
+import { resolve, basename } from 'path';
+import { pathToFileURL } from 'url';
 
-import { PKG_MANAGER, isDev, isLocalPath } from '@ldk/shared';
+import { PACKAGES_RIR, PKG_MANAGER, isDev } from '@ldk/shared';
 import fse from 'fs-extra';
 import type { PkgJson } from '@ldk/plugin-helper';
 import { parseJson } from '@ldk/plugin-helper';
 import { oraPromise } from 'ora';
 import chalk from 'chalk';
 
-import { PLUGIN_CACHE_DIR, PLUGIN_PKG_FILE } from './constant.js';
+import { PLUGIN_CACHE_DIR, PLUGIN_PKG_FILE, isOfficialPlugin } from './constant.js';
 
 import type { PluginConfig } from './index.js';
 
+/**
+ * ！！注意
+ * 在 monorepo 架构下，在本地 dev 环境开发脚手架官方插件开发时
+ * 官方插件会依赖脚手架仓库其他包，dependencies 方式为 "@ldk/shared": "workspace:*",
+ * 如果按照第三方插件本地开发处理方式，将第三方插件依赖包注入缓存目录中 package.json
+ * "@ldk/cli-plugin-eslint": "file:///D:/myTest/ldk-cli/packages/cli-plugin-eslint"
+ * 那么在拉取插件时，cli-plugin-eslint 官方插件的 dependencies "@ldk/shared": "workspace:*" 就会报错
+ * 解决方案：
+ * 对于官方插件，本地 dev 环境不再注入缓存目录中 package.json，直接指定插件目录读取插件
+ */
 export async function parsePluginPath(nameOrPath: string) {
-  if (!isLocalPath(nameOrPath)) {
+  if (isDev() && isOfficialPlugin(nameOrPath)) {
+    const pkgName = basename(nameOrPath);
+    nameOrPath = resolve(PACKAGES_RIR, pkgName);
+  }
+  if (fse.existsSync(nameOrPath)) {
+    const pkgPath = resolve(nameOrPath, 'package.json');
+    // import 导入的 json 对象是 is not extensible 不可扩展新属性的
+    const pkg: PkgJson = await import(pathToFileURL(pkgPath).toString());
     return {
-      name: nameOrPath,
-      version: 'latest',
+      name: pkg.name,
+      version: '',
+      local: nameOrPath,
     };
   }
-  const pkg: PkgJson = await import(resolve(nameOrPath, 'package.json'));
   return {
-    name: pkg.name,
-    version: nameOrPath,
+    name: nameOrPath,
+    version: 'latest',
+    local: '',
   };
 }
 async function initPkgDir() {
@@ -40,7 +59,10 @@ export async function installPkgs(configs: PluginConfig[]) {
   const code = await fse.readFile(PLUGIN_PKG_FILE, 'utf-8');
   const jsonHepler = parseJson(code);
   const deps = configs.reduce(
-    (prev, { name, version }) => {
+    (prev, { name, version, local }) => {
+      if (local) {
+        return prev;
+      }
       prev[name] = version;
       return prev;
     },
@@ -48,7 +70,6 @@ export async function installPkgs(configs: PluginConfig[]) {
   );
   jsonHepler.injectDependencies(deps, true);
   await fse.writeFile(PLUGIN_PKG_FILE, jsonHepler.tryStringify());
-  if (isDev()) return;
   execSync(`${PKG_MANAGER} i`, {
     cwd: PLUGIN_CACHE_DIR,
   });
@@ -61,6 +82,6 @@ export async function installPkgsWithOra(configs: PluginConfig[]) {
       text: 'Loading install',
     });
   } catch (error) {
-    console.error(chalk.bgRed('ERROR') + chalk.red(' Failed to clone repository:'), error);
+    console.error(chalk.bgRed('ERROR') + chalk.red(' Failed to install plugins:'), error);
   }
 }

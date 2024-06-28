@@ -1,5 +1,5 @@
 import os from 'os';
-import { join } from 'path';
+import { join, resolve } from 'path';
 import { readFile, writeFile } from 'fs/promises';
 
 import fse from 'fs-extra';
@@ -8,10 +8,10 @@ import chalk from 'chalk';
 import { mergeObject } from './utils.js';
 
 const { remove, existsSync } = fse;
-
 const USER_HOME = os.homedir();
 const DEFAULT_CACHE_DIR = join(USER_HOME, '.ldk-cache');
 
+export const PACKAGES_RIR = resolve(import.meta.filename, '../../../');
 export const CWD = process.cwd();
 export const LOCAL_CONFIG_FILE = join(USER_HOME, '.ldkrc');
 

@@ -12,6 +12,7 @@ type InjectOption = {
 const defaultInjectOption: InjectOption = {
   replace: false,
 };
+
 export function injectJsonAttr<T extends keyof PkgJson, K extends PkgJson[T]>(
   json: Partial<PkgJson>,
   key: T,

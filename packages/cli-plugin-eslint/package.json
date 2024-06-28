@@ -1,5 +1,5 @@
 {
-  "name": "@ldk/template-manager",
+  "name": "@ldk/cli-plugin-eslint",
   "version": "1.0.0",
   "private": false,
   "description": "a vue cli",

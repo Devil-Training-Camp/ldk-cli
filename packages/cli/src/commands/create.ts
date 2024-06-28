@@ -73,6 +73,6 @@ export async function create(projectName: string, options: CreateOptions) {
   await pluginManager.init();
   const plugins = await pluginPrompt(pluginManager.plugins);
   console.log(plugins);
-  await pluginManager.addPlugins(plugins);
-  await pluginManager.installPlugins();
+  // await pluginManager.addPlugins(plugins);
+  // await pluginManager.installPlugins();
 }

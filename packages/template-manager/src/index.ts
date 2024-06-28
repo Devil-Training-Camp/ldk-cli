@@ -64,8 +64,8 @@ export class TemplateManager extends Action<TemplateConfig> {
     this.add(tempConfig);
     return tempConfig;
   }
-  async invokeTemplate(name: string) {
-    const tempConfig = await this.addTemplate(name);
+  async invokeTemplate(nameOrPath: string) {
+    const tempConfig = await this.addTemplate(nameOrPath);
     if (tempConfig === undefined) return;
     const { path } = tempConfig;
     await fse.remove(this.projectPath);
@@ -75,8 +75,8 @@ export class TemplateManager extends Action<TemplateConfig> {
     console.log(chalk.green('Template invoked'));
     await setCacheConfigAsync();
   }
-  async addTemplate(name: string) {
-    const tempConfig = await this.genTemplate(name);
+  async addTemplate(nameOrPath: string) {
+    const tempConfig = await this.genTemplate(nameOrPath);
     const { url, temp } = tempConfig;
     let { local, path } = tempConfig;
     if (local === '') {
@@ -94,8 +94,8 @@ export class TemplateManager extends Action<TemplateConfig> {
     }
     return tempConfig;
   }
-  getTemplate(name: string) {
-    name = formatRepoUrl(name);
+  getTemplate(nameOrPath: string) {
+    const name = formatRepoUrl(nameOrPath);
     const tempConfig = this.get(name);
     if (tempConfig === undefined) {
       console.log(chalk.red(`${name} does not exist`));
@@ -103,10 +103,10 @@ export class TemplateManager extends Action<TemplateConfig> {
     }
     return tempConfig;
   }
-  async removeTemplate(name: string) {
-    const tempConfig = this.getTemplate(name);
+  async removeTemplate(nameOrPath: string) {
+    const tempConfig = this.getTemplate(nameOrPath);
     if (tempConfig === undefined) return;
-    const { path } = tempConfig;
+    const { path, name } = tempConfig;
     if (!existsSync(path)) {
       console.log(chalk.red(`${name} does not exist`));
       return;
