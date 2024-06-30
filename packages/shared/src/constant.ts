@@ -1,6 +1,7 @@
 import os from 'os';
 import { join, resolve } from 'path';
 import { readFile, writeFile } from 'fs/promises';
+import { fileURLToPath } from 'url';
 
 import fse from 'fs-extra';
 import chalk from 'chalk';
@@ -11,7 +12,8 @@ const { remove, existsSync } = fse;
 const USER_HOME = os.homedir();
 const DEFAULT_CACHE_DIR = join(USER_HOME, '.ldk-cache');
 
-export const PACKAGES_RIR = resolve(import.meta.filename, '../../../');
+const __fileName = fileURLToPath(import.meta.url);
+export const PACKAGES_RIR = resolve(__fileName, '../../../');
 export const CWD = process.cwd();
 export const LOCAL_CONFIG_FILE = join(USER_HOME, '.ldkrc');
 
