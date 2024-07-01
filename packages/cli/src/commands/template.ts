@@ -50,14 +50,14 @@ async function withoutNameOrPath(templateManager: TemplateManager, action: Manag
   switch (action) {
     case '--add':
     case '--update':
-      templates.forEach(await templateManager.addTemplate.bind(templateManager));
+      await Promise.all(templates.map(templateManager.addTemplate.bind(templateManager)));
       break;
     case '--remove':
       if (templates.length === templateManager.templates.length) {
         await templateManager.removeAllTemplates();
         return;
       }
-      templates.forEach(await templateManager.removeTemplate.bind(templateManager));
+      await Promise.all(templates.map(templateManager.removeTemplate.bind(templateManager)));
       break;
     default:
       break;

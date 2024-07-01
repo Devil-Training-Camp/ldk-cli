@@ -5,8 +5,8 @@ const targets = args.length
   : [
       'shared',
       'template-manager',
-      'plugin-manager',
       'cli-plugin-eslint',
+      'plugin-manager',
       'plugin-core',
       'plugin-helper',
     ];

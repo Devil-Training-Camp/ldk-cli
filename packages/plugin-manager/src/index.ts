@@ -1,5 +1,5 @@
 import type { ActionTargetConfig } from '@ldk/shared';
-import { Action, getCacheConfig } from '@ldk/shared';
+import { Action, getCacheConfig, isDev } from '@ldk/shared';
 import chalk from 'chalk';
 
 import { OFFICIAL_PLUGINS } from './constant.js';
@@ -20,7 +20,9 @@ export class PluginManager extends Action<PluginConfig> {
     console.log(this.plugins);
   }
   async initPlugins() {
-    await this.genPlugins(OFFICIAL_PLUGINS.concat('virtual-scroll-list-liudingkang'));
+    await this.genPlugins(
+      OFFICIAL_PLUGINS.concat(isDev() ? ['virtual-scroll-list-liudingkang'] : []),
+    );
   }
   async genPlugins(names: string[]) {
     return Promise.all(names.map(this.genPlugin.bind(this)));

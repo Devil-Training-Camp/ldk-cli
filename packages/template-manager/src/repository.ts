@@ -1,13 +1,13 @@
-import { basename } from 'path';
+import { basename, resolve } from 'path';
 import { existsSync } from 'fs';
 
 import chalk from 'chalk';
 import type { SimpleGit } from 'simple-git';
 import { simpleGit } from 'simple-git';
 import { oraPromise } from 'ora';
-import { isRemotePath } from '@ldk/shared';
+import { PACKAGES_RIR, isDev, isRemotePath } from '@ldk/shared';
 
-import { DEFAULT_BRANCH } from './constant.js';
+import { DEFAULT_BRANCH, isOfficialTemp } from './constant.js';
 
 import type { TemplateConfig } from './index.js';
 
@@ -29,8 +29,13 @@ export async function cloneRepoWithOra(config: TemplateConfig) {
     throw error;
   }
 }
+
+// 暂未使用
 let tempId = 0;
 export function getRepoDirName(repoUrl: string) {
+  if (!isRemotePath(repoUrl)) {
+    return basename(repoUrl);
+  }
   const [, searchStr] = repoUrl.split('?');
   if (searchStr) {
     const searchParams = new URLSearchParams(searchStr);
@@ -44,8 +49,12 @@ export function getRepoDirName(repoUrl: string) {
   return `cli-tempalate-${tempId++}`;
 }
 
+// https://github.com/Devil-Training-Camp/ldk-cli?temp=packages/cli-template-base#main
 export function formatRepoUrl(repoUrl: string) {
-  if (existsSync(repoUrl)) return repoUrl;
+  if (isDev() && isOfficialTemp(repoUrl)) {
+    return resolve(PACKAGES_RIR, repoUrl);
+  }
+  if (existsSync(repoUrl)) return resolve(repoUrl);
   if (!isRemotePath(repoUrl)) {
     repoUrl = 'https://github.com/' + repoUrl;
   }
@@ -61,13 +70,24 @@ export function formatRepoUrl(repoUrl: string) {
 }
 
 export function parseRepoUrl(repoUrl: string) {
+  if (!isRemotePath(repoUrl)) {
+    return {
+      branch: '',
+      temp: '',
+      url: '',
+      title: basename(repoUrl),
+    };
+  }
   const url = new URL(repoUrl);
   const branch = url.hash.slice(1);
   const temp = url.searchParams.get('temp') || '';
+  const title = `${basename(temp || url.pathname)}${DEFAULT_BRANCH === branch ? '' : `(${branch})`}`;
+
   return {
     branch,
     temp,
     url: url.origin + url.pathname,
+    title,
   };
 }
 

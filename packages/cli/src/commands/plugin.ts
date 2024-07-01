@@ -51,10 +51,10 @@ async function withoutNameOrPath(pluginManager: PluginManager, action: ManageAct
   switch (action) {
     case '--add':
     case '--update':
-      plugins.forEach(await pluginManager.addPlugin.bind(pluginManager));
+      await Promise.all(plugins.map(pluginManager.addPlugin.bind(pluginManager)));
       break;
     case '--remove':
-      plugins.forEach(await pluginManager.removePlugin.bind(pluginManager));
+      await Promise.all(plugins.map(pluginManager.removePlugin.bind(pluginManager)));
       break;
     default:
       break;

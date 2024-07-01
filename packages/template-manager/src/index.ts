@@ -3,21 +3,17 @@ import { existsSync } from 'fs';
 
 import fse from 'fs-extra';
 import chalk from 'chalk';
-import { Action, getCacheConfig, setCacheConfigAsync, type ActionTargetConfig } from '@ldk/shared';
+import {
+  Action,
+  getCacheConfig,
+  setCacheConfigAsync,
+  type ActionTargetConfig,
+  isRemotePath,
+  isDev,
+} from '@ldk/shared';
 
-import {
-  cloneRepoWithOra,
-  formatRepoUrl,
-  getRepoDirName,
-  parseRepoUrl,
-  updateRepoWithOra,
-} from './repository.js';
-import {
-  DEFAULT_BRANCH,
-  OFFICIAL_TEMPLATES,
-  TEMPLATE_CACHE_DIR,
-  TEMPLATE_IGNORE_DIRS_RE,
-} from './constant.js';
+import { cloneRepoWithOra, formatRepoUrl, parseRepoUrl, updateRepoWithOra } from './repository.js';
+import { OFFICIAL_TEMPLATES, TEMPLATE_CACHE_DIR, TEMPLATE_IGNORE_DIRS_RE } from './constant.js';
 
 export interface TemplateConfig extends ActionTargetConfig {
   url: string;
@@ -39,7 +35,16 @@ export class TemplateManager extends Action<TemplateConfig> {
     // console.log(this.templates);
   }
   async initTemplates() {
-    await this.genTemplates(OFFICIAL_TEMPLATES);
+    await this.genTemplates(
+      OFFICIAL_TEMPLATES.concat(
+        isDev()
+          ? [
+              'https://github.com/grey-coat/virtual-scroll-list-liudingkang-test.git',
+              'https://github.com/grey-coat/virtual-scroll-list-liudingkang-build-test',
+            ]
+          : [],
+      ),
+    );
   }
   async genTemplates(tempPaths: string[]) {
     return Promise.all(tempPaths.map(this.genTemplate.bind(this)));
@@ -47,19 +52,13 @@ export class TemplateManager extends Action<TemplateConfig> {
   async genTemplate(tempPath: string) {
     tempPath = formatRepoUrl(tempPath);
     if (this.has(tempPath)) return this.get(tempPath) as TemplateConfig;
-    const dirName = getRepoDirName(tempPath);
-    const { url, branch, temp } = parseRepoUrl(tempPath);
-    const title = `${dirName}${DEFAULT_BRANCH === branch ? '' : `(${branch})`}`;
 
     const tempConfig = {
       name: tempPath,
-      title,
       version: '',
       path: '',
       local: '',
-      url,
-      branch,
-      temp,
+      ...parseRepoUrl(tempPath),
     };
     this.add(tempConfig);
     return tempConfig;
@@ -77,12 +76,16 @@ export class TemplateManager extends Action<TemplateConfig> {
   }
   async addTemplate(nameOrPath: string) {
     const tempConfig = await this.genTemplate(nameOrPath);
-    const { url, temp } = tempConfig;
+    const { url, temp, name } = tempConfig;
     let { local, path } = tempConfig;
-    if (local === '') {
-      tempConfig.local = local = join(TEMPLATE_CACHE_DIR, basename(url));
+    if (!isRemotePath(name)) {
+      tempConfig.local = local = name;
       tempConfig.path = path = join(local, temp);
+      console.log('success');
+      return tempConfig;
     }
+    tempConfig.local = local = join(TEMPLATE_CACHE_DIR, basename(url));
+    tempConfig.path = path = join(local, temp);
     if (existsSync(local)) {
       await updateRepoWithOra(tempConfig, !existsSync(path));
     } else {
@@ -111,7 +114,9 @@ export class TemplateManager extends Action<TemplateConfig> {
       console.log(chalk.red(`${name} does not exist`));
       return;
     }
-    await fse.remove(path);
+    if (isRemotePath(name)) {
+      await fse.remove(path);
+    }
     this.remove(name);
   }
   async removeAllTemplates() {
