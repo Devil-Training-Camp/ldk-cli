@@ -7,6 +7,7 @@ import { TemplateManager } from '@ldk/template-manager';
 import type { TemplateConfig } from '@ldk/template-manager';
 import type { PluginConfig } from '@ldk/plugin-manager';
 import { PluginManager } from '@ldk/plugin-manager';
+import { createPluginCore } from '@ldk/plugin-core';
 
 import type { CreateOptions } from '../index.js';
 
@@ -68,11 +69,19 @@ export async function create(projectName: string, options: CreateOptions) {
   }
 
   const template = await templatePrompt(templateManager.templates);
+  // const template = 'cli-template-base';
   await templateManager.invokeTemplate(template);
   const pluginManager = new PluginManager();
   await pluginManager.init();
   const plugins = await pluginPrompt(pluginManager.plugins);
+  // const plugins = ['@ldk/cli-plugin-eslint', '@ldk/cli-plugin-router'];
   console.log(plugins);
   plugins.forEach(await pluginManager.addPlugin.bind(pluginManager));
   await pluginManager.installPlugins();
+
+  const pluginConfigs = pluginManager.plugins.filter(pluginconfig =>
+    plugins.includes(pluginconfig.name),
+  );
+  const tempConfig = templateManager.getTemplate(template) as TemplateConfig;
+  await createPluginCore({ tempConfig, pluginConfigs, projectPath }).invoke();
 }

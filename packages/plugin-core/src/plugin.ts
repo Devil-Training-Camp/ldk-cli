@@ -1,16 +1,21 @@
-// import { pathToFileURL } from 'url';
+import type { PluginConfig } from '@ldk/plugin-manager';
+import { getModuleEntry, loadModule } from '@ldk/shared';
+import type * as Helper from '@ldk/plugin-helper';
 
-// import type { PluginConfig } from '@ldk/plugin-manager';
+export type PluginContext = {
+  code: string;
+  helper: typeof Helper;
+};
+export type Plugin = (context: PluginContext) => void;
 
-// import type { FileContext } from './index.js';
-
-// export type Plugin = (context: FileContext) => unknown;
-// export async function collectPlugins(pluginConfigs: PluginConfig[]) {
-//   const plugins = await Promise.all(
-//     pluginConfigs.map(async ({ local }) => {
-//       const plugin: Plugin = await import(pathToFileURL(local).toString());
-//       return plugin;
-//     }),
-//   );
-//   return plugins;
-// }
+export async function collectPlugins(pluginConfigs: PluginConfig[]) {
+  const plugins = await Promise.all(
+    pluginConfigs.map(async ({ local }) => {
+      const moduleEntry = await getModuleEntry(local);
+      console.log(moduleEntry);
+      const plugin = await loadModule<Plugin>(local, moduleEntry);
+      return plugin;
+    }),
+  );
+  return plugins;
+}

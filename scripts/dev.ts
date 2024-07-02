@@ -6,6 +6,7 @@ const targets = args.length
       'shared',
       'template-manager',
       'cli-plugin-eslint',
+      'cli-plugin-router',
       'plugin-manager',
       'plugin-core',
       'plugin-helper',

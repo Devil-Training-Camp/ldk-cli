@@ -42,6 +42,7 @@
     "@ldk/plugin-manager": "workspace:*",
     "@ldk/shared": "workspace:*",
     "@ldk/template-manager": "workspace:*",
+    "@ldk/plugin-core": "workspace:*",
     "chalk": "^5.3.0",
     "commander": "^12.0.0",
     "cross-env": "^7.0.3",

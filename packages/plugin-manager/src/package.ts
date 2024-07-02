@@ -1,7 +1,6 @@
 import { resolve, basename } from 'path';
-import { pathToFileURL } from 'url';
 
-import { PACKAGES_RIR, PKG_MANAGER, isDev } from '@ldk/shared';
+import { PACKAGES_RIR, PKG_MANAGER, isDev, loadModule } from '@ldk/shared';
 import fse from 'fs-extra';
 import type { PkgJson } from '@ldk/plugin-helper';
 import { parseJson } from '@ldk/plugin-helper';
@@ -29,7 +28,7 @@ export async function parsePluginPath(nameOrPath: string) {
   if (fse.existsSync(nameOrPath)) {
     const pkgPath = resolve(nameOrPath, 'package.json');
     // import 导入的 json 对象是 is not extensible 不可扩展新属性的
-    const pkg: PkgJson = await import(pathToFileURL(pkgPath).toString());
+    const pkg = await loadModule<PkgJson>(pkgPath);
     return {
       name: pkg.name,
       version: '',
@@ -56,7 +55,7 @@ async function initPkgDir() {
 export async function installPkgs(configs: PluginConfig[]) {
   await initPkgDir();
   const code = await fse.readFile(PLUGIN_PKG_FILE, 'utf-8');
-  const jsonHepler = parseJson(code);
+  const jsonHelper = parseJson(code);
   const deps = configs.reduce(
     (prev, { name, version, local }) => {
       if (local) {
@@ -67,8 +66,8 @@ export async function installPkgs(configs: PluginConfig[]) {
     },
     {} as Record<string, string>,
   );
-  jsonHepler.injectDependencies(deps, true);
-  await fse.writeFile(PLUGIN_PKG_FILE, jsonHepler.tryStringify());
+  jsonHelper.injectDependencies(deps, true);
+  await fse.writeFile(PLUGIN_PKG_FILE, jsonHelper.tryStringify());
   await execa(PKG_MANAGER, ['i'], {
     cwd: PLUGIN_CACHE_DIR,
     stdout: 'ignore',
