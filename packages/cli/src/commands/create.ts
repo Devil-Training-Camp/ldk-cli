@@ -75,7 +75,6 @@ export async function create(projectName: string, options: CreateOptions) {
   await pluginManager.init();
   const plugins = await pluginPrompt(pluginManager.plugins);
   // const plugins = ['@ldk/cli-plugin-eslint', '@ldk/cli-plugin-router'];
-  console.log(plugins);
   plugins.forEach(await pluginManager.addPlugin.bind(pluginManager));
   await pluginManager.installPlugins();
 

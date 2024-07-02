@@ -9,8 +9,7 @@ import chalk from 'chalk';
 import { execa } from 'execa';
 
 import { PLUGIN_CACHE_DIR, PLUGIN_PKG_FILE, isOfficialPlugin } from './constant.js';
-
-import type { PluginConfig } from './index.js';
+import type { PluginConfig } from './manager.js';
 
 // ！！注意
 // 在 monorepo 架构下，在本地 dev 环境开发脚手架官方插件开发时
