@@ -1,7 +1,8 @@
-import { type Plugin } from '@ldk/plugin-core';
+import { onInvokeStart, type Plugin } from '@ldk/plugin-core';
 
-const plugin: Plugin = async context => {
-  console.log(context.helper.tryParse(`{"name": "eslint"}`));
-  console.log('cli-plugin-eslint');
+const plugin: Plugin = async () => {
+  onInvokeStart(context => {
+    console.log(`plugin-eslint invokeStart at ${context.path}`);
+  });
 };
 export default plugin;

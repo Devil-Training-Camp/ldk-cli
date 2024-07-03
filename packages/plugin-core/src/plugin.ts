@@ -1,15 +1,9 @@
 import type { PluginConfig } from '@ldk/plugin-manager';
 import { getModuleEntry, loadModule } from '@ldk/shared';
-import type * as Helper from '@ldk/plugin-helper';
 
-export type PluginContext = {
-  code: string;
-  helper: typeof Helper;
-  path: string;
-};
-export type Plugin = (context: PluginContext) => void;
+export type Plugin = () => void;
 
-export async function collectPlugins(pluginConfigs: PluginConfig[]) {
+async function collectPlugins(pluginConfigs: PluginConfig[]) {
   const plugins = await Promise.all(
     pluginConfigs.map(async ({ local }) => {
       const moduleEntry = await getModuleEntry(local);
@@ -18,4 +12,10 @@ export async function collectPlugins(pluginConfigs: PluginConfig[]) {
     }),
   );
   return plugins;
+}
+export async function invokePlugins(pluginConfigs: PluginConfig[]) {
+  const plugins = await collectPlugins(pluginConfigs);
+  for (const plugin of plugins) {
+    await plugin();
+  }
 }

@@ -1,9 +1,9 @@
 import type { TemplateConfig } from '@ldk/template-manager';
 import type { PluginConfig } from '@ldk/plugin-manager';
-import * as Helper from '@ldk/plugin-helper';
 
-import type { PluginContext } from './plugin.js';
-import { collectPlugins } from './plugin.js';
+import { PluginHooks } from './constant.js';
+import { invokeHook, type PluginHook } from './hook.js';
+import { invokePlugins } from './plugin.js';
 import type { TempFiles } from './file.js';
 import { concatProjectFiles } from './file.js';
 
@@ -17,8 +17,8 @@ export type CoreOptions = {
 
 export type CoreContext = {
   files: TempFiles;
-  invokeStarts: string[];
-  invokeEnds: string[];
+  [PluginHooks.INVOKE_START]: PluginHook;
+  [PluginHooks.INVOKE_END]: PluginHook;
 };
 
 export type PluginCore = {
@@ -29,16 +29,15 @@ export type PluginCore = {
 function createCoreContext(): CoreContext {
   return {
     files: {},
-    invokeStarts: [],
-    invokeEnds: [],
+    [PluginHooks.INVOKE_START]: [],
+    [PluginHooks.INVOKE_END]: [],
   };
 }
-function createPluginContext(): PluginContext {
-  return {
-    code: '',
-    helper: Helper,
-    path: '',
-  };
+
+export let curPluginCoreIns: PluginCore | null = null;
+
+export function setCurPluginCoreIns(ins: PluginCore) {
+  curPluginCoreIns = ins;
 }
 
 export function createPluginCore({ tempConfig, pluginConfigs, projectPath }: CoreOptions) {
@@ -46,11 +45,10 @@ export function createPluginCore({ tempConfig, pluginConfigs, projectPath }: Cor
   const pluginCore: PluginCore = {
     context,
     async invoke() {
+      setCurPluginCoreIns(pluginCore);
       context.files = await concatProjectFiles(projectPath, tempConfig.path, pluginConfigs);
-      console.log(context.files);
-      const pluginContext = createPluginContext();
-      const plugins = await collectPlugins(pluginConfigs);
-      plugins.forEach(plugin => plugin(pluginContext));
+      await invokePlugins(pluginConfigs);
+      await invokeHook(PluginHooks.INVOKE_START);
     },
   };
   return pluginCore;

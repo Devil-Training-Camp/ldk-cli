@@ -30,7 +30,6 @@ export async function genProjectFiles(projectPath: string, dirPath: string) {
       ignored: p => TEMPLATE_IGNORE_DIRS_RE.test(p.path),
     },
   });
-  console.log(filePaths);
   const files = {} as TempFiles;
   for (const filePath of filePaths) {
     const [path, code] = await genProjectFile(filePath, dirPath, projectPath);
@@ -41,6 +40,5 @@ export async function genProjectFiles(projectPath: string, dirPath: string) {
 async function genProjectFile(filePath: string, dirPath: string, projectPath: string) {
   const code = await fse.readFile(filePath, 'utf-8');
   const path = filePath.replace(dirPath, projectPath);
-  console.log(filePath, code);
   return [path, code];
 }
