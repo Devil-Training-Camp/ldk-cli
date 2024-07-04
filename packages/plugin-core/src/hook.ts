@@ -9,15 +9,18 @@ export type HookContext = {
   code: string;
   helper: typeof Helper;
   path: string;
+  projectPath: string;
 };
 
 export type PluginHook<TFn = Function> = TFn[];
 
-function createHookContext(): HookContext {
+function createHookContext(context?: Partial<HookContext>): HookContext {
   return {
     code: '',
     helper,
     path: '',
+    projectPath: '',
+    ...context,
   };
 }
 
@@ -36,8 +39,8 @@ export async function invokeHook(type: PluginHooks) {
   if (curPluginCoreIns === null) return;
   try {
     const context = curPluginCoreIns.context;
-    const { files } = context;
-    const hookContext = createHookContext();
+    const { files, projectPath } = context;
+    const hookContext = createHookContext({ projectPath });
     for (const [path, file] of Object.entries(files)) {
       hookContext.code = file;
       hookContext.path = path;

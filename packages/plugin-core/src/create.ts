@@ -17,6 +17,7 @@ export type CoreOptions = {
 
 export type CoreContext = {
   files: TempFiles;
+  projectPath: string;
   [PluginHooks.INVOKE_START]: PluginHook;
   [PluginHooks.INVOKE_END]: PluginHook;
 };
@@ -29,6 +30,7 @@ export type PluginCore = {
 function createCoreContext(): CoreContext {
   return {
     files: {},
+    projectPath: '',
     [PluginHooks.INVOKE_START]: [],
     [PluginHooks.INVOKE_END]: [],
   };
@@ -42,6 +44,7 @@ export function setCurPluginCoreIns(ins: PluginCore) {
 
 export function createPluginCore({ tempConfig, pluginConfigs, projectPath }: CoreOptions) {
   const context = createCoreContext();
+  context.projectPath = projectPath;
   const pluginCore: PluginCore = {
     context,
     async invoke() {
