@@ -1,4 +1,6 @@
 export { type Plugin } from './plugin.js';
 
 export { createPluginCore } from './create.js';
-export * from './hook.js';
+export { onInvokeStart, onInvokeEnd } from './hook.js';
+
+export { injectPrompt } from './prompt.js';

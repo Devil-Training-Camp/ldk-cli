@@ -20,6 +20,7 @@ export type CoreContext = {
   projectPath: string;
   [PluginHooks.INVOKE_START]: PluginHook;
   [PluginHooks.INVOKE_END]: PluginHook;
+  [PluginHooks.INJECT_PROMPT]: PluginHook;
 };
 
 export type PluginCore = {
@@ -27,12 +28,14 @@ export type PluginCore = {
   invoke(): Promise<void>;
 };
 
-function createCoreContext(): CoreContext {
+function createCoreContext(context?: Partial<CoreContext>): CoreContext {
   return {
     files: {},
     projectPath: '',
     [PluginHooks.INVOKE_START]: [],
     [PluginHooks.INVOKE_END]: [],
+    [PluginHooks.INJECT_PROMPT]: [],
+    ...context,
   };
 }
 
@@ -43,8 +46,7 @@ export function setCurPluginCoreIns(ins: PluginCore) {
 }
 
 export function createPluginCore({ tempConfig, pluginConfigs, projectPath }: CoreOptions) {
-  const context = createCoreContext();
-  context.projectPath = projectPath;
+  const context = createCoreContext({ projectPath });
   const pluginCore: PluginCore = {
     context,
     async invoke() {
@@ -52,6 +54,8 @@ export function createPluginCore({ tempConfig, pluginConfigs, projectPath }: Cor
       context.files = await concatProjectFiles(projectPath, tempConfig.path, pluginConfigs);
       await invokePlugins(pluginConfigs);
       await invokeHook(PluginHooks.INVOKE_START);
+      console.log(context.files);
+      await invokeHook(PluginHooks.INJECT_PROMPT);
     },
   };
   return pluginCore;
