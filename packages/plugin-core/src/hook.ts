@@ -2,8 +2,9 @@ import chalk from 'chalk';
 import type * as Helper from '@ldk/plugin-helper';
 import * as helper from '@ldk/plugin-helper';
 
-import { PluginHooks } from './constant.js';
+import { PluginHookTypes } from './constant.js';
 import { curPluginCoreIns } from './create.js';
+import { curPlugin } from './plugin.js';
 
 export type HookContext = {
   code: string;
@@ -11,9 +12,12 @@ export type HookContext = {
   path: string;
   projectPath: string;
   options: Record<string, unknown>;
+  [key: string]: unknown;
 };
-
-export type PluginHook<TFn = Function> = TFn[];
+type PluginHook = {
+  pluginName: string;
+} & ((context: HookContext) => unknown);
+export type PluginHooks = PluginHook[];
 
 function createHookContext(context?: Partial<HookContext>): HookContext {
   return {
@@ -21,39 +25,52 @@ function createHookContext(context?: Partial<HookContext>): HookContext {
     helper,
     path: '',
     projectPath: '',
-    ...context,
     options: {},
+    ...context,
   };
 }
 
-function createHook(type: PluginHooks) {
-  return (cb: (context: HookContext) => unknown) => {
-    if (curPluginCoreIns) {
-      curPluginCoreIns.context[type].push(cb);
+function createHook(type: PluginHookTypes) {
+  return (cb: PluginHook) => {
+    if (curPlugin) {
+      cb.pluginName = curPlugin.name;
+      curPlugin[type].push(cb);
     }
   };
 }
 
-export const onInvokeStart = createHook(PluginHooks.INVOKE_START);
-export const onInvokeEnd = createHook(PluginHooks.INVOKE_END);
-export const onInjectPrompt = createHook(PluginHooks.INJECT_PROMPT);
+export const onInvokeStart = createHook(PluginHookTypes.INVOKE_START);
+export const onInvokeEnd = createHook(PluginHookTypes.INVOKE_END);
+export const onInjectPrompt = createHook(PluginHookTypes.INJECT_PROMPT);
 
-export async function invokeHook(type: PluginHooks) {
+export async function invokeHook(type: PluginHookTypes) {
   if (curPluginCoreIns === null) return;
   try {
     const context = curPluginCoreIns.context;
-    const { files, projectPath } = context;
+    const { files, projectPath, plugins } = context;
     const hookContext = createHookContext({ projectPath });
-    for (const [path, file] of Object.entries(files)) {
-      hookContext.code = file;
-      hookContext.path = path;
-      const hooks = context[type];
-      for (const hook of hooks) {
-        await hook(hookContext);
+    const fileEntries = Object.entries(files);
+
+    for (const plugin of plugins) {
+      const hooks = plugin[type];
+      hookContext.options = plugin.options;
+      if (fileEntries.length === 0) {
+        for (const hook of hooks) {
+          await hook(hookContext);
+        }
+        return;
       }
-      files[path] = hookContext.code;
+      for (const [path, file] of Object.entries(files)) {
+        hookContext.code = file;
+        hookContext.path = path;
+        for (const hook of hooks) {
+          console.log(hook.toString());
+          await hook(hookContext);
+        }
+        files[path] = hookContext.code;
+      }
     }
   } catch (error) {
-    console.error(chalk.bgRed('ERROR') + chalk.red(` ${type}`), error);
+    console.log(chalk.bgRed('ERROR') + chalk.red(` ${type}`), error);
   }
 }

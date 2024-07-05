@@ -8,7 +8,7 @@ import { TEMPLATE_IGNORE_DIRS_RE } from '@ldk/template-manager';
 
 export type TempFiles = Record<string, string>;
 
-export async function concatProjectFiles(
+export async function createProjectFiles(
   projectPath: string,
   tempPath: string,
   pluginConfigs: PluginConfig[],
@@ -22,7 +22,7 @@ export async function concatProjectFiles(
   return files;
 }
 
-export async function genProjectFiles(projectPath: string, dirPath: string) {
+async function genProjectFiles(projectPath: string, dirPath: string) {
   const filePaths = await glob(`${dirPath}/**/*`, {
     nodir: true,
     absolute: true,

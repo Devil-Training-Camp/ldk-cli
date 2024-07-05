@@ -1,17 +1,35 @@
-import { basename } from 'path';
+// import { basename } from 'path';
 
-import { onInvokeStart, type Plugin } from '@ldk/plugin-core';
+// import { injectPrompt, onInvokeEnd, type PluginFn } from '@ldk/plugin-core';
 
-const plugin: Plugin = async () => {
-  onInvokeStart(context => {
-    const { projectPath, path, helper, code } = context;
-    if (/package.json/.test(path)) {
-      const pkgHelper = helper.parseJson(code);
-      const name = basename(projectPath);
-      pkgHelper.injectName(name);
-      context.code = pkgHelper.tryStringify();
-    }
-    console.log(`plugin-eslint invokeStart at ${path}, and code ${code}`);
-  });
-};
-export default plugin;
+// const plugin: PluginFn = async () => {
+//   injectPrompt([
+//     {
+//       name: 'check',
+//       type: 'list',
+//       message: `Choice template`,
+//       choices: [
+//         {
+//           name: '严格检测',
+//           value: true,
+//         },
+//         {
+//           name: '非严格检测',
+//           value: false,
+//         },
+//       ],
+//     },
+//   ]);
+//   onInvokeEnd(context => {
+//     const { projectPath, path, helper, code, options } = context;
+//     console.log(options);
+//     if (/package.json/.test(path)) {
+//       const pkgHelper = helper.parseJson(code);
+//       const name = basename(projectPath);
+//       pkgHelper.injectName(name);
+//       context.code = pkgHelper.tryStringify();
+//     }
+//     console.log(`plugin-eslint invokeStart at ${path}, and code ${code}`);
+//   });
+// };
+// export default plugin;

@@ -1,13 +1,14 @@
 import type { TemplateConfig } from '@ldk/template-manager';
 import type { PluginConfig } from '@ldk/plugin-manager';
 
-import { PluginHooks } from './constant.js';
-import { invokeHook, type PluginHook } from './hook.js';
-import { invokePlugins } from './plugin.js';
+import { PluginHookTypes } from './constant.js';
+import { invokeHook } from './hook.js';
+import type { Plugins } from './plugin.js';
+import { createPlugins, invokePlugins } from './plugin.js';
 import type { TempFiles } from './file.js';
-import { concatProjectFiles } from './file.js';
+import { createProjectFiles } from './file.js';
 
-export { type Plugin } from './plugin.js';
+export { type PluginFn } from './plugin.js';
 
 export type CoreOptions = {
   tempConfig: TemplateConfig;
@@ -18,9 +19,7 @@ export type CoreOptions = {
 export type CoreContext = {
   files: TempFiles;
   projectPath: string;
-  [PluginHooks.INVOKE_START]: PluginHook;
-  [PluginHooks.INVOKE_END]: PluginHook;
-  [PluginHooks.INJECT_PROMPT]: PluginHook;
+  plugins: Plugins;
 };
 
 export type PluginCore = {
@@ -32,9 +31,7 @@ function createCoreContext(context?: Partial<CoreContext>): CoreContext {
   return {
     files: {},
     projectPath: '',
-    [PluginHooks.INVOKE_START]: [],
-    [PluginHooks.INVOKE_END]: [],
-    [PluginHooks.INJECT_PROMPT]: [],
+    plugins: [],
     ...context,
   };
 }
@@ -51,11 +48,13 @@ export function createPluginCore({ tempConfig, pluginConfigs, projectPath }: Cor
     context,
     async invoke() {
       setCurPluginCoreIns(pluginCore);
-      context.files = await concatProjectFiles(projectPath, tempConfig.path, pluginConfigs);
-      await invokePlugins(pluginConfigs);
-      await invokeHook(PluginHooks.INVOKE_START);
-      console.log(context.files);
-      await invokeHook(PluginHooks.INJECT_PROMPT);
+      context.plugins = await createPlugins(pluginConfigs);
+      // await invokeHook(PluginHookTypes.INVOKE_START);
+      await invokePlugins(context.plugins);
+      await invokeHook(PluginHookTypes.INJECT_PROMPT);
+      context.files = await createProjectFiles(projectPath, tempConfig.path, pluginConfigs);
+      console.log(context);
+      // await invokeHook(PluginHookTypes.INVOKE_END);
     },
   };
   return pluginCore;
