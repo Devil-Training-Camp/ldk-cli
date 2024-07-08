@@ -1,5 +1,5 @@
 {
-  "name": "@ldk/cli-plugin-router",
+  "name": "@ldk/cli-plugin-base",
   "version": "1.0.0",
   "private": false,
   "description": "a vue cli",

@@ -5,10 +5,10 @@ const plugin: PluginFn = async () => {
     const { projectPath } = context;
     console.log(`plugin-router invokeStart at ${projectPath}`);
   });
-  onTransform(context => {
-    const { path, code, options } = context;
+  onTransform(({ file, options }) => {
+    const { path, code } = file;
     console.log(options);
-    console.log(`plugin-router invokeEnd at ${path}, and code ${code}`);
+    console.log(`plugin-router onTransform at ${path}, and code ${code}`);
   });
 };
 export default plugin;

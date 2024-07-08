@@ -6,17 +6,36 @@ import { isOfficialPlugin } from '@ldk/plugin-manager';
 import type { PluginConfig } from '@ldk/plugin-manager';
 import { TEMPLATE_IGNORE_DIRS_RE } from '@ldk/template-manager';
 
-export type TempFiles = Record<string, string>;
+export type TempFile = {
+  id: string;
+  path: string;
+  code: string;
+  extras: Record<string, string>;
+};
+export type TempFiles = TempFile[];
+
+export function createFile(context?: Partial<TempFile>): TempFile {
+  return {
+    id: '',
+    code: '',
+    path: '',
+    extras: {},
+    ...context,
+  };
+}
 
 export async function createProjectFiles(
   projectPath: string,
-  tempPath: string,
+  tempPath: string | undefined,
   pluginConfigs: PluginConfig[],
 ) {
   const pluginPaths = pluginConfigs.map(config => {
     return resolve(config.local, isOfficialPlugin(config.name) ? 'template' : '');
   });
-  const dirPaths = [tempPath, ...pluginPaths];
+  const dirPaths = [...pluginPaths];
+  if (tempPath) {
+    dirPaths.unshift(tempPath);
+  }
   const filesArr = await Promise.all(dirPaths.map(genProjectFiles.bind(null, projectPath)));
   const files: TempFiles = Object.assign({}, ...filesArr);
   return files;
@@ -30,25 +49,32 @@ async function genProjectFiles(projectPath: string, dirPath: string) {
       ignored: p => TEMPLATE_IGNORE_DIRS_RE.test(p.path),
     },
   });
-  const files = {} as TempFiles;
+  const files = [];
   for (const filePath of filePaths) {
-    const [path, code] = await genProjectFile(filePath, dirPath, projectPath);
-    files[path] = code;
+    const file = await genProjectFile(filePath, dirPath, projectPath);
+    files.push(file);
   }
   return files;
 }
-async function genProjectFile(filePath: string, dirPath: string, projectPath: string) {
+async function genProjectFile(
+  filePath: string,
+  dirPath: string,
+  projectPath: string,
+): Promise<TempFile> {
   const code = await fse.readFile(filePath, 'utf-8');
   const path = filePath.replace(dirPath, projectPath);
-  return [path, code];
+  return createFile({ id: path, code, path });
 }
 
 export async function writeProjectFiles(projectPath: string, files: TempFiles) {
   if (fse.existsSync(projectPath)) {
     await fse.remove(projectPath);
   }
-  for (const [path, file] of Object.entries(files)) {
-    console.log(path, file);
-    await fse.outputFile(path, file);
+  console.log(files);
+  for (const { path, code, extras } of files) {
+    await fse.outputFile(path, code);
+    for (const [exPath, exCode] of Object.entries(extras)) {
+      await fse.outputFile(exPath, exCode);
+    }
   }
 }

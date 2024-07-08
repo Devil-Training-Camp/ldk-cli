@@ -11,7 +11,7 @@ import { createProjectFiles, writeProjectFiles } from './file.js';
 export { type PluginFn } from './plugin.js';
 
 export type CoreOptions = {
-  tempConfig: TemplateConfig;
+  tempConfig?: TemplateConfig;
   pluginConfigs: PluginConfig[];
   projectPath: string;
 };
@@ -29,7 +29,7 @@ export type PluginCore = {
 
 function createCoreContext(context?: Partial<CoreContext>): CoreContext {
   return {
-    files: {},
+    files: [],
     projectPath: '',
     plugins: [],
     ...context,
@@ -52,7 +52,7 @@ export function createPluginCore({ tempConfig, pluginConfigs, projectPath }: Cor
       await invokePlugins(context.plugins);
       await invokeHook(PluginHookTypes.INVOKE_START);
       await invokeHook(PluginHookTypes.INJECT_PROMPT);
-      context.files = await createProjectFiles(projectPath, tempConfig.path, pluginConfigs);
+      context.files = await createProjectFiles(projectPath, tempConfig?.path, pluginConfigs);
       await invokeHook(PluginHookTypes.TRANSFORM);
       await writeProjectFiles(projectPath, context.files);
       await invokeHook(PluginHookTypes.INVOKE_END);

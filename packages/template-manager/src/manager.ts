@@ -101,7 +101,6 @@ export class TemplateManager extends Action<TemplateConfig> {
     const name = formatRepoUrl(nameOrPath);
     const tempConfig = this.get(name);
     if (tempConfig === undefined) {
-      console.log(chalk.red(`${name} does not exist`));
       return;
     }
     return tempConfig;

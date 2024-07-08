@@ -5,6 +5,7 @@ import * as helper from '@ldk/plugin-helper';
 import { PluginHookTypes } from './constant.js';
 import { curPluginCoreIns } from './create.js';
 import { curPlugin } from './plugin.js';
+import type { TempFile } from './file.js';
 
 type BaseHookContext = {
   helper: typeof Helper;
@@ -12,9 +13,7 @@ type BaseHookContext = {
   options: Record<string, unknown>;
   [key: string]: unknown;
 };
-type ExtraHookContext<T> = T extends PluginHookTypes.INVOKE_START | PluginHookTypes.INVOKE_END
-  ? {}
-  : { code: string; path: string };
+type ExtraHookContext<T> = T extends PluginHookTypes.TRANSFORM ? { file: TempFile } : {};
 
 export type HookContext<T = PluginHookTypes.TRANSFORM> = BaseHookContext & ExtraHookContext<T>;
 
@@ -27,18 +26,17 @@ export type PluginHooks<T> = PluginHook<T>[];
 
 function createHookContext(context?: Partial<HookContext>): HookContext {
   return {
-    code: '',
+    file: {} as TempFile,
     helper,
-    path: '',
     projectPath: '',
     options: {},
     ...context,
   };
 }
-function createHook<T>(type: PluginHookTypes) {
+function createHook<T extends PluginHookTypes>(type: T) {
   return (cb: PluginHookFn<T>) => {
     if (curPlugin) {
-      const hook = cb as PluginHook<typeof type>;
+      const hook = cb as PluginHook<PluginHookTypes>;
       hook.pluginName = curPlugin.name;
       curPlugin[type].push(hook);
     }
@@ -47,9 +45,7 @@ function createHook<T>(type: PluginHookTypes) {
 
 export const onInvokeStart = createHook(PluginHookTypes.INVOKE_START);
 export const onInvokeEnd = createHook(PluginHookTypes.INVOKE_END);
-export const onInjectPrompt = createHook<PluginHookTypes.INJECT_PROMPT>(
-  PluginHookTypes.INJECT_PROMPT,
-);
+export const onInjectPrompt = createHook(PluginHookTypes.INJECT_PROMPT);
 export const onTransform = createHook(PluginHookTypes.TRANSFORM);
 
 export async function invokeHook(type: PluginHookTypes) {
@@ -69,13 +65,11 @@ export async function invokeHook(type: PluginHookTypes) {
         }
         continue;
       }
-      for (const [path, file] of Object.entries(files)) {
-        hookContext.code = file;
-        hookContext.path = path;
+      for (const file of files) {
+        hookContext.file = file;
         for (const hook of hooks) {
           await hook(hookContext);
         }
-        files[path] = hookContext.code;
       }
     }
   } catch (error) {

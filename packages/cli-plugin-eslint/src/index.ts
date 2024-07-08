@@ -24,14 +24,14 @@ const plugin: PluginFn = async () => {
       ],
     },
   ]);
-  onTransform(context => {
-    const { projectPath, path, helper, code, options } = context;
+  onTransform(({ projectPath, file, helper, options }) => {
     console.log(options);
+    const { path, code } = file;
     if (/package.json/.test(path)) {
       const pkgHelper = helper.parseJson(code);
       const name = basename(projectPath);
       pkgHelper.injectName(name);
-      context.code = pkgHelper.tryStringify();
+      file.code = pkgHelper.tryStringify();
     }
     console.log(`plugin-eslint invokeEnd at ${path}, and code ${code}`);
   });

@@ -5,7 +5,6 @@ import inquirer from 'inquirer';
 import { CWD } from '@ldk/shared';
 // import { transToPromptChoices } from '@ldk/shared';
 import { TemplateManager } from '@ldk/template-manager';
-import type { TemplateConfig } from '@ldk/template-manager';
 // import type { PluginConfig } from '@ldk/plugin-manager';
 import { PluginManager } from '@ldk/plugin-manager';
 import { createPluginCore } from '@ldk/plugin-core';
@@ -70,8 +69,8 @@ export async function create(projectName: string, options: CreateOptions) {
   }
 
   // const template = await templatePrompt(templateManager.templates);
-  const template = 'cli-template-base';
-  await templateManager.invokeTemplate(template);
+  const template = '';
+  // await templateManager.invokeTemplate(template);
   const pluginManager = new PluginManager();
   await pluginManager.init();
   // const plugins = await pluginPrompt(pluginManager.plugins);
@@ -82,6 +81,6 @@ export async function create(projectName: string, options: CreateOptions) {
   const pluginConfigs = pluginManager.plugins.filter(pluginconfig =>
     plugins.includes(pluginconfig.name),
   );
-  const tempConfig = templateManager.getTemplate(template) as TemplateConfig;
+  const tempConfig = templateManager.getTemplate(template);
   await createPluginCore({ tempConfig, pluginConfigs, projectPath }).invoke();
 }
