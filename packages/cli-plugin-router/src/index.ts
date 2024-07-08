@@ -3,7 +3,7 @@ import { onInvokeStart, onTransform, type PluginFn } from '@ldk/plugin-core';
 const plugin: PluginFn = async () => {
   onInvokeStart(context => {
     const { projectPath } = context;
-    console.log(`plugin-router invokeStart at ${projectPath}`);
+    console.log(`plugin-router onInvokeStart at ${projectPath}`);
   });
   onTransform(({ file, options }) => {
     const { path, code } = file;

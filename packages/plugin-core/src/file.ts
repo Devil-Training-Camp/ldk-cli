@@ -37,8 +37,16 @@ export async function createProjectFiles(
     dirPaths.unshift(tempPath);
   }
   const filesArr = await Promise.all(dirPaths.map(genProjectFiles.bind(null, projectPath)));
-  const files: TempFiles = Object.assign({}, ...filesArr);
-  return files;
+  console.log(filesArr);
+  return concatFiles(filesArr);
+}
+function concatFiles(filesArr2: TempFile[][]) {
+  const filesMap = new Map<string, TempFile>();
+  const filesArr = filesArr2.flat();
+  for (const file of filesArr) {
+    filesMap.set(file.id, file);
+  }
+  return Array.from(filesMap.values());
 }
 
 async function genProjectFiles(projectPath: string, dirPath: string) {
@@ -70,7 +78,6 @@ export async function writeProjectFiles(projectPath: string, files: TempFiles) {
   if (fse.existsSync(projectPath)) {
     await fse.remove(projectPath);
   }
-  console.log(files);
   for (const { path, code, extras } of files) {
     await fse.outputFile(path, code);
     for (const [exPath, exCode] of Object.entries(extras)) {

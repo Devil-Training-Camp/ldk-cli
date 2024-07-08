@@ -1,11 +1,9 @@
-import { basename } from 'path';
-
 import { injectPrompt, onInvokeStart, onTransform, type PluginFn } from '@ldk/plugin-core';
 
 const plugin: PluginFn = async () => {
   onInvokeStart(context => {
     const { projectPath } = context;
-    console.log(`plugin-eslint invokeStart at ${projectPath}`);
+    console.log(`plugin-eslint onInvokeStart at ${projectPath}`);
   });
   injectPrompt([
     {
@@ -24,16 +22,9 @@ const plugin: PluginFn = async () => {
       ],
     },
   ]);
-  onTransform(({ projectPath, file, helper, options }) => {
+  onTransform(({ file: { path, code }, options }) => {
     console.log(options);
-    const { path, code } = file;
-    if (/package.json/.test(path)) {
-      const pkgHelper = helper.parseJson(code);
-      const name = basename(projectPath);
-      pkgHelper.injectName(name);
-      file.code = pkgHelper.tryStringify();
-    }
-    console.log(`plugin-eslint invokeEnd at ${path}, and code ${code}`);
+    console.log(`plugin-eslint onTransform at ${path}, and code ${code}`);
   });
 };
 export default plugin;

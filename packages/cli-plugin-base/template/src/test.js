@@ -1,1 +1,1 @@
-console.log('eslint');
+console.log('plugin-base');
