@@ -6,7 +6,7 @@ import { invokeHook } from './hook.js';
 import type { Plugins } from './plugin.js';
 import { createPlugins, invokePlugins } from './plugin.js';
 import type { TempFiles } from './file.js';
-import { createProjectFiles } from './file.js';
+import { createProjectFiles, writeProjectFiles } from './file.js';
 
 export { type PluginFn } from './plugin.js';
 
@@ -49,12 +49,14 @@ export function createPluginCore({ tempConfig, pluginConfigs, projectPath }: Cor
     async invoke() {
       setCurPluginCoreIns(pluginCore);
       context.plugins = await createPlugins(pluginConfigs);
-      // await invokeHook(PluginHookTypes.INVOKE_START);
       await invokePlugins(context.plugins);
+      await invokeHook(PluginHookTypes.INVOKE_START);
       await invokeHook(PluginHookTypes.INJECT_PROMPT);
       context.files = await createProjectFiles(projectPath, tempConfig.path, pluginConfigs);
-      console.log(context);
-      // await invokeHook(PluginHookTypes.INVOKE_END);
+      await invokeHook(PluginHookTypes.TRANSFORM);
+      await writeProjectFiles(projectPath, context.files);
+      await invokeHook(PluginHookTypes.INVOKE_END);
+      // console.log(context);
     },
   };
   return pluginCore;

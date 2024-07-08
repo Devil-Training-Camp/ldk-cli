@@ -42,3 +42,13 @@ async function genProjectFile(filePath: string, dirPath: string, projectPath: st
   const path = filePath.replace(dirPath, projectPath);
   return [path, code];
 }
+
+export async function writeProjectFiles(projectPath: string, files: TempFiles) {
+  if (fse.existsSync(projectPath)) {
+    await fse.remove(projectPath);
+  }
+  for (const [path, file] of Object.entries(files)) {
+    console.log(path, file);
+    await fse.outputFile(path, file);
+  }
+}

@@ -6,18 +6,24 @@ import { PluginHookTypes } from './constant.js';
 import { curPluginCoreIns } from './create.js';
 import { curPlugin } from './plugin.js';
 
-export type HookContext = {
-  code: string;
+type BaseHookContext = {
   helper: typeof Helper;
-  path: string;
   projectPath: string;
   options: Record<string, unknown>;
   [key: string]: unknown;
 };
-type PluginHook = {
+type ExtraHookContext<T> = T extends PluginHookTypes.INVOKE_START | PluginHookTypes.INVOKE_END
+  ? {}
+  : { code: string; path: string };
+
+export type HookContext<T = PluginHookTypes.TRANSFORM> = BaseHookContext & ExtraHookContext<T>;
+
+type PluginHookFn<T> = (context: HookContext<T>) => unknown;
+type PluginHook<T> = {
   pluginName: string;
-} & ((context: HookContext) => unknown);
-export type PluginHooks = PluginHook[];
+} & PluginHookFn<T>;
+
+export type PluginHooks<T> = PluginHook<T>[];
 
 function createHookContext(context?: Partial<HookContext>): HookContext {
   return {
@@ -29,19 +35,22 @@ function createHookContext(context?: Partial<HookContext>): HookContext {
     ...context,
   };
 }
-
-function createHook(type: PluginHookTypes) {
-  return (cb: PluginHook) => {
+function createHook<T>(type: PluginHookTypes) {
+  return (cb: PluginHookFn<T>) => {
     if (curPlugin) {
-      cb.pluginName = curPlugin.name;
-      curPlugin[type].push(cb);
+      const hook = cb as PluginHook<typeof type>;
+      hook.pluginName = curPlugin.name;
+      curPlugin[type].push(hook);
     }
   };
 }
 
 export const onInvokeStart = createHook(PluginHookTypes.INVOKE_START);
 export const onInvokeEnd = createHook(PluginHookTypes.INVOKE_END);
-export const onInjectPrompt = createHook(PluginHookTypes.INJECT_PROMPT);
+export const onInjectPrompt = createHook<PluginHookTypes.INJECT_PROMPT>(
+  PluginHookTypes.INJECT_PROMPT,
+);
+export const onTransform = createHook(PluginHookTypes.TRANSFORM);
 
 export async function invokeHook(type: PluginHookTypes) {
   if (curPluginCoreIns === null) return;
@@ -58,13 +67,12 @@ export async function invokeHook(type: PluginHookTypes) {
         for (const hook of hooks) {
           await hook(hookContext);
         }
-        return;
+        continue;
       }
       for (const [path, file] of Object.entries(files)) {
         hookContext.code = file;
         hookContext.path = path;
         for (const hook of hooks) {
-          console.log(hook.toString());
           await hook(hookContext);
         }
         files[path] = hookContext.code;

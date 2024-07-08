@@ -9,9 +9,10 @@ export type Plugin = {
   options: Record<string, unknown>;
   fn: PluginFn;
   name: string;
-  [PluginHookTypes.INVOKE_START]: PluginHooks;
-  [PluginHookTypes.INVOKE_END]: PluginHooks;
-  [PluginHookTypes.INJECT_PROMPT]: PluginHooks;
+  [PluginHookTypes.INVOKE_START]: PluginHooks<PluginHookTypes.INVOKE_START>;
+  [PluginHookTypes.INJECT_PROMPT]: PluginHooks<PluginHookTypes.INJECT_PROMPT>;
+  [PluginHookTypes.TRANSFORM]: PluginHooks<PluginHookTypes.TRANSFORM>;
+  [PluginHookTypes.INVOKE_END]: PluginHooks<PluginHookTypes.INVOKE_END>;
 };
 export type Plugins = Plugin[];
 
@@ -28,6 +29,7 @@ function createPlugin(plugin?: Partial<Plugin>): Plugin {
     [PluginHookTypes.INVOKE_START]: [],
     [PluginHookTypes.INVOKE_END]: [],
     [PluginHookTypes.INJECT_PROMPT]: [],
+    [PluginHookTypes.TRANSFORM]: [],
     ...plugin,
   };
 }
