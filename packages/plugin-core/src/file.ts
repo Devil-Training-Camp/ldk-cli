@@ -51,6 +51,7 @@ function concatFiles(filesArr2: TempFile[][]) {
 async function genProjectFiles(projectPath: string, dirPath: string) {
   const filePaths = await glob(`${dirPath}/**/*`, {
     nodir: true,
+    dot: true,
     absolute: true,
     ignore: {
       ignored: p => TEMPLATE_IGNORE_DIRS_RE.test(p.path),

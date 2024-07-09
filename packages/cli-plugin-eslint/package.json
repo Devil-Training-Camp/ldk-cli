@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": false,
   "description": "a vue cli",
-  "main": "lib/index.js",
-  "module": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "lib/src/index.js",
+  "module": "lib/src/index.js",
+  "types": "lib/src/index.d.ts",
   "type": "module",
   "files": [
     "lib"
@@ -30,5 +30,8 @@
   "license": "MIT",
   "dependencies": {
     "@ldk/plugin-core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/eslint": "^8.56.10"
   }
 }

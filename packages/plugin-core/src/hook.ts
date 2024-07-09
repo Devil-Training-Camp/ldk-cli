@@ -64,12 +64,11 @@ export async function invokeHook(type: PluginHookTypes) {
     const { files, projectPath, plugins, options } = context;
     const hookContext = createHookContext({ projectPath });
     hookContext.options.global = options;
-    const fileEntries = Object.entries(files);
 
     for (const plugin of plugins) {
       const hooks = plugin[type];
       hookContext.options.plugin = plugin.options;
-      if (fileEntries.length === 0) {
+      if (type !== PluginHookTypes.TRANSFORM) {
         for (const hook of hooks) {
           await hook(hookContext);
         }
