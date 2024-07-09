@@ -16,10 +16,14 @@ export type CoreOptions = {
   projectPath: string;
 };
 
+export type GlobalOptions = Record<string, unknown> & {
+  typescript: boolean;
+};
 export type CoreContext = {
   files: TempFiles;
   projectPath: string;
   plugins: Plugins;
+  options: GlobalOptions;
 };
 
 export type PluginCore = {
@@ -32,6 +36,9 @@ function createCoreContext(context?: Partial<CoreContext>): CoreContext {
     files: [],
     projectPath: '',
     plugins: [],
+    options: {
+      typescript: false,
+    },
     ...context,
   };
 }

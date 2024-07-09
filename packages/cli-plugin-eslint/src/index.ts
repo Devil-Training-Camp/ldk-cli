@@ -1,30 +1,28 @@
-import { injectPrompt, onInvokeStart, onTransform, type PluginFn } from '@ldk/plugin-core';
+import { onTransform, type PluginFn } from '@ldk/plugin-core';
 
 const plugin: PluginFn = async () => {
-  onInvokeStart(context => {
-    const { projectPath } = context;
-    console.log(`plugin-eslint onInvokeStart at ${projectPath}`);
-  });
-  injectPrompt([
-    {
-      name: 'check',
-      type: 'list',
-      message: `Choice template`,
-      choices: [
-        {
-          name: '严格检测',
-          value: true,
-        },
-        {
-          name: '非严格检测',
-          value: false,
-        },
-      ],
-    },
-  ]);
-  onTransform(({ file: { path, code }, options }) => {
-    console.log(options);
-    console.log(`plugin-eslint onTransform at ${path}, and code ${code}`);
+  onTransform(({ file, helper, options }) => {
+    const { code, id } = file;
+    if (/package.json/.test(id)) {
+      console.log(options);
+      let defaultDeps: Record<string, string> = {
+        eslint: '^8.51.0',
+        'eslint-config-standard': '^17.1.0',
+        'eslint-plugin-import': '^2.28.1',
+      };
+      if (options.global.typescript) {
+        defaultDeps = {
+          'eslint-import-resolver-typescript': '^3.6.1',
+          '@typescript-eslint/eslint-plugin': '^6.7.5',
+          '@typescript-eslint/parser': '^6.7.5',
+          ...defaultDeps,
+        };
+      }
+      const pkgHelper = helper.parseJson(code);
+      pkgHelper.injectDevDependencies(defaultDeps);
+      console.log(pkgHelper.tryStringify());
+      file.code = pkgHelper.tryStringify();
+    }
   });
 };
 export default plugin;

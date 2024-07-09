@@ -37,7 +37,6 @@ export async function createProjectFiles(
     dirPaths.unshift(tempPath);
   }
   const filesArr = await Promise.all(dirPaths.map(genProjectFiles.bind(null, projectPath)));
-  console.log(filesArr);
   return concatFiles(filesArr);
 }
 function concatFiles(filesArr2: TempFile[][]) {

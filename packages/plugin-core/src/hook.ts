@@ -3,6 +3,7 @@ import type * as Helper from '@ldk/plugin-helper';
 import * as helper from '@ldk/plugin-helper';
 
 import { PluginHookTypes } from './constant.js';
+import type { GlobalOptions } from './create.js';
 import { curPluginCoreIns } from './create.js';
 import { curPlugin } from './plugin.js';
 import type { TempFile } from './file.js';
@@ -10,7 +11,10 @@ import type { TempFile } from './file.js';
 type BaseHookContext = {
   helper: typeof Helper;
   projectPath: string;
-  options: Record<string, unknown>;
+  options: {
+    global: GlobalOptions;
+    plugin: Record<string, unknown>;
+  };
   [key: string]: unknown;
 };
 type ExtraHookContext<T> = T extends PluginHookTypes.TRANSFORM ? { file: TempFile } : {};
@@ -29,7 +33,12 @@ function createHookContext(context?: Partial<HookContext>): HookContext {
     file: {} as TempFile,
     helper,
     projectPath: '',
-    options: {},
+    options: {
+      global: {
+        typescript: false,
+      },
+      plugin: {},
+    },
     ...context,
   };
 }
@@ -52,13 +61,14 @@ export async function invokeHook(type: PluginHookTypes) {
   if (curPluginCoreIns === null) return;
   try {
     const context = curPluginCoreIns.context;
-    const { files, projectPath, plugins } = context;
+    const { files, projectPath, plugins, options } = context;
     const hookContext = createHookContext({ projectPath });
+    hookContext.options.global = options;
     const fileEntries = Object.entries(files);
 
     for (const plugin of plugins) {
       const hooks = plugin[type];
-      hookContext.options = plugin.options;
+      hookContext.options.plugin = plugin.options;
       if (fileEntries.length === 0) {
         for (const hook of hooks) {
           await hook(hookContext);
