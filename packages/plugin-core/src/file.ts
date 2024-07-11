@@ -79,7 +79,9 @@ export async function writeProjectFiles(projectPath: string, files: TempFiles) {
     await fse.remove(projectPath);
   }
   for (const { path, code, extras } of files) {
-    await fse.outputFile(path, code);
+    if (path) {
+      await fse.outputFile(path, code);
+    }
     for (const [exPath, exCode] of Object.entries(extras)) {
       await fse.outputFile(exPath, exCode);
     }

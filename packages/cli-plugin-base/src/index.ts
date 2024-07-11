@@ -25,12 +25,29 @@ const plugin: PluginFn = async () => {
   );
   onTransform(({ projectPath, file, helper, options }) => {
     const { id, code } = file;
-    if (/package.json/.test(id)) {
-      console.log(options);
-      const pkgHelper = helper.parseJson(code);
-      const name = basename(projectPath);
-      pkgHelper.injectName(name);
-      file.code = pkgHelper.tryStringify();
+    if (options.global.typescript) {
+      if (/package.json/.test(id)) {
+        const pkgHelper = helper.parseJson(code);
+        const name = basename(projectPath);
+        pkgHelper.injectName(name);
+        pkgHelper.injectDevDependencies({
+          typescript: '~5.3.3',
+        });
+        file.code = pkgHelper.tryStringify();
+      }
+      if (/src[\\/]main.js/.test(id)) {
+        file.path = file.path.replace('.js', '.ts');
+      }
+    } else {
+      const removeFiles = [
+        'vite-env.d.ts',
+        'tsconfig.json',
+        'tsconfig.app.json',
+        'tsconfig.node.json',
+      ];
+      if (removeFiles.includes(basename(id))) {
+        file.path = '';
+      }
     }
   });
 };

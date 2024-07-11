@@ -7,7 +7,7 @@ const plugin: PluginFn = async () => {
     if (/package.json/.test(id)) {
       console.log(options);
       let defaultDeps: Record<string, string> = {
-        eslint: '^9.0.0',
+        eslint: '^8.51.0',
         'eslint-config-standard': '^17.1.0',
         'eslint-plugin-import': '^2.28.1',
       };
@@ -23,9 +23,9 @@ const plugin: PluginFn = async () => {
       pkgHelper.injectDevDependencies(defaultDeps);
       file.code = pkgHelper.tryStringify();
     }
-    if (/eslint.config.js/.test(id)) {
+    if (/.eslintrc.json/.test(id)) {
       if (options.global.typescript) {
-        const eslintConfig = (await import('../template/eslint.config.js'))
+        const eslintConfig = (await import('../template/.eslintrc.json'))
           .default as unknown as Linter.Config;
         const newConfig = {
           ...eslintConfig,
@@ -44,9 +44,14 @@ const plugin: PluginFn = async () => {
             '@typescript-eslint/consistent-type-imports': [2], // type 标注类型导入
             '@typescript-eslint/ban-types': [0],
           },
+          settings: {
+            'import/resolver': {
+              ...eslintConfig.settings?.['import/resolver'],
+              typescript: true,
+            },
+          },
         };
-        const configHelper = helper.parseJs(`export default ${JSON.stringify(newConfig, null, 2)}`);
-        file.code = configHelper.getCode();
+        file.code = JSON.stringify(newConfig, null, 2);
       }
     }
   });

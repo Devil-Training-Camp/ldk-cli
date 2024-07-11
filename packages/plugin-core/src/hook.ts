@@ -34,9 +34,7 @@ function createHookContext(context?: Partial<HookContext>): HookContext {
     helper,
     projectPath: '',
     options: {
-      global: {
-        typescript: false,
-      },
+      global: {} as GlobalOptions,
       plugin: {},
     },
     ...context,

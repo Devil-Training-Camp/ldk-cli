@@ -3,11 +3,12 @@ const args = process.argv.slice(2);
 const targets = args.length
   ? args
   : [
-      'shared',
-      'template-manager',
+      // 'shared',
+      // 'template-manager',
       'cli-plugin-base',
       'cli-plugin-eslint',
-      'cli-plugin-router',
+      // 'cli-plugin-router',
+      'cli-plugin-vue',
       'plugin-manager',
       'plugin-core',
       'plugin-helper',

@@ -18,6 +18,7 @@ export type CoreOptions = {
 
 export type GlobalOptions = Record<string, unknown> & {
   typescript: boolean;
+  vue: boolean;
 };
 export type CoreContext = {
   files: TempFiles;
@@ -38,6 +39,7 @@ function createCoreContext(context?: Partial<CoreContext>): CoreContext {
     plugins: [],
     options: {
       typescript: false,
+      vue: false,
     },
     ...context,
   };
