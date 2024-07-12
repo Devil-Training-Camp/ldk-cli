@@ -13,7 +13,7 @@ const defaultInjectOption: InjectOption = {
   replace: false,
 };
 
-export function injectJsonAttr<T extends keyof PkgJson, K extends PkgJson[T]>(
+export function injectPkgJsonAttr<T extends keyof PkgJson, K extends PkgJson[T]>(
   json: Partial<PkgJson>,
   key: T,
   value: K,
@@ -43,24 +43,24 @@ export function injectDependencies(
   records: Record<string, string>,
   replace = false,
 ) {
-  return injectJsonAttr(json, 'dependencies', records, { replace });
+  return injectPkgJsonAttr(json, 'dependencies', records, { replace });
 }
 export function injectDevDependencies(
   json: Partial<PkgJson>,
   records: Record<string, string>,
   replace = false,
 ) {
-  return injectJsonAttr(json, 'devDependencies', records, { replace });
+  return injectPkgJsonAttr(json, 'devDependencies', records, { replace });
 }
 export function injectScripts(
   json: Partial<PkgJson>,
   records: Record<string, string>,
   replace = false,
 ) {
-  return injectJsonAttr(json, 'scripts', records, { replace });
+  return injectPkgJsonAttr(json, 'scripts', records, { replace });
 }
 export function injectName(json: Partial<PkgJson>, name: string) {
-  return injectJsonAttr(json, 'name', name);
+  return injectPkgJsonAttr(json, 'name', name);
 }
 export function tryStringify(json: Partial<PkgJson>) {
   try {

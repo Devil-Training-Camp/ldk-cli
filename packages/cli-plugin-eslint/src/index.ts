@@ -19,15 +19,23 @@ const plugin: PluginFn = async () => {
           ...defaultDeps,
         };
       }
+      if (options.global.vue) {
+        defaultDeps = {
+          ...defaultDeps,
+          'eslint-plugin-vue': '^9.17.0',
+          'vue-eslint-parser': '^9.3.2',
+        };
+      }
       const pkgHelper = helper.parseJson(code);
       pkgHelper.injectDevDependencies(defaultDeps);
       file.code = pkgHelper.tryStringify();
     }
     if (/.eslintrc.json/.test(id)) {
+      const eslintConfig = (await import('../template/.eslintrc.json'))
+        .default as unknown as Linter.Config;
+      let newConfig;
       if (options.global.typescript) {
-        const eslintConfig = (await import('../template/.eslintrc.json'))
-          .default as unknown as Linter.Config;
-        const newConfig = {
+        newConfig = {
           ...eslintConfig,
           parserOptions: {
             ecmaVersion: 'latest',
@@ -51,8 +59,20 @@ const plugin: PluginFn = async () => {
             },
           },
         };
-        file.code = JSON.stringify(newConfig, null, 2);
       }
+      if (options.global.vue) {
+        newConfig = {
+          ...eslintConfig,
+          ...newConfig,
+          parser: 'vue-eslint-parser', // to lint vue
+          extends: [...(eslintConfig.extends as string[]), ...['plugin:vue/vue3-recommended']],
+          rules: {
+            ...eslintConfig.rules,
+            'vue/multi-word-component-names': [0],
+          },
+        };
+      }
+      file.code = JSON.stringify(newConfig, null, 2);
     }
   });
 };
