@@ -69,7 +69,10 @@ export function createPluginCore({ tempConfig, pluginConfigs, projectPath }: Cor
       await invokeHook(PluginHookTypes.TRANSFORM);
       await writeProjectFiles();
       await invokeHook(PluginHookTypes.INVOKE_END);
-      console.log(context.plugins.map(({ name, paths }) => ({ name, paths })));
+      console.dir(
+        context.plugins.map(({ name, paths }) => ({ name, paths })),
+        { depth: 3 },
+      );
       setCurPluginCoreIns(null);
     },
   };

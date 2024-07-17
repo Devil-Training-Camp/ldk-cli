@@ -1,10 +1,11 @@
-import { dirname, resolve } from 'path';
+import { resolve } from 'path';
 import { fileURLToPath } from 'url';
 
 import fse from 'fs-extra';
 import { glob } from 'glob';
 import { TEMPLATE_IGNORE_DIRS_RE } from '@ldk/template-manager';
 
+import type { RenderPath } from './plugin.js';
 import { curPlugin } from './plugin.js';
 import { curPluginCoreIns } from './create.js';
 
@@ -33,19 +34,23 @@ export async function createProjectFiles() {
   const pluginPaths = plugins.map(plugin => plugin.paths);
   const dirPaths = pluginPaths.flat();
   if (temp) {
-    dirPaths.unshift(temp.path);
+    dirPaths.unshift({ from: temp.path, to: projectPath });
   }
-  const filesArr = await Promise.all(dirPaths.map(genProjectFiles.bind(null, projectPath)));
+  const filesArr = await Promise.all(dirPaths.map(genProjectFiles));
   return concatFiles(filesArr);
 }
 
-export function render(path: string) {
+export function render(from: string, to = '') {
   const callerModule = getCallerModule();
   if (callerModule) {
-    path = resolve(fileURLToPath(callerModule), '../', path);
+    from = resolve(fileURLToPath(callerModule), '../', from);
   }
+  if (curPluginCoreIns) {
+    to = resolve(curPluginCoreIns.context.projectPath, to);
+  }
+
   if (curPlugin) {
-    curPlugin.paths.push(path);
+    curPlugin.paths.push({ from, to });
   }
 }
 function concatFiles(filesArr2: TempFile[][]) {
@@ -57,13 +62,14 @@ function concatFiles(filesArr2: TempFile[][]) {
   return Array.from(filesMap.values());
 }
 
-async function genProjectFiles(projectPath: string, dirPath: string) {
+async function genProjectFiles(renderPath: RenderPath) {
+  const { from } = renderPath;
   const files = [];
-  if (fse.statSync(dirPath).isFile()) {
-    const file = await genProjectFile(dirPath, dirname(dirPath), projectPath);
+  if (fse.statSync(from).isFile()) {
+    const file = await genProjectFile(from, renderPath);
     return [file];
   }
-  const filePaths = await glob(`${dirPath}/**/*`, {
+  const filePaths = await glob(`${from}/**/*`, {
     nodir: true,
     dot: true,
     absolute: true,
@@ -72,18 +78,14 @@ async function genProjectFiles(projectPath: string, dirPath: string) {
     },
   });
   for (const filePath of filePaths) {
-    const file = await genProjectFile(filePath, dirPath, projectPath);
+    const file = await genProjectFile(filePath, renderPath);
     files.push(file);
   }
   return files;
 }
-async function genProjectFile(
-  filePath: string,
-  dirPath: string,
-  projectPath: string,
-): Promise<TempFile> {
+async function genProjectFile(filePath: string, { from, to }: RenderPath): Promise<TempFile> {
   const code = await fse.readFile(filePath, 'utf-8');
-  const path = filePath.replace(dirPath, projectPath);
+  const path = filePath.replace(from, to);
   return createFile({ id: path, code, path });
 }
 

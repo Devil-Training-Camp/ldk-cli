@@ -5,11 +5,15 @@ import { PluginHookTypes } from './constant.js';
 import type { PluginHooks } from './hook.js';
 
 export type PluginFn = () => void;
+export type RenderPath = {
+  from: string;
+  to: string;
+};
 export type Plugin = {
   options: Record<string, unknown>;
   fn: PluginFn;
   name: string;
-  paths: string[];
+  paths: RenderPath[];
   config: PluginConfig;
   [PluginHookTypes.INVOKE_START]: PluginHooks<PluginHookTypes.INVOKE_START>;
   [PluginHookTypes.INJECT_PROMPT]: PluginHooks<PluginHookTypes.INJECT_PROMPT>;
