@@ -1,6 +1,6 @@
 import { basename } from 'path';
 
-import { onInvokeStart, onTransform, type PluginFn } from '@ldk/plugin-core';
+import { injectPrompt, onRender, onTransform, type PluginFn } from '@ldk/plugin-core';
 import type { CompilerOptions } from 'typescript';
 import type ts from 'typescript';
 
@@ -15,10 +15,35 @@ interface TsConfig {
 }
 
 const plugin: PluginFn = async () => {
-  onInvokeStart(({ options }) => {
-    options.global.vue = true;
+  injectPrompt(
+    [
+      {
+        name: 'vue',
+        type: 'confirm',
+        message: `Use vue?`,
+        choices: [
+          {
+            name: 'Yes',
+            value: true,
+          },
+          {
+            name: 'No',
+            value: false,
+          },
+        ],
+      },
+    ],
+    false,
+  );
+  onRender(({ render, options }) => {
+    if (options.global.vue) {
+      render('../template');
+    }
   });
   onTransform(({ projectPath, file, helper, options }) => {
+    if (!options.global.vue) {
+      return;
+    }
     const { id } = file;
     if (/package.json/.test(id)) {
       const pkgHelper = helper.parseJson(file.code);
@@ -43,22 +68,41 @@ const plugin: PluginFn = async () => {
         pkgHelper.injectDevDependencies({ 'vue-tsc': '^2.0.21' });
         file.code = pkgHelper.tryStringify();
       }
-      const renameFiles = ['vite.config.js'];
-      if (/src[\\/]main.js/.test(id) || renameFiles.includes(basename(id))) {
-        file.path = file.path.replace('.js', '.ts');
-      }
       if (/tsconfig.app.json/.test(id)) {
         const eslintConfig = JSON.parse(file.code) as TsConfig;
         eslintConfig.compilerOptions.jsx = 'preserve' as unknown as ts.JsxEmit;
         eslintConfig.include?.push(...['src/**/*.tsx', 'src/**/*.vue']);
         file.code = JSON.stringify(eslintConfig, null, 2);
       }
-      const vueFiles = ['App.vue', 'HelloWorld.vue'];
-      if (vueFiles.includes(basename(id))) {
+      const vuePaths = ['App.vue', 'HelloWorld.vue'];
+      if (vuePaths.includes(basename(id))) {
         file.code = file.code.replace(`<script setup`, `<script setup lang="ts"`);
       }
       if (/index.html/.test(id)) {
         file.code = file.code.replace(`src="/src/main.js"`, `src="/src/main.ts"`);
+      }
+    }
+    if (options.global.eslint) {
+      if (/package.json/.test(id)) {
+        const pkgHelper = helper.parseJson(file.code);
+        pkgHelper.injectDevDependencies({
+          'eslint-plugin-vue': '^9.17.0',
+          'vue-eslint-parser': '^9.3.2',
+        });
+        file.code = pkgHelper.tryStringify();
+      }
+      if (/.eslintrc.json/.test(id)) {
+        const eslintConfig = JSON.parse(file.code);
+        const newConfig = {
+          ...eslintConfig,
+          parser: 'vue-eslint-parser', // to lint vue
+          extends: [...(eslintConfig.extends as string[]), ...['plugin:vue/vue3-recommended']],
+          rules: {
+            ...eslintConfig.rules,
+            'vue/multi-word-component-names': [0],
+          },
+        };
+        file.code = JSON.stringify(newConfig, null, 2);
       }
     }
   });

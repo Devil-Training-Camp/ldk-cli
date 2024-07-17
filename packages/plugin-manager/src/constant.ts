@@ -5,6 +5,7 @@ import { CACHE_DIR } from '@ldk/shared';
 export const BUILD_IN_PLUGINS = ['@ldk/cli-plugin-base'];
 export const OFFICIAL_PLUGINS = [
   '@ldk/cli-plugin-eslint',
+  '@ldk/cli-plugin-prettier',
   '@ldk/cli-plugin-vue',
   '@ldk/cli-plugin-router',
 ].concat(BUILD_IN_PLUGINS);

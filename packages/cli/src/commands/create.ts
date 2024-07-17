@@ -75,13 +75,17 @@ export async function create(projectName: string, options: CreateOptions) {
   const pluginManager = new PluginManager();
   await pluginManager.init();
   // const promptPlugins = await pluginPrompt(pluginManager.plugins);
-  const promptPlugins = ['@ldk/cli-plugin-eslint', '@ldk/cli-plugin-vue', '@ldk/cli-plugin-router'];
+  const promptPlugins = [
+    '@ldk/cli-plugin-eslint',
+    '@ldk/cli-plugin-prettier',
+    '@ldk/cli-plugin-vue',
+    '@ldk/cli-plugin-router',
+  ];
   const plugins = [...BUILD_IN_PLUGINS, ...promptPlugins];
   plugins.forEach(await pluginManager.addPlugin.bind(pluginManager));
   await pluginManager.installPlugins();
 
   const pluginConfigs = plugins.map(pluginManager.get.bind(pluginManager)) as PluginConfig[];
-  console.log(pluginConfigs);
   const tempConfig = templateManager.getTemplate(template);
   await createPluginCore({ tempConfig, pluginConfigs, projectPath }).invoke();
 }

@@ -9,8 +9,11 @@ export type Plugin = {
   options: Record<string, unknown>;
   fn: PluginFn;
   name: string;
+  paths: string[];
+  config: PluginConfig;
   [PluginHookTypes.INVOKE_START]: PluginHooks<PluginHookTypes.INVOKE_START>;
   [PluginHookTypes.INJECT_PROMPT]: PluginHooks<PluginHookTypes.INJECT_PROMPT>;
+  [PluginHookTypes.RENDER]: PluginHooks<PluginHookTypes.RENDER>;
   [PluginHookTypes.TRANSFORM]: PluginHooks<PluginHookTypes.TRANSFORM>;
   [PluginHookTypes.INVOKE_END]: PluginHooks<PluginHookTypes.INVOKE_END>;
 };
@@ -26,19 +29,23 @@ function createPlugin(plugin?: Partial<Plugin>): Plugin {
     options: {},
     fn: () => {},
     name: '',
+    paths: [],
+    config: {} as PluginConfig,
     [PluginHookTypes.INVOKE_START]: [],
-    [PluginHookTypes.INVOKE_END]: [],
     [PluginHookTypes.INJECT_PROMPT]: [],
+    [PluginHookTypes.RENDER]: [],
     [PluginHookTypes.TRANSFORM]: [],
+    [PluginHookTypes.INVOKE_END]: [],
     ...plugin,
   };
 }
 export async function createPlugins(pluginConfigs: PluginConfig[]): Promise<Plugins> {
   const plugins = await Promise.all(
-    pluginConfigs.map(async ({ local, name }) => {
+    pluginConfigs.map(async config => {
+      const { local, name } = config;
       const moduleEntry = await getModuleEntry(local);
       const plugin = await loadModule<PluginFn>(local, moduleEntry);
-      return createPlugin({ fn: plugin, name });
+      return createPlugin({ fn: plugin, name, config });
     }),
   );
   return plugins;

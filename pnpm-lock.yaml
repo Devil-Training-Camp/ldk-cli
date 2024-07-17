@@ -164,6 +164,12 @@ importers:
         specifier: ^8.56.10
         version: 8.56.10
 
+  packages/cli-plugin-prettier:
+    dependencies:
+      '@ldk/plugin-core':
+        specifier: workspace:*
+        version: link:../plugin-core
+
   packages/cli-plugin-router:
     dependencies:
       '@ldk/plugin-core':

@@ -1,6 +1,6 @@
 import { basename } from 'path';
 
-import { injectPrompt, onTransform, type PluginFn } from '@ldk/plugin-core';
+import { injectPrompt, onRender, onTransform, type PluginFn } from '@ldk/plugin-core';
 
 const plugin: PluginFn = async () => {
   injectPrompt(
@@ -23,6 +23,21 @@ const plugin: PluginFn = async () => {
     ],
     false,
   );
+  onRender(({ render, options }) => {
+    if (options.global.typescript) {
+      render('../template');
+      return;
+    }
+    render('../template/src/main.js');
+    const renderFiles = [
+      '../template/src/main.js',
+      '../template/.gitignore',
+      '../template/index.html',
+      '../template/package.json',
+      '../template/vite.config.js',
+    ];
+    renderFiles.forEach(render);
+  });
   onTransform(({ projectPath, file, helper, options }) => {
     const { id, code } = file;
     if (options.global.typescript) {
@@ -35,18 +50,9 @@ const plugin: PluginFn = async () => {
         });
         file.code = pkgHelper.tryStringify();
       }
-      if (/src[\\/]main.js/.test(id)) {
+      const renamePaths = ['vite.config.js', 'src/main.js'];
+      if (helper.pathMatcher(renamePaths, id)) {
         file.path = file.path.replace('.js', '.ts');
-      }
-    } else {
-      const removeFiles = [
-        'vite-env.d.ts',
-        'tsconfig.json',
-        'tsconfig.app.json',
-        'tsconfig.node.json',
-      ];
-      if (removeFiles.includes(basename(id))) {
-        file.path = '';
       }
     }
   });

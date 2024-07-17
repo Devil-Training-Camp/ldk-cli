@@ -19,10 +19,12 @@ export type CoreOptions = {
 export type GlobalOptions = Record<string, unknown> & {
   typescript: boolean;
   vue: boolean;
+  eslint: boolean;
 };
 export type CoreContext = {
   files: TempFiles;
   projectPath: string;
+  temp?: TemplateConfig;
   plugins: Plugins;
   options: GlobalOptions;
 };
@@ -40,6 +42,7 @@ function createCoreContext(context?: Partial<CoreContext>): CoreContext {
     options: {
       typescript: false,
       vue: false,
+      eslint: false,
     },
     ...context,
   };
@@ -47,12 +50,12 @@ function createCoreContext(context?: Partial<CoreContext>): CoreContext {
 
 export let curPluginCoreIns: PluginCore | null = null;
 
-export function setCurPluginCoreIns(ins: PluginCore) {
+export function setCurPluginCoreIns(ins: PluginCore | null) {
   curPluginCoreIns = ins;
 }
 
 export function createPluginCore({ tempConfig, pluginConfigs, projectPath }: CoreOptions) {
-  const context = createCoreContext({ projectPath });
+  const context = createCoreContext({ projectPath, temp: tempConfig });
   const pluginCore: PluginCore = {
     context,
     async invoke() {
@@ -61,11 +64,13 @@ export function createPluginCore({ tempConfig, pluginConfigs, projectPath }: Cor
       await invokePlugins(context.plugins);
       await invokeHook(PluginHookTypes.INVOKE_START);
       await invokeHook(PluginHookTypes.INJECT_PROMPT);
-      context.files = await createProjectFiles(projectPath, tempConfig?.path, pluginConfigs);
+      await invokeHook(PluginHookTypes.RENDER);
+      context.files = await createProjectFiles();
       await invokeHook(PluginHookTypes.TRANSFORM);
-      await writeProjectFiles(projectPath, context.files);
+      await writeProjectFiles();
       await invokeHook(PluginHookTypes.INVOKE_END);
-      // console.log(context);
+      console.log(context.plugins.map(({ name, paths }) => ({ name, paths })));
+      setCurPluginCoreIns(null);
     },
   };
   return pluginCore;

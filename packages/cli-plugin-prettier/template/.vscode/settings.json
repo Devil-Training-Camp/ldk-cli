@@ -1,0 +1,14 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "never",
+    "source.fixAll.eslint": "explicit",
+  },
+  "editor.formatOnSave": true, // 自动保存
+  "editor.defaultFormatter": "esbenp.prettier-vscode", // 默认格式化工具
+  "editor.tabSize": 2,
+  "prettier.configPath": ".prettierrc.json",
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode" // vue 文件默认格式化方式 和 volar 冲突
+  },
+  "typescript.tsdk": "node_modules\\typescript\\lib"
+}

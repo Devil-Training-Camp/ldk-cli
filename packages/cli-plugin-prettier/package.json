@@ -1,5 +1,5 @@
 {
-  "name": "@ldk/cli-plugin-eslint",
+  "name": "@ldk/cli-plugin-prettier",
   "version": "1.0.0",
   "private": false,
   "description": "a vue cli",
@@ -30,8 +30,5 @@
   "license": "MIT",
   "dependencies": {
     "@ldk/plugin-core": "workspace:*"
-  },
-  "devDependencies": {
-    "@types/eslint": "^8.56.10"
   }
 }
