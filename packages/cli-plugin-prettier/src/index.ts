@@ -1,8 +1,9 @@
-import { injectPrompt, onRender, onTransform, type PluginFn } from '@ldk/plugin-core';
+import { onInvokeStart, onRender, onTransform, type PluginFn } from '@ldk/plugin-core';
 
 const plugin: PluginFn = async () => {
-  injectPrompt(
-    [
+  onInvokeStart(async ({ options, inquirer }) => {
+    if (!options.global.eslint) return;
+    const { prettier } = await inquirer.prompt([
       {
         name: 'prettier',
         type: 'confirm',
@@ -18,10 +19,9 @@ const plugin: PluginFn = async () => {
           },
         ],
       },
-    ],
-    true,
-    ({ options }) => options.global.eslint,
-  );
+    ]);
+    options.plugin.prettier = prettier;
+  });
   onRender(({ render, options }) => {
     if (options.plugin.prettier) {
       render('../template');

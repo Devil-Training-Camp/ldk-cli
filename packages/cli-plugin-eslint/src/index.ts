@@ -1,9 +1,9 @@
-import { injectPrompt, onRender, onTransform, type PluginFn } from '@ldk/plugin-core';
+import { onInvokeStart, onRender, onTransform, type PluginFn } from '@ldk/plugin-core';
 import type { Linter } from 'eslint';
 
 const plugin: PluginFn = async () => {
-  injectPrompt(
-    [
+  onInvokeStart(async ({ options, inquirer }) => {
+    const { eslint } = await inquirer.prompt([
       {
         name: 'eslint',
         type: 'confirm',
@@ -19,9 +19,9 @@ const plugin: PluginFn = async () => {
           },
         ],
       },
-    ],
-    false,
-  );
+    ]);
+    options.global.eslint = eslint;
+  });
   onRender(({ render, options }) => {
     if (options.global.eslint) {
       render('../template');

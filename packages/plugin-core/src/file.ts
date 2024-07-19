@@ -112,15 +112,16 @@ export async function writeProjectFiles() {
 //     render('../template');
 //     return;
 //   }
-//   render('../template/src/main.js');
 //   const renderFiles = [
-//     '../template/src/main.js',
-//     '../template/.gitignore',
-//     '../template/index.html',
-//     '../template/package.json',
-//     '../template/vite.config.js',
+//     { from: '../template/src/main.js', to: './src/main.js' },
+//     { from: '../template/.gitignore', to: './.gitignore' },
+//     { from: '../template/index.html', to: './index.html' },
+//     { from: '../template/package.json', to: './package.json' },
+//     { from: '../template/vite.config.js', to: './vite.config.js' },
 //   ];
-//   renderFiles.forEach(render);
+//   renderFiles.forEach(({ from, to }) => {
+//     render(from, to);
+//   });
 // });
 function getCallerModule() {
   // 保留 prepareStackTrace

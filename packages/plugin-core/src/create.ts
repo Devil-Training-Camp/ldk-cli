@@ -1,5 +1,6 @@
 import type { TemplateConfig } from '@ldk/template-manager';
 import type { PluginConfig } from '@ldk/plugin-manager';
+import { oraPromise } from 'ora';
 
 import { PluginHookTypes } from './constant.js';
 import { invokeHook } from './hook.js';
@@ -63,11 +64,19 @@ export function createPluginCore({ tempConfig, pluginConfigs, projectPath }: Cor
       context.plugins = await createPlugins(pluginConfigs);
       await invokePlugins(context.plugins);
       await invokeHook(PluginHookTypes.INVOKE_START);
-      await invokeHook(PluginHookTypes.INJECT_PROMPT);
-      await invokeHook(PluginHookTypes.RENDER);
-      context.files = await createProjectFiles();
-      await invokeHook(PluginHookTypes.TRANSFORM);
-      await writeProjectFiles();
+      await oraPromise(
+        async () => {
+          await invokeHook(PluginHookTypes.RENDER);
+          context.files = await createProjectFiles();
+          await invokeHook(PluginHookTypes.TRANSFORM);
+          await writeProjectFiles();
+        },
+        {
+          successText: `Project generated successfully`,
+          failText: `Project generation failed`,
+          text: 'Loading',
+        },
+      );
       await invokeHook(PluginHookTypes.INVOKE_END);
       console.dir(
         context.plugins.map(({ name, paths }) => ({ name, paths })),

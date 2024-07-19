@@ -1,8 +1,9 @@
-import { injectPrompt, onRender, onTransform, type PluginFn } from '@ldk/plugin-core';
+import { onInvokeStart, onRender, onTransform, type PluginFn } from '@ldk/plugin-core';
 
 const plugin: PluginFn = async () => {
-  injectPrompt(
-    [
+  onInvokeStart(async ({ options, inquirer }) => {
+    if (!options.global.vue) return;
+    const { router } = await inquirer.prompt([
       {
         name: 'router',
         type: 'confirm',
@@ -18,10 +19,9 @@ const plugin: PluginFn = async () => {
           },
         ],
       },
-    ],
-    true,
-    ({ options }) => options.global.vue,
-  );
+    ]);
+    options.plugin.router = router;
+  });
   onRender(({ render, options }) => {
     if (options.plugin.router) {
       render('../template');

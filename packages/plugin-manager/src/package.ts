@@ -71,6 +71,11 @@ export async function installPkgs(configs: PluginConfig[]) {
     cwd: PLUGIN_CACHE_DIR,
     stdout: 'ignore',
   });
+  configs.forEach(config => {
+    if (config.local === '') {
+      config.local = resolve(PLUGIN_CACHE_DIR, 'node_modules', config.name);
+    }
+  });
 }
 export async function installPkgsWithOra(configs: PluginConfig[]) {
   try {

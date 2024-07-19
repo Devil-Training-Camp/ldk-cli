@@ -2,7 +2,8 @@ import path from 'path';
 import { existsSync } from 'fs';
 
 import inquirer from 'inquirer';
-import { CWD, transToPromptChoices } from '@ldk/shared';
+import type { PkgManager } from '@ldk/shared';
+import { CWD, getLocalConfig, transToPromptChoices } from '@ldk/shared';
 import type { TemplateConfig } from '@ldk/template-manager';
 import { TemplateManager } from '@ldk/template-manager';
 import type { PluginConfig } from '@ldk/plugin-manager';
@@ -49,6 +50,21 @@ export async function pluginPrompt(allPlugins: PluginConfig[]) {
   ]);
   return plugins;
 }
+export async function pkgManagerPrompt() {
+  const { pkgManager }: { pkgManager: PkgManager } = await inquirer.prompt([
+    {
+      name: 'pkgManager',
+      type: 'list',
+      message: `Choose package manager(pnpm, npm, yarn)?`,
+      choices: [
+        { name: 'pnpm', value: 'pnpm' },
+        { name: 'npm', value: 'npm' },
+        { name: 'yarn', value: 'yarn' },
+      ],
+    },
+  ]);
+  return pkgManager;
+}
 
 // e.g pnpm c:create
 // e.g -t https://github.com/grey-coat/virtual-scroll-list-liudingkang-test.git
@@ -86,6 +102,12 @@ export async function create(projectName: string, options: CreateOptions) {
   await pluginManager.installPlugins();
 
   const pluginConfigs = plugins.map(pluginManager.get.bind(pluginManager)) as PluginConfig[];
+  console.log(pluginConfigs);
   const tempConfig = templateManager.getTemplate(template);
   await createPluginCore({ tempConfig, pluginConfigs, projectPath }).invoke();
+  const localConfig = getLocalConfig();
+  if (!localConfig.pkgManager) {
+    const pkgManager = await pkgManagerPrompt();
+    localConfig.pkgManager = pkgManager;
+  }
 }

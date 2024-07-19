@@ -3,7 +3,7 @@ const args = process.argv.slice(2);
 const targets = args.length
   ? args
   : [
-      // 'shared',
+      'shared',
       // 'template-manager',
       'cli-plugin-base',
       'cli-plugin-eslint',

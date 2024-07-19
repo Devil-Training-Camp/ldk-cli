@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import type * as Helper from '@ldk/plugin-helper';
 import * as helper from '@ldk/plugin-helper';
+import inquirer from 'inquirer';
 
 import { PluginHookTypes } from './constant.js';
 import type { GlobalOptions } from './create.js';
@@ -22,7 +23,7 @@ type ExtraHookContext<T> = T extends PluginHookTypes.TRANSFORM
   ? { file: TempFile }
   : T extends PluginHookTypes.RENDER
     ? { render: typeof render }
-    : {};
+    : { inquirer: typeof inquirer };
 
 export type HookContext<T = PluginHookTypes.TRANSFORM> = BaseHookContext & ExtraHookContext<T>;
 
@@ -32,9 +33,10 @@ export type PluginHooks<T> = PluginHook<T>[];
 
 function createHookContext(context?: Partial<HookContext>) {
   return {
-    file: {} as TempFile,
+    file: null as unknown as TempFile,
     helper,
-    render: (async () => {}) as typeof render,
+    render: null as unknown as typeof render,
+    inquirer: null as unknown as typeof inquirer,
     projectPath: '',
     options: {
       global: {} as GlobalOptions,
@@ -54,7 +56,6 @@ function createHook<T extends PluginHookTypes>(type: T) {
 
 export const onInvokeStart = createHook(PluginHookTypes.INVOKE_START);
 export const onInvokeEnd = createHook(PluginHookTypes.INVOKE_END);
-export const onInjectPrompt = createHook(PluginHookTypes.INJECT_PROMPT);
 export const onTransform = createHook(PluginHookTypes.TRANSFORM);
 export const onRender = createHook(PluginHookTypes.RENDER);
 
@@ -82,6 +83,8 @@ export async function invokeHook(type: PluginHookTypes) {
       }
       if (type === PluginHookTypes.RENDER) {
         hookContext.render = render;
+      } else {
+        hookContext.inquirer = inquirer;
       }
       for (const hook of hooks) {
         await hook(hookContext);

@@ -16,7 +16,6 @@ export type Plugin = {
   paths: RenderPath[];
   config: PluginConfig;
   [PluginHookTypes.INVOKE_START]: PluginHooks<PluginHookTypes.INVOKE_START>;
-  [PluginHookTypes.INJECT_PROMPT]: PluginHooks<PluginHookTypes.INJECT_PROMPT>;
   [PluginHookTypes.RENDER]: PluginHooks<PluginHookTypes.RENDER>;
   [PluginHookTypes.TRANSFORM]: PluginHooks<PluginHookTypes.TRANSFORM>;
   [PluginHookTypes.INVOKE_END]: PluginHooks<PluginHookTypes.INVOKE_END>;
@@ -36,7 +35,6 @@ function createPlugin(plugin?: Partial<Plugin>): Plugin {
     paths: [],
     config: {} as PluginConfig,
     [PluginHookTypes.INVOKE_START]: [],
-    [PluginHookTypes.INJECT_PROMPT]: [],
     [PluginHookTypes.RENDER]: [],
     [PluginHookTypes.TRANSFORM]: [],
     [PluginHookTypes.INVOKE_END]: [],

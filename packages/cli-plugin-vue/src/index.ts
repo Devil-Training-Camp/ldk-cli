@@ -1,6 +1,6 @@
 import { basename } from 'path';
 
-import { injectPrompt, onRender, onTransform, type PluginFn } from '@ldk/plugin-core';
+import { onInvokeStart, onRender, onTransform, type PluginFn } from '@ldk/plugin-core';
 import type { CompilerOptions } from 'typescript';
 import type ts from 'typescript';
 
@@ -15,8 +15,8 @@ interface TsConfig {
 }
 
 const plugin: PluginFn = async () => {
-  injectPrompt(
-    [
+  onInvokeStart(async ({ options, inquirer }) => {
+    const { vue } = await inquirer.prompt([
       {
         name: 'vue',
         type: 'confirm',
@@ -32,9 +32,9 @@ const plugin: PluginFn = async () => {
           },
         ],
       },
-    ],
-    false,
-  );
+    ]);
+    options.global.vue = vue;
+  });
   onRender(({ render, options }) => {
     if (options.global.vue) {
       render('../template');
