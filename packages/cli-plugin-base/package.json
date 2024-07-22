@@ -11,7 +11,8 @@
     "lib"
   ],
   "scripts": {
-    "dev": "tsc -w"
+    "dev": "tsc -w",
+    "build": "rimraf ./lib && tsc"
   },
   "keywords": [
     "vue3",

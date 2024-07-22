@@ -1,6 +1,6 @@
 import { resolve, basename } from 'path';
 
-import { PACKAGES_RIR, PKG_MANAGER, isDev, loadModule } from '@ldk/shared';
+import { PACKAGES_RIR, getLocalConfig, isDev, loadModule } from '@ldk/shared';
 import fse from 'fs-extra';
 import type { PkgJson } from '@ldk/plugin-helper';
 import { parseJson } from '@ldk/plugin-helper';
@@ -10,6 +10,8 @@ import { execa } from 'execa';
 
 import { PLUGIN_CACHE_DIR, PLUGIN_PKG_FILE, isOfficialPlugin } from './constant.js';
 import type { PluginConfig } from './manager.js';
+
+const localConfig = getLocalConfig();
 
 // ！！注意
 // 在 monorepo 架构下，在本地 dev 环境开发脚手架官方插件开发时
@@ -45,8 +47,8 @@ async function initPkgDir() {
   if (fse.existsSync(PLUGIN_CACHE_DIR)) {
     await fse.remove(PLUGIN_CACHE_DIR);
   }
-  await fse.mkdir(PLUGIN_CACHE_DIR);
-  await execa(PKG_MANAGER, ['init'], {
+  await fse.ensureDir(PLUGIN_CACHE_DIR);
+  await execa(localConfig.pkgManager as string, ['init'], {
     cwd: PLUGIN_CACHE_DIR,
     stdout: 'ignore',
   });
@@ -67,7 +69,7 @@ export async function installPkgs(configs: PluginConfig[]) {
   );
   jsonHelper.injectDependencies(deps, true);
   await fse.writeFile(PLUGIN_PKG_FILE, jsonHelper.tryStringify());
-  await execa(PKG_MANAGER, ['i'], {
+  await execa(localConfig.pkgManager as string, ['i'], {
     cwd: PLUGIN_CACHE_DIR,
     stdout: 'ignore',
   });

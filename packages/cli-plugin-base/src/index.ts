@@ -1,6 +1,6 @@
 import { basename } from 'path';
 
-import { onInvokeEnd, onInvokeStart, onRender, onTransform, type PluginFn } from '@ldk/plugin-core';
+import { onInvokeStart, onRender, onTransform, type PluginFn } from '@ldk/plugin-core';
 
 const plugin: PluginFn = async () => {
   onInvokeStart(async ({ options, inquirer }) => {
@@ -56,21 +56,6 @@ const plugin: PluginFn = async () => {
         file.path = file.path.replace('.js', '.ts');
       }
     }
-  });
-  onInvokeEnd(async ({ options, inquirer }) => {
-    const { pkgManager } = await inquirer.prompt([
-      {
-        name: 'pkgManager',
-        type: 'list',
-        message: `Choose package manager(pnpm, npm, yarn)?`,
-        choices: [
-          { name: 'pnpm', value: 'pnpm' },
-          { name: 'npm', value: 'npm' },
-          { name: 'yarn', value: 'yarn' },
-        ],
-      },
-    ]);
-    options.global.pkgManager = pkgManager;
   });
 };
 export default plugin;

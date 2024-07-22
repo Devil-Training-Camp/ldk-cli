@@ -2,7 +2,7 @@ import { join } from 'path';
 
 import { CACHE_DIR } from '@ldk/shared';
 
-export const OFFICIAL_TEMPLATES = ['cli-template-base', 'cli'];
+export const OFFICIAL_TEMPLATES: string[] = [];
 export function isOfficialTemp(name: string) {
   return OFFICIAL_TEMPLATES.includes(name);
 }

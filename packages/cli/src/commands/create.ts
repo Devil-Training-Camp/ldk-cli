@@ -3,7 +3,7 @@ import { existsSync } from 'fs';
 
 import inquirer from 'inquirer';
 import type { PkgManager } from '@ldk/shared';
-import { CWD, getLocalConfig, transToPromptChoices } from '@ldk/shared';
+import { CWD, getLocalConfig, setLocalConfigAsync, transToPromptChoices } from '@ldk/shared';
 import type { TemplateConfig } from '@ldk/template-manager';
 import { TemplateManager } from '@ldk/template-manager';
 import type { PluginConfig } from '@ldk/plugin-manager';
@@ -11,6 +11,7 @@ import { PluginManager, BUILD_IN_PLUGINS, isBuildInPlugin } from '@ldk/plugin-ma
 import { createPluginCore } from '@ldk/plugin-core';
 
 import type { CreateOptions } from '../index.js';
+import { getLocalManagers } from '../manager.js';
 
 export async function templatePrompt(temps: TemplateConfig[]) {
   const { template }: { template: string } = await inquirer.prompt([
@@ -18,7 +19,7 @@ export async function templatePrompt(temps: TemplateConfig[]) {
       name: 'template',
       type: 'list',
       message: `Choice template`,
-      choices: transToPromptChoices(temps),
+      choices: [{ name: 'default', value: '' }, ...transToPromptChoices(temps)],
     },
   ]);
   return template;
@@ -51,16 +52,16 @@ export async function pluginPrompt(allPlugins: PluginConfig[]) {
   return plugins;
 }
 export async function pkgManagerPrompt() {
+  const localManagers = await getLocalManagers();
+  if (localManagers.length == 1) {
+    return localManagers[0];
+  }
   const { pkgManager }: { pkgManager: PkgManager } = await inquirer.prompt([
     {
       name: 'pkgManager',
       type: 'list',
-      message: `Choose package manager(pnpm, npm, yarn)?`,
-      choices: [
-        { name: 'pnpm', value: 'pnpm' },
-        { name: 'npm', value: 'npm' },
-        { name: 'yarn', value: 'yarn' },
-      ],
+      message: `Choose package manager?`,
+      choices: localManagers.map(manager => ({ name: manager, value: manager })),
     },
   ]);
   return pkgManager;
@@ -85,29 +86,31 @@ export async function create(projectName: string, options: CreateOptions) {
     return;
   }
 
-  // const template = await templatePrompt(templateManager.templates);
-  const template = '';
-  // await templateManager.invokeTemplate(template);
+  const template = await templatePrompt(templateManager.templates);
+  // const template = '';
   const pluginManager = new PluginManager();
   await pluginManager.init();
-  // const promptPlugins = await pluginPrompt(pluginManager.plugins);
-  const promptPlugins = [
-    '@ldk/cli-plugin-eslint',
-    '@ldk/cli-plugin-prettier',
-    '@ldk/cli-plugin-vue',
-    '@ldk/cli-plugin-router',
-  ];
+  const promptPlugins = await pluginPrompt(pluginManager.plugins);
+  // const promptPlugins = [
+  //   '@ldk/cli-plugin-eslint',
+  //   '@ldk/cli-plugin-prettier',
+  //   '@ldk/cli-plugin-vue',
+  //   '@ldk/cli-plugin-router',
+  // ];
   const plugins = [...BUILD_IN_PLUGINS, ...promptPlugins];
   plugins.forEach(await pluginManager.addPlugin.bind(pluginManager));
-  await pluginManager.installPlugins();
 
-  const pluginConfigs = plugins.map(pluginManager.get.bind(pluginManager)) as PluginConfig[];
-  console.log(pluginConfigs);
-  const tempConfig = templateManager.getTemplate(template);
-  await createPluginCore({ tempConfig, pluginConfigs, projectPath }).invoke();
   const localConfig = getLocalConfig();
   if (!localConfig.pkgManager) {
     const pkgManager = await pkgManagerPrompt();
     localConfig.pkgManager = pkgManager;
   }
+  await pluginManager.installPlugins();
+
+  const pluginConfigs = plugins.map(pluginManager.get.bind(pluginManager)) as PluginConfig[];
+  // console.log(pluginConfigs);
+  const tempConfig = templateManager.getTemplate(template);
+  await createPluginCore({ tempConfig, pluginConfigs, projectPath }).invoke();
+
+  await setLocalConfigAsync();
 }

@@ -6,7 +6,7 @@
     "pnpm": ">=8.7.0"
   },
   "scripts": {
-    "build": "echo \"build\" && exit 1",
+    "build": "tsx ./scripts/build.ts",
     "dev": "tsx ./scripts/dev.ts",
     "eslint": "eslint --ext .vue,.ts,.js .",
     "eslint:fix": "eslint --ext .vue,.ts,.js . --fix",

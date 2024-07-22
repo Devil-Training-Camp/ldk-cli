@@ -36,5 +36,13 @@ program
     const { plugin } = await import('./commands/plugin.js');
     plugin(action, nameOrPath);
   });
+program
+  .command('config [key] [value]')
+  .description('Global config')
+  .allowUnknownOption()
+  .action(async (key?: string, value?: string) => {
+    const { config } = await import('./commands/config.js');
+    config(key, value);
+  });
 
 program.parse();

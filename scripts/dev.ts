@@ -4,7 +4,7 @@ const targets = args.length
   ? args
   : [
       'shared',
-      // 'template-manager',
+      'template-manager',
       'cli-plugin-base',
       'cli-plugin-eslint',
       'cli-plugin-prettier',

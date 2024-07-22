@@ -17,11 +17,12 @@ export const PACKAGES_RIR = resolve(__fileName, '../../../');
 export const CWD = process.cwd();
 export const LOCAL_CONFIG_FILE = join(USER_HOME, '.ldkrc');
 
-export type PkgManager = 'npm' | 'pnpm' | 'yarn';
-export interface LocalConfig {
+export const pkgManagers = ['pnpm', 'npm', 'yarn'] as const;
+export type PkgManager = (typeof pkgManagers)[number];
+export type LocalConfig = {
   cacheDir: string;
   pkgManager?: PkgManager;
-}
+} & Record<string, string>;
 const defaultLocalConfig: LocalConfig = {
   cacheDir: DEFAULT_CACHE_DIR,
 };
@@ -31,7 +32,6 @@ const localConfig = mergeObject<LocalConfig>(
 );
 
 export const CACHE_DIR = localConfig.cacheDir;
-export const PKG_MANAGER = localConfig.pkgManager || 'pnpm';
 export const CACHE_CONFIG_FILE = join(CACHE_DIR, '.ldk-cache.json');
 
 export function getLocalConfig() {
