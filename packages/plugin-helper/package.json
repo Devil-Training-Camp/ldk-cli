@@ -1,6 +1,6 @@
 {
   "name": "@ldk/plugin-helper",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "private": false,
   "description": "a vue cli",
   "main": "lib/index.js",
@@ -8,7 +8,8 @@
   "types": "lib/index.d.ts",
   "type": "module",
   "files": [
-    "lib"
+    "lib",
+    "template"
   ],
   "scripts": {
     "dev": "tsc -w",

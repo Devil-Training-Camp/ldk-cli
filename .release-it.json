@@ -3,7 +3,8 @@
     "release": true
   },
   "git": {
-    "commitMessage": "build: release v${version}"
+    "commitMessage": "build: release v${version}",
+    "requireCleanWorkingDir": false
   },
   "npm": {
     "publish": true
@@ -32,6 +33,8 @@
         ]
       }
     },
-    "release-it-pnpm": {}
+    "release-it-pnpm": {
+      "inFile": "CHANGELOG.md"
+    }
   }
 }
