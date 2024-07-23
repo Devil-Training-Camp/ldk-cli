@@ -73,7 +73,6 @@ export async function plugin(action: ManageAction, nameOrPath?: string) {
     return;
   }
   const pluginManager = new PluginManager();
-  console.log(action, nameOrPath);
   await pluginManager.init();
   if (nameOrPath) {
     await withNameOrPath(pluginManager, action, nameOrPath);

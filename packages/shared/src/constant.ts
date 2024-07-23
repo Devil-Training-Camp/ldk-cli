@@ -8,7 +8,7 @@ import chalk from 'chalk';
 
 import { mergeObject } from './utils.js';
 
-const { remove, existsSync } = fse;
+const { remove, existsSync, ensureFile } = fse;
 const USER_HOME = os.homedir();
 const DEFAULT_CACHE_DIR = join(USER_HOME, '.ldk-cache');
 
@@ -74,6 +74,7 @@ async function setConfigAsync<T>(path: string, config: T) {
       await remove(path);
     }
     const code = JSON.stringify(config, null, 2);
+    await ensureFile(path);
     await writeFile(path, code);
   } catch (error) {
     console.error(chalk.bgYellow('WARN') + chalk.red(' Failed to update config: '), error);

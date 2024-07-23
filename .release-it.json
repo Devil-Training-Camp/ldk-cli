@@ -34,7 +34,8 @@
       }
     },
     "release-it-pnpm": {
-      "inFile": "CHANGELOG.md"
+      "inFile": "CHANGELOG.md",
+      "publishCommand": "pnpm -r publish --access public --no-git-checks --tag $tag"
     }
   }
 }
