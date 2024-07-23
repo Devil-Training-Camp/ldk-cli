@@ -10,7 +10,7 @@ import {
   type ActionTargetConfig,
   isRemotePath,
   isDev,
-} from '@ldk/shared';
+} from '@ldk-cli/shared';
 
 import { cloneRepoWithOra, formatRepoUrl, parseRepoUrl, updateRepoWithOra } from './repository.js';
 import { OFFICIAL_TEMPLATES, TEMPLATE_CACHE_DIR, TEMPLATE_IGNORE_DIRS_RE } from './constant.js';

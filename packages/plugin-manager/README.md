@@ -1,1 +1,1 @@
-@ldk/plugin-manager
+@ldk-cli/plugin-manager

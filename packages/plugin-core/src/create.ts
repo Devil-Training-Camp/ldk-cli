@@ -1,5 +1,5 @@
-import type { TemplateConfig } from '@ldk/template-manager';
-import type { PluginConfig } from '@ldk/plugin-manager';
+import type { TemplateConfig } from '@ldk-cli/template-manager';
+import type { PluginConfig } from '@ldk-cli/plugin-manager';
 import { oraPromise } from 'ora';
 
 import { PluginHookTypes } from './constant.js';

@@ -1,5 +1,5 @@
 {
-  "name": "@ldk/shared",
+  "name": "@ldk-cli/shared",
   "version": "0.1.0",
   "private": false,
   "description": "a vue cli",

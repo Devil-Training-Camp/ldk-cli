@@ -1,6 +1,6 @@
 import { basename } from 'path';
 
-import { onInvokeStart, onRender, onTransform, type PluginFn } from '@ldk/plugin-core';
+import { onInvokeStart, onRender, onTransform, type PluginFn } from '@ldk-cli/plugin-core';
 import type { CompilerOptions } from 'typescript';
 import type ts from 'typescript';
 

@@ -1,9 +1,9 @@
 import { resolve, basename } from 'path';
 
-import { PACKAGES_RIR, getLocalConfig, isDev, loadModule } from '@ldk/shared';
+import { PACKAGES_RIR, getLocalConfig, isDev, loadModule } from '@ldk-cli/shared';
 import fse from 'fs-extra';
-import type { PkgJson } from '@ldk/plugin-helper';
-import { parseJson } from '@ldk/plugin-helper';
+import type { PkgJson } from '@ldk-cli/plugin-helper';
+import { parseJson } from '@ldk-cli/plugin-helper';
 import { oraPromise } from 'ora';
 import chalk from 'chalk';
 import { execa } from 'execa';
@@ -15,10 +15,10 @@ const localConfig = getLocalConfig();
 
 // ！！注意
 // 在 monorepo 架构下，在本地 dev 环境开发脚手架官方插件开发时
-// 官方插件会依赖脚手架仓库其他包，dependencies 方式为 "@ldk/shared": "workspace:*",
+// 官方插件会依赖脚手架仓库其他包，dependencies 方式为 "@ldk-cli/shared": "workspace:*",
 // 如果将插件依赖包注入缓存目录中 package.json
-// "@ldk/cli-plugin-eslint": "file:///D:/myTest/ldk-cli/packages/cli-plugin-eslint"
-// 那么在安装插件时，cli-plugin-eslint 官方插件的 dependencies "@ldk/shared": "workspace:*" 就会报错
+// "@ldk-cli/cli-plugin-eslint": "file:///D:/myTest/ldk-cli/packages/cli-plugin-eslint"
+// 那么在安装插件时，cli-plugin-eslint 官方插件的 dependencies "@ldk-cli/shared": "workspace:*" 就会报错
 // 解决方案：
 // 对于本地插件，不再注入缓存目录中 package.json，直接指定插件目录读取插件
 export async function parsePluginPath(nameOrPath: string) {

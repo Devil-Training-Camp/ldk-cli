@@ -2,13 +2,13 @@ import path from 'path';
 import { existsSync } from 'fs';
 
 import inquirer from 'inquirer';
-import type { PkgManager } from '@ldk/shared';
-import { CWD, getLocalConfig, setLocalConfigAsync, transToPromptChoices } from '@ldk/shared';
-import type { TemplateConfig } from '@ldk/template-manager';
-import { TemplateManager } from '@ldk/template-manager';
-import type { PluginConfig } from '@ldk/plugin-manager';
-import { PluginManager, BUILD_IN_PLUGINS, isBuildInPlugin } from '@ldk/plugin-manager';
-import { createPluginCore } from '@ldk/plugin-core';
+import type { PkgManager } from '@ldk-cli/shared';
+import { CWD, getLocalConfig, setLocalConfigAsync, transToPromptChoices } from '@ldk-cli/shared';
+import type { TemplateConfig } from '@ldk-cli/template-manager';
+import { TemplateManager } from '@ldk-cli/template-manager';
+import type { PluginConfig } from '@ldk-cli/plugin-manager';
+import { PluginManager, BUILD_IN_PLUGINS, isBuildInPlugin } from '@ldk-cli/plugin-manager';
+import { createPluginCore } from '@ldk-cli/plugin-core';
 
 import type { CreateOptions } from '../index.js';
 import { getLocalManagers } from '../manager.js';
@@ -92,10 +92,10 @@ export async function create(projectName: string, options: CreateOptions) {
   await pluginManager.init();
   const promptPlugins = await pluginPrompt(pluginManager.plugins);
   // const promptPlugins = [
-  //   '@ldk/cli-plugin-eslint',
-  //   '@ldk/cli-plugin-prettier',
-  //   '@ldk/cli-plugin-vue',
-  //   '@ldk/cli-plugin-router',
+  //   '@ldk-cli/cli-plugin-eslint',
+  //   '@ldk-cli/cli-plugin-prettier',
+  //   '@ldk-cli/cli-plugin-vue',
+  //   '@ldk-cli/cli-plugin-router',
   // ];
   const plugins = [...BUILD_IN_PLUGINS, ...promptPlugins];
   plugins.forEach(await pluginManager.addPlugin.bind(pluginManager));

@@ -1,7 +1,7 @@
-import { getLocalConfig, setLocalConfigAsync } from '@ldk/shared';
+import { getLocalConfig, setLocalConfigAsync } from '@ldk-cli/shared';
 
 // e.g pnpm c:plugin
-// e.g --add @ldk/cli-plugin-eslint
+// e.g --add @ldk-cli/cli-plugin-eslint
 export async function config(key?: string, value?: string) {
   console.log(key, value);
   const localConfig = getLocalConfig();

@@ -1,1 +1,1 @@
-@ldk/cli-plugin-vue
+@ldk-cli/cli-plugin-vue

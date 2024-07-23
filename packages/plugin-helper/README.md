@@ -1,1 +1,1 @@
-@ldk/plugin-helper
+@ldk-cli/plugin-helper

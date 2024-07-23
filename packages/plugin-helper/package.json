@@ -1,5 +1,5 @@
 {
-  "name": "@ldk/plugin-helper",
+  "name": "@ldk-cli/plugin-helper",
   "version": "0.1.0",
   "private": false,
   "description": "a vue cli",

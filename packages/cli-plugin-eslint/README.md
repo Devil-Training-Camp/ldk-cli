@@ -1,1 +1,1 @@
-@ldk/cli-plugin-eslint
+@ldk-cli/cli-plugin-eslint

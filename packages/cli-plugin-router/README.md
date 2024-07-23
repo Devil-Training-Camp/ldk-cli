@@ -1,1 +1,1 @@
-@ldk/cli-plugin-router
+@ldk-cli/cli-plugin-router

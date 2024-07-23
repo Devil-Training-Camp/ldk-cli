@@ -1,1 +1,1 @@
-@ldk/cli
+@ldk-cli/cli

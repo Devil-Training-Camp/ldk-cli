@@ -1,5 +1,5 @@
 {
-  "name": "@ldk/cli-plugin-eslint",
+  "name": "@ldk-cli/cli-plugin-eslint",
   "version": "0.1.0",
   "private": false,
   "description": "a vue cli",
@@ -31,7 +31,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@ldk/plugin-core": "workspace:*"
+    "@ldk-cli/plugin-core": "workspace:*"
   },
   "devDependencies": {
     "@types/eslint": "^8.56.10"

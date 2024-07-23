@@ -1,6 +1,6 @@
 import { join } from 'path';
 
-import { CACHE_DIR } from '@ldk/shared';
+import { CACHE_DIR } from '@ldk-cli/shared';
 
 export const OFFICIAL_TEMPLATES: string[] = [];
 export function isOfficialTemp(name: string) {

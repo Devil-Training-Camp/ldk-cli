@@ -1,4 +1,4 @@
-import { pkgManagers, type PkgManager } from '@ldk/shared';
+import { pkgManagers, type PkgManager } from '@ldk-cli/shared';
 import { execa } from 'execa';
 
 async function checkManager(manager: PkgManager) {

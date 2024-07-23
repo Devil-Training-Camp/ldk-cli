@@ -1,5 +1,5 @@
 {
-  "name": "@ldk/cli-plugin-router",
+  "name": "@ldk-cli/cli-plugin-router",
   "version": "0.1.0",
   "private": false,
   "description": "a vue cli",
@@ -31,6 +31,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@ldk/plugin-core": "workspace:*"
+    "@ldk-cli/plugin-core": "workspace:*"
   }
 }

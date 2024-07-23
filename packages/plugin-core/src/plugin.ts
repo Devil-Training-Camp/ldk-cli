@@ -1,5 +1,5 @@
-import type { PluginConfig } from '@ldk/plugin-manager';
-import { getModuleEntry, loadModule } from '@ldk/shared';
+import type { PluginConfig } from '@ldk-cli/plugin-manager';
+import { getModuleEntry, loadModule } from '@ldk-cli/shared';
 
 import { PluginHookTypes } from './constant.js';
 import type { PluginHooks } from './hook.js';

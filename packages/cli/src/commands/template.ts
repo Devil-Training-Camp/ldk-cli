@@ -1,8 +1,8 @@
 import chalk from 'chalk';
 import inquirer from 'inquirer';
-import { TemplateManager } from '@ldk/template-manager';
-import type { TemplateConfig } from '@ldk/template-manager';
-import { setCacheConfigAsync, transToPromptChoices } from '@ldk/shared';
+import { TemplateManager } from '@ldk-cli/template-manager';
+import type { TemplateConfig } from '@ldk-cli/template-manager';
+import { setCacheConfigAsync, transToPromptChoices } from '@ldk-cli/shared';
 
 import { manageActions } from '../index.js';
 import type { ManageAction } from '../index.js';

@@ -1,8 +1,8 @@
 import chalk from 'chalk';
 import inquirer from 'inquirer';
-import { PluginManager } from '@ldk/plugin-manager';
-import type { PluginConfig } from '@ldk/plugin-manager';
-import { setCacheConfigAsync, transToPromptChoices } from '@ldk/shared';
+import { PluginManager } from '@ldk-cli/plugin-manager';
+import type { PluginConfig } from '@ldk-cli/plugin-manager';
+import { setCacheConfigAsync, transToPromptChoices } from '@ldk-cli/shared';
 
 import { manageActions } from '../index.js';
 import type { ManageAction } from '../index.js';
@@ -63,7 +63,7 @@ async function withoutNameOrPath(pluginManager: PluginManager, action: ManageAct
 }
 
 // e.g pnpm c:plugin
-// e.g --add @ldk/cli-plugin-eslint
+// e.g --add @ldk-cli/cli-plugin-eslint
 export async function plugin(action: ManageAction, nameOrPath?: string) {
   if (!manageActions.includes(action)) {
     console.error(

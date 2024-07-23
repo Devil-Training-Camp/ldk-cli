@@ -1,1 +1,1 @@
-@ldk/shared
+@ldk-cli/shared

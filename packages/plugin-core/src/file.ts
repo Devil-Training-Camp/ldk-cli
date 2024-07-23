@@ -3,7 +3,7 @@ import { fileURLToPath } from 'url';
 
 import fse from 'fs-extra';
 import { glob } from 'glob';
-import { TEMPLATE_IGNORE_DIRS_RE } from '@ldk/template-manager';
+import { TEMPLATE_IGNORE_DIRS_RE } from '@ldk-cli/template-manager';
 
 import type { RenderPath } from './plugin.js';
 import { curPlugin } from './plugin.js';

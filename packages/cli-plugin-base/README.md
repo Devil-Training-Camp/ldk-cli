@@ -1,1 +1,1 @@
-@ldk/cli-plugin-base
+@ldk-cli/cli-plugin-base

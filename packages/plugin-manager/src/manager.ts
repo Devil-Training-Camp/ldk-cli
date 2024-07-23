@@ -1,7 +1,7 @@
 import { normalize } from 'path';
 
-import type { ActionTargetConfig } from '@ldk/shared';
-import { Action, getCacheConfig } from '@ldk/shared';
+import type { ActionTargetConfig } from '@ldk-cli/shared';
+import { Action, getCacheConfig } from '@ldk-cli/shared';
 import chalk from 'chalk';
 
 import { OFFICIAL_PLUGINS } from './constant.js';

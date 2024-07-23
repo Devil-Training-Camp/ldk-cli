@@ -1,1 +1,1 @@
-@ldk/cli-plugin-prettier
+@ldk-cli/cli-plugin-prettier

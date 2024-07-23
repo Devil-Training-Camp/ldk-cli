@@ -4,15 +4,16 @@ const targets = args.length
   ? args
   : [
       'shared',
+      'plugin-helper',
       'template-manager',
       'plugin-manager',
       'plugin-core',
-      'plugin-helper',
       'cli-plugin-base',
       'cli-plugin-eslint',
       'cli-plugin-prettier',
       'cli-plugin-vue',
       'cli-plugin-router',
+      'cli',
     ];
 
 async function build() {

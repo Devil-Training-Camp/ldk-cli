@@ -1,1 +1,1 @@
-@ldk/template-manager
+@ldk-cli/template-manager

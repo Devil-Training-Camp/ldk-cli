@@ -1,4 +1,4 @@
-import { onInvokeStart, onRender, onTransform, type PluginFn } from '@ldk/plugin-core';
+import { onInvokeStart, onRender, onTransform, type PluginFn } from '@ldk-cli/plugin-core';
 import type { Linter } from 'eslint';
 
 const plugin: PluginFn = async () => {

@@ -5,7 +5,7 @@ import chalk from 'chalk';
 import type { SimpleGit } from 'simple-git';
 import { simpleGit } from 'simple-git';
 import { oraPromise } from 'ora';
-import { PACKAGES_RIR, isDev, isRemotePath } from '@ldk/shared';
+import { PACKAGES_RIR, isDev, isRemotePath } from '@ldk-cli/shared';
 
 import { DEFAULT_BRANCH, isOfficialTemp } from './constant.js';
 

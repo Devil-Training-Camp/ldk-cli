@@ -1,6 +1,6 @@
 import chalk from 'chalk';
-import type * as Helper from '@ldk/plugin-helper';
-import * as helper from '@ldk/plugin-helper';
+import type * as Helper from '@ldk-cli/plugin-helper';
+import * as helper from '@ldk-cli/plugin-helper';
 import inquirer from 'inquirer';
 
 import { PluginHookTypes } from './constant.js';

@@ -1,1 +1,1 @@
-@ldk/plugin-core
+@ldk-cli/plugin-core

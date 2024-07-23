@@ -1,4 +1,4 @@
-import { onInvokeStart, onRender, onTransform, type PluginFn } from '@ldk/plugin-core';
+import { onInvokeStart, onRender, onTransform, type PluginFn } from '@ldk-cli/plugin-core';
 
 const plugin: PluginFn = async () => {
   onInvokeStart(async ({ options, inquirer }) => {
