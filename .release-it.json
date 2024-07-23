@@ -10,6 +10,7 @@
     "publish": true
   },
   "hooks": {
+    "after:release-it-pnpm:release": "pnpm -r publish --access public --no-git-checks --tag ${npm.tag} --otp ${npm.otp}",
     "after:bump": "echo 更新版本成功"
   },
   "plugins": {
@@ -35,7 +36,7 @@
     },
     "release-it-pnpm": {
       "inFile": "CHANGELOG.md",
-      "publishCommand": "pnpm -r publish --access public --no-git-checks --tag $tag"
+      "publishCommand": "echo release-it-pnpm"
     }
   }
 }
