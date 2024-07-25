@@ -1,6 +1,6 @@
 {
   "name": "@ldk-cli/plugin-core",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": false,
   "description": "a vue cli",
   "main": "lib/index.js",
