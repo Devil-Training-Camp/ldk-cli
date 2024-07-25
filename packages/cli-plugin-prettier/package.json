@@ -1,0 +1,36 @@
+{
+  "name": "@ldk-cli/cli-plugin-prettier",
+  "version": "0.1.4",
+  "private": false,
+  "description": "a vue cli",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "type": "module",
+  "files": [
+    "lib",
+    "template"
+  ],
+  "scripts": {
+    "dev": "tsc -w",
+    "build": "rimraf ./lib && tsc"
+  },
+  "keywords": [
+    "vue3",
+    "cli"
+  ],
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Devil-Training-Camp/ldk-cli.git",
+    "directory": "packages/cli"
+  },
+  "author": {
+    "name": "grey-coat",
+    "email": "461252486@qq.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@ldk-cli/plugin-core": "workspace:*"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": [
+    "src/**/*",
+  ], // 包含的文件
+  "exclude": [
+    "node_modules",
+    "lib/**/*",
+  ], // 排除的文件
+  "compilerOptions": {
+    "target": "ESNext", // 编译后的目标
+    "outDir": "./lib",
+    "declaration": true
+  }
+}

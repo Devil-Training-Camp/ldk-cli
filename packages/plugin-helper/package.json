@@ -1,0 +1,40 @@
+{
+  "name": "@ldk-cli/plugin-helper",
+  "version": "0.1.4",
+  "private": false,
+  "description": "a vue cli",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "type": "module",
+  "files": [
+    "lib",
+    "template"
+  ],
+  "scripts": {
+    "dev": "tsc -w",
+    "build": "rimraf ./lib && tsc"
+  },
+  "keywords": [
+    "vue3",
+    "cli"
+  ],
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Devil-Training-Camp/ldk-cli.git",
+    "directory": "packages/plugin-helper"
+  },
+  "author": {
+    "name": "grey-coat",
+    "email": "461252486@qq.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "jscodeshift": "^0.16.1"
+  },
+  "devDependencies": {
+    "@types/jscodeshift": "^0.11.11"
+  }
+}

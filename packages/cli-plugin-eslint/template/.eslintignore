@@ -1,0 +1,15 @@
+node_modules
+dist
+es
+lib
+!docs/.vitepress
+docs/.vitepress/dist
+docs/.vitepress/cache
+
+.husky
+.vscode
+.github
+
+
+*.d.ts
+# .eslintrc.cjs

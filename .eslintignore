@@ -2,6 +2,7 @@ node_modules
 dist
 es
 lib
+template
 # eslint 默认忽略 . 开头的目录
 !docs/.vitepress
 docs/.vitepress/dist
