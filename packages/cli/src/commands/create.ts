@@ -98,8 +98,7 @@ export async function create(projectName: string, options: CreateOptions) {
   //   '@ldk-cli/cli-plugin-router',
   // ];
   const plugins = [...BUILD_IN_PLUGINS, ...promptPlugins];
-  plugins.forEach(await pluginManager.addPlugin.bind(pluginManager));
-
+  await Promise.all(plugins.map(pluginManager.addPlugin.bind(pluginManager)));
   const localConfig = getLocalConfig();
   if (!localConfig.pkgManager) {
     const pkgManager = await pkgManagerPrompt();
@@ -107,8 +106,9 @@ export async function create(projectName: string, options: CreateOptions) {
   }
   await pluginManager.installPlugins();
 
+  console.log(pluginManager.plugins);
+
   const pluginConfigs = plugins.map(pluginManager.get.bind(pluginManager)) as PluginConfig[];
-  // console.log(pluginConfigs);
   const tempConfig = templateManager.getTemplate(template);
   await createPluginCore({ tempConfig, pluginConfigs, projectPath }).invoke();
 
