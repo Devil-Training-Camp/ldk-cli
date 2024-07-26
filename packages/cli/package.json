@@ -14,7 +14,7 @@
     "ldk-cli": "./bin.js"
   },
   "scripts": {
-    "dev": "cross-env NODE_ENV=development pnpm dev:tsx",
+    "dev": "pnpm dev:tsx",
     "c:temp": "pnpm dev temp",
     "c:plugin": "pnpm dev plugin",
     "c:create": "pnpm dev create ../../../ldk-cli-test/my-project -f",

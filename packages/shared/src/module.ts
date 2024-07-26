@@ -1,5 +1,5 @@
 import { pathToFileURL } from 'url';
-import { resolve } from 'path';
+import { extname, resolve } from 'path';
 export function moduleLoader<T>(path: string): (file?: string) => Promise<T>;
 export function moduleLoader<T>(path: string, file: string): Promise<T>;
 
@@ -9,10 +9,16 @@ export function moduleLoader<T>(path: string, file?: string) {
   }
   return (file = '') => loadModule<T>(path, file);
 }
-
 export async function loadModule<T>(path: string, file = '') {
-  const moduleURL = pathToFileURL(resolve(path, file)).href;
-  const importedModule = await import(moduleURL);
+  path = resolve(path, file);
+  const moduleURL = pathToFileURL(path).href;
+  let importOption = {};
+  if (extname(path) === '.json') {
+    importOption = {
+      assert: { type: 'json' },
+    };
+  }
+  const importedModule = await import(moduleURL, importOption);
   return importedModule.default as T; // 假设导入的模块使用了 ES 模块的 default 导出
 }
 
