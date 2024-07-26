@@ -1,10 +1,14 @@
 import { Command } from 'commander';
 
-const program = new Command();
+import { CLI_VERSION } from './constant.js';
+
 export interface CreateOptions {
   template?: string;
   force: boolean;
 }
+const program = new Command();
+
+program.version(`@ldk-cli/cli ${CLI_VERSION}`);
 
 program
   .command('create <projectName>')

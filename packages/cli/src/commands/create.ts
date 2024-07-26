@@ -88,8 +88,10 @@ export async function create(projectName: string, options: CreateOptions) {
 
   const template = await templatePrompt(templateManager.templates);
   // const template = '';
+
   const pluginManager = new PluginManager();
   await pluginManager.init();
+
   const promptPlugins = await pluginPrompt(pluginManager.plugins);
   // const promptPlugins = [
   //   '@ldk-cli/cli-plugin-eslint',
@@ -98,15 +100,15 @@ export async function create(projectName: string, options: CreateOptions) {
   //   '@ldk-cli/cli-plugin-router',
   // ];
   const plugins = [...BUILD_IN_PLUGINS, ...promptPlugins];
+
   await Promise.all(plugins.map(pluginManager.addPlugin.bind(pluginManager)));
+
   const localConfig = getLocalConfig();
   if (!localConfig.pkgManager) {
     const pkgManager = await pkgManagerPrompt();
     localConfig.pkgManager = pkgManager;
   }
   await pluginManager.installPlugins();
-
-  console.log(pluginManager.plugins);
 
   const pluginConfigs = plugins.map(pluginManager.get.bind(pluginManager)) as PluginConfig[];
   const tempConfig = templateManager.getTemplate(template);
