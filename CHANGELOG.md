@@ -1,8 +1,23 @@
 
 
-## [0.1.4](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.1.3...0.1.4) (2024-7-25)
+## [0.1.5](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.1.4...0.1.5) (2024-7-25)
+
+
+### 🔧 Continuous Integration | CI 配置
+
+* **ci:** ci配置 ([6bfd61a](https://github.com/Devil-Training-Camp/ldk-cli/commit/6bfd61a26f793089abf3404dec3edad47db3ee19))
 
 # Changelog
+
+## 0.1.5
+
+*No significant changes*
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.1.4...dev)
+
+## [0.1.4](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.1.3...0.1.4) (2024-7-25)
+
+
 
 ## 0.1.4
 

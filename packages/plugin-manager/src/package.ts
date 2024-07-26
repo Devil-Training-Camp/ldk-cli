@@ -1,4 +1,4 @@
-import { resolve, basename } from 'path';
+import { resolve, basename, normalize } from 'path';
 
 import { PACKAGES_RIR, getLocalConfig, isDev, loadModule } from '@ldk-cli/shared';
 import fse from 'fs-extra';
@@ -27,6 +27,7 @@ export async function parsePluginPath(nameOrPath: string) {
     nameOrPath = resolve(PACKAGES_RIR, pkgName);
   }
   if (fse.existsSync(nameOrPath)) {
+    nameOrPath = normalize(nameOrPath);
     const pkgPath = resolve(nameOrPath, 'package.json');
     // import 导入的 json 对象是 is not extensible 不可扩展新属性的
     const pkg = await loadModule<PkgJson>(pkgPath);

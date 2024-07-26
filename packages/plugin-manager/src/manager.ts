@@ -1,5 +1,3 @@
-import { normalize } from 'path';
-
 import type { ActionTargetConfig } from '@ldk-cli/shared';
 import { Action, getCacheConfig } from '@ldk-cli/shared';
 import chalk from 'chalk';
@@ -29,7 +27,6 @@ export class PluginManager extends Action<PluginConfig> {
   }
   async genPlugin(nameOrPath: string) {
     const { name, version, local } = await parsePluginPath(nameOrPath);
-    if (this.has(name)) return this.get(name) as PluginConfig;
     const pluginConfig = {
       name,
       title: name,
@@ -49,7 +46,6 @@ export class PluginManager extends Action<PluginConfig> {
     return pluginConfig;
   }
   async addPlugin(name: string) {
-    name = normalize(name);
     await this.genPlugin(name);
   }
   async removePlugin(nameOrPath: string) {

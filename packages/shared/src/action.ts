@@ -10,9 +10,12 @@ export class Action<T extends ActionTargetConfig> {
     return this.targetArr.find(target => target.name === name);
   }
   add(target: T) {
-    if (this.has(target.name)) return false;
+    const old = this.get(target.name);
+    if (old) {
+      Object.assign(old, target);
+      return;
+    }
     this.targetArr.push(target);
-    return true;
   }
   remove(name: string) {
     const curIdx = this.targetArr.findIndex(target => target.name === name);
