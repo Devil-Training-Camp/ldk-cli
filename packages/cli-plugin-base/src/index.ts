@@ -46,6 +46,7 @@ const plugin: PluginFn = async () => {
         const pkgHelper = helper.parseJson(code);
         const name = basename(projectPath);
         pkgHelper.injectName(name);
+        pkgHelper.injectVersion('0.0.0');
         pkgHelper.injectDevDependencies({
           typescript: '~5.3.3',
         });

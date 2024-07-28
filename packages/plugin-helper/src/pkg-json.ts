@@ -2,6 +2,7 @@ import chalk from 'chalk';
 
 export type PkgJson = {
   name: string;
+  version: string;
   dependencies: Record<string, string>;
   devDependencies: Record<string, string>;
   scripts: Record<string, string>;
@@ -62,6 +63,9 @@ export function injectScripts(
 export function injectName(json: Partial<PkgJson>, name: string) {
   return injectPkgJsonAttr(json, 'name', name);
 }
+export function injectVersion(json: Partial<PkgJson>, version: string) {
+  return injectPkgJsonAttr(json, 'version', version);
+}
 export function tryStringify(json: Partial<PkgJson>) {
   try {
     return JSON.stringify(json, null, 2);
@@ -88,6 +92,7 @@ export function parseJson(code: string | Partial<PkgJson>) {
     injectDependencies: injectDependencies.bind(null, json),
     injectDevDependencies: injectDevDependencies.bind(null, json),
     injectName: injectName.bind(null, json),
+    injectVersion: injectVersion.bind(null, json),
     injectScripts: injectScripts.bind(null, json),
     tryStringify: tryStringify.bind(null, json),
     json,
