@@ -28,9 +28,8 @@ export async function parsePluginPath(nameOrPath: string) {
   }
   if (fse.existsSync(nameOrPath)) {
     nameOrPath = normalize(nameOrPath);
-    const pkgPath = resolve(nameOrPath, 'package.json');
     // import 导入的 json 对象是 is not extensible 不可扩展新属性的
-    const pkg = await loadModule<PkgJson>(pkgPath);
+    const pkg = await loadModule<PkgJson>(nameOrPath, './package.json');
     return {
       name: pkg.name,
       version: '',

@@ -155,35 +155,34 @@ importers:
         version: 4.12.0
 
   packages/cli-plugin-base:
-    dependencies:
+    devDependencies:
       '@ldk-cli/plugin-core':
         specifier: workspace:*
         version: link:../plugin-core
 
   packages/cli-plugin-eslint:
-    dependencies:
+    devDependencies:
       '@ldk-cli/plugin-core':
         specifier: workspace:*
         version: link:../plugin-core
-    devDependencies:
       '@types/eslint':
         specifier: ^8.56.10
         version: 8.56.10
 
   packages/cli-plugin-prettier:
-    dependencies:
+    devDependencies:
       '@ldk-cli/plugin-core':
         specifier: workspace:*
         version: link:../plugin-core
 
   packages/cli-plugin-router:
-    dependencies:
+    devDependencies:
       '@ldk-cli/plugin-core':
         specifier: workspace:*
         version: link:../plugin-core
 
   packages/cli-plugin-vue:
-    dependencies:
+    devDependencies:
       '@ldk-cli/plugin-core':
         specifier: workspace:*
         version: link:../plugin-core
