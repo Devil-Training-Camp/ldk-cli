@@ -30,7 +30,10 @@
     "email": "461252486@qq.com"
   },
   "license": "MIT",
-  "dependencies": {
+  "devDependencies": {
+    "@ldk-cli/plugin-core": "workspace:*"
+  },
+  "peerDependencies": {
     "@ldk-cli/plugin-core": "workspace:*"
   }
 }
