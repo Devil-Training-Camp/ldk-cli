@@ -1,5 +1,20 @@
 
 
+## [0.4.1](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.4.0...0.4.1) (2024-7-29)
+
+
+### 👷‍ Build System | 构建
+
+* **build:** build ([bf375b2](https://github.com/Devil-Training-Camp/ldk-cli/commit/bf375b24da3046927837479181af823482a99c8e))
+
+# Changelog
+
+## 0.4.1
+
+*No significant changes*
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.4.0...dev)
+
 ## [0.4.0](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.3.0...0.4.0) (2024-7-29)
 
 
@@ -12,7 +27,7 @@
 
 * **build:** build ([5beb6df](https://github.com/Devil-Training-Camp/ldk-cli/commit/5beb6df7f1291420ad8536f9407a82610dad4b76))
 
-# Changelog
+
 
 ## 0.4.0
 
