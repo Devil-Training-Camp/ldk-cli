@@ -22,10 +22,22 @@ export type Plugin = {
 };
 export type Plugins = Plugin[];
 
-export let curPlugin: Plugin | null = null;
+if (!globalThis.__ldkCliPluginCore__) {
+  global.__ldkCliPluginCore__ = {
+    curPlugin: null,
+  };
+}
 
-export function setCurPlugin(pluginInfo: Plugin | null) {
-  curPlugin = pluginInfo;
+const globalState = global.__ldkCliPluginCore__;
+
+export type CurPlugin = Plugin | null;
+
+export function getCurPlugin() {
+  return globalState.curPlugin;
+}
+
+export function setCurPlugin(curPlugin: CurPlugin) {
+  globalState.curPlugin = curPlugin;
 }
 function createPlugin(plugin?: Partial<Plugin>): Plugin {
   return {

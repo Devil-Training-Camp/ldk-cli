@@ -12,7 +12,7 @@ export function moduleLoader<T>(path: string, file?: string) {
 }
 
 export async function loadModule<T>(path: string, file: string) {
-  if (extname(path) === '.json') {
+  if (extname(file) === '.json') {
     const require = createRequire(resolve(path, './package.json'));
     return require(file);
   }
