@@ -28,16 +28,17 @@ if (!globalThis.__ldkCliPluginCore__) {
   };
 }
 
-const globalState = global.__ldkCliPluginCore__;
+// const globalState = global.__ldkCliPluginCore__;
 
 export type CurPlugin = Plugin | null;
+export let curPlugin: CurPlugin = null;
 
 export function getCurPlugin() {
-  return globalState.curPlugin;
+  return curPlugin;
 }
 
-export function setCurPlugin(curPlugin: CurPlugin) {
-  globalState.curPlugin = curPlugin;
+export function setCurPlugin(cur: CurPlugin) {
+  curPlugin = cur;
 }
 function createPlugin(plugin?: Partial<Plugin>): Plugin {
   return {
