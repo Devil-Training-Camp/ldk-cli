@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.json",
   "include": [
     "src/**/*",
+    "./global.d.ts"
   ], // 包含的文件
   "exclude": [
     "node_modules",
@@ -10,6 +11,6 @@
   "compilerOptions": {
     "target": "ESNext", // 编译后的目标
     "outDir": "./lib",
-    "declaration": true
+    "declaration": true,
   }
 }

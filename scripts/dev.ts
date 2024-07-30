@@ -13,7 +13,7 @@ const targets = args.length
       'plugin-manager',
       'plugin-core',
       'plugin-helper',
-      'cli',
+      // 'cli',
     ];
 
 async function dev() {

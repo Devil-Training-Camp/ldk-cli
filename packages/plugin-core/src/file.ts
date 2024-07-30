@@ -6,7 +6,7 @@ import { glob } from 'glob';
 import { TEMPLATE_IGNORE_DIRS_RE } from '@ldk-cli/template-manager';
 
 import type { RenderPath } from './plugin.js';
-import { curPlugin } from './plugin.js';
+import { getCurPlugin } from './plugin.js';
 import { curPluginCoreIns } from './create.js';
 
 export type TempFile = {
@@ -49,6 +49,7 @@ export function render(from: string, to = '') {
     to = resolve(curPluginCoreIns.context.projectPath, to);
   }
 
+  const curPlugin = getCurPlugin();
   if (curPlugin) {
     curPlugin.paths.push({ from, to });
   }

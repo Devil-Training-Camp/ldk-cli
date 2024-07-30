@@ -32,6 +32,9 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^6.7.5
         version: 6.21.0(eslint@8.57.0)(typescript@5.3.3)
+      axios:
+        specifier: ^1.7.2
+        version: 1.7.2
       commitizen:
         specifier: ^4.3.0
         version: 4.3.0(@types/node@20.14.9)(typescript@5.3.3)
@@ -62,6 +65,9 @@ importers:
       eslint-plugin-vue:
         specifier: ^9.17.0
         version: 9.26.0(eslint@8.57.0)
+      glob:
+        specifier: ^10.3.10
+        version: 10.4.1
       husky:
         specifier: ^8.0.3
         version: 8.0.3
@@ -155,35 +161,34 @@ importers:
         version: 4.12.0
 
   packages/cli-plugin-base:
-    dependencies:
+    devDependencies:
       '@ldk-cli/plugin-core':
         specifier: workspace:*
         version: link:../plugin-core
 
   packages/cli-plugin-eslint:
-    dependencies:
+    devDependencies:
       '@ldk-cli/plugin-core':
         specifier: workspace:*
         version: link:../plugin-core
-    devDependencies:
       '@types/eslint':
         specifier: ^8.56.10
         version: 8.56.10
 
   packages/cli-plugin-prettier:
-    dependencies:
+    devDependencies:
       '@ldk-cli/plugin-core':
         specifier: workspace:*
         version: link:../plugin-core
 
   packages/cli-plugin-router:
-    dependencies:
+    devDependencies:
       '@ldk-cli/plugin-core':
         specifier: workspace:*
         version: link:../plugin-core
 
   packages/cli-plugin-vue:
-    dependencies:
+    devDependencies:
       '@ldk-cli/plugin-core':
         specifier: workspace:*
         version: link:../plugin-core
@@ -2298,6 +2303,10 @@ packages:
       retry: 0.13.1
     dev: true
 
+  /asynckit@0.4.0:
+    resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
+    dev: true
+
   /at-least-node@1.0.0:
     resolution: {integrity: sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg==}
     engines: {node: '>= 4.0.0'}
@@ -2308,6 +2317,16 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       possible-typed-array-names: 1.0.0
+    dev: true
+
+  /axios@1.7.2:
+    resolution: {integrity: sha512-2A8QhOMrbomlDuiLeK9XibIBzuHeRcqqNOHp0Cyp5EoJ1IFDh+XZH3A6BkXtv0K4gFGCI0Y4BM7B1wOEi0Rmgw==}
+    dependencies:
+      follow-redirects: 1.15.6
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
     dev: true
 
   /balanced-match@1.0.2:
@@ -2742,6 +2761,13 @@ packages:
 
   /colorette@2.0.20:
     resolution: {integrity: sha512-IfEDxwoWIjkeXL1eXcDiow4UbKjhLdq6/EuSVR9GMN7KVH3r9gQ83e73hsz1Nd1T3ijd5xv1wcWRYO+D6kCI2w==}
+    dev: true
+
+  /combined-stream@1.0.8:
+    resolution: {integrity: sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==}
+    engines: {node: '>= 0.8'}
+    dependencies:
+      delayed-stream: 1.0.0
     dev: true
 
   /commander@11.0.0:
@@ -3343,6 +3369,11 @@ packages:
       ast-types: 0.13.4
       escodegen: 2.1.0
       esprima: 4.0.1
+    dev: true
+
+  /delayed-stream@1.0.0:
+    resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
+    engines: {node: '>=0.4.0'}
     dev: true
 
   /deprecation@2.3.1:
@@ -4245,6 +4276,16 @@ packages:
     engines: {node: '>=0.4.0'}
     dev: false
 
+  /follow-redirects@1.15.6:
+    resolution: {integrity: sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dev: true
+
   /for-each@0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
     dependencies:
@@ -4261,6 +4302,15 @@ packages:
   /form-data-encoder@2.1.4:
     resolution: {integrity: sha512-yDYSgNMraqvnxiEXO4hi88+YZxaHC6QKzb5N84iRCTDeRO7ZALpir/lVmf/uXUhnwUr2O4HU8s/n6x+yNjQkHw==}
     engines: {node: '>= 14.17'}
+    dev: true
+
+  /form-data@4.0.0:
+    resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}
+    engines: {node: '>= 6'}
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      mime-types: 2.1.35
     dev: true
 
   /formdata-polyfill@4.0.10:

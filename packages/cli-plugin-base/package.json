@@ -1,6 +1,6 @@
 {
   "name": "@ldk-cli/cli-plugin-base",
-  "version": "0.1.5",
+  "version": "0.4.1",
   "private": false,
   "description": "a vue cli",
   "main": "lib/index.js",
@@ -11,9 +11,16 @@
     "lib",
     "template"
   ],
+  "publishConfig": {
+    "include": [
+      "lib",
+      "template"
+    ]
+  },
   "scripts": {
     "dev": "tsc -w",
-    "build": "rimraf ./lib && tsc"
+    "build": "rimraf ./lib && tsc",
+    "test": "echo %npm_package_name% && exit 0"
   },
   "keywords": [
     "vue3",
@@ -30,7 +37,10 @@
     "email": "461252486@qq.com"
   },
   "license": "MIT",
-  "dependencies": {
+  "devDependencies": {
+    "@ldk-cli/plugin-core": "workspace:*"
+  },
+  "peerDependencies": {
     "@ldk-cli/plugin-core": "workspace:*"
   }
 }

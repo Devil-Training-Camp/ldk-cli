@@ -8,6 +8,7 @@
   "scripts": {
     "build": "tsx ./scripts/build.ts",
     "dev": "tsx ./scripts/dev.ts",
+    "sync": "tsx ./scripts/sync-publish.ts",
     "eslint": "eslint --ext .vue,.ts,.js .",
     "eslint:fix": "eslint --ext .vue,.ts,.js . --fix",
     "stylelint": "stylelint \"packages/**/*.{css,scss,sass,vue}\"",
@@ -31,6 +32,7 @@
     "@types/node": "^20.14.9",
     "@typescript-eslint/eslint-plugin": "^6.7.5",
     "@typescript-eslint/parser": "^6.7.5",
+    "axios": "^1.7.2",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
     "esbuild": "^0.19.4",
@@ -41,6 +43,7 @@
     "eslint-plugin-import": "^2.28.1",
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-vue": "^9.17.0",
+    "glob": "^10.3.10",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
     "prettier": "^3.0.3",
@@ -59,5 +62,5 @@
     "typescript": "~5.3.3",
     "vue-eslint-parser": "^9.3.2"
   },
-  "version": "0.1.5"
+  "version": "0.4.1"
 }

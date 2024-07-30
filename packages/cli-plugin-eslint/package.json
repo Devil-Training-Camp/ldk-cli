@@ -1,6 +1,6 @@
 {
   "name": "@ldk-cli/cli-plugin-eslint",
-  "version": "0.1.5",
+  "version": "0.4.1",
   "private": false,
   "description": "a vue cli",
   "main": "lib/index.js",
@@ -30,10 +30,11 @@
     "email": "461252486@qq.com"
   },
   "license": "MIT",
-  "dependencies": {
-    "@ldk-cli/plugin-core": "workspace:*"
-  },
   "devDependencies": {
+    "@ldk-cli/plugin-core": "workspace:*",
     "@types/eslint": "^8.56.10"
+  },
+  "peerDependencies": {
+    "@ldk-cli/plugin-core": "workspace:*"
   }
 }

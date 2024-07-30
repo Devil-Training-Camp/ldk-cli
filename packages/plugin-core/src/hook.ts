@@ -6,7 +6,7 @@ import inquirer from 'inquirer';
 import { PluginHookTypes } from './constant.js';
 import type { GlobalOptions } from './create.js';
 import { curPluginCoreIns } from './create.js';
-import { curPlugin, setCurPlugin } from './plugin.js';
+import { getCurPlugin, setCurPlugin } from './plugin.js';
 import type { TempFile } from './file.js';
 import { render } from './file.js';
 
@@ -47,6 +47,7 @@ function createHookContext(context?: Partial<HookContext>) {
 }
 function createHook<T extends PluginHookTypes>(type: T) {
   return (cb: PluginHook<T>) => {
+    const curPlugin = getCurPlugin();
     if (curPlugin) {
       const hook = cb as PluginHook<PluginHookTypes>;
       curPlugin[type].push(hook);
