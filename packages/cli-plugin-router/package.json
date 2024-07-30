@@ -1,6 +1,6 @@
 {
   "name": "@ldk-cli/cli-plugin-router",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "private": false,
   "description": "a vue cli",
   "main": "lib/index.js",
