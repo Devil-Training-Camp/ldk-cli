@@ -1,5 +1,22 @@
 
 
+## [0.4.3](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.4.2...0.4.3) (2024-7-31)
+
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **plugin-core:** 插件不执行 ([c7f6876](https://github.com/Devil-Training-Camp/ldk-cli/commit/c7f6876b5ae8fc1b7f8e30d9a6a4c4cc29cd848c))
+
+# Changelog
+
+## 0.4.3
+
+### &nbsp;&nbsp;&nbsp;Bug Fixes
+
+- **plugin-core**: 插件不执行 &nbsp;-&nbsp; by **grey-coat** [<samp>(c7f68)</samp>](https://github.com/Devil-Training-Camp/ldk-cli/commit/c7f6876)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.4.2...dev)
+
 ## [0.4.2](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.4.1...0.4.2) (2024-7-30)
 
 
@@ -8,7 +25,7 @@
 * **ci:** github action ([24be031](https://github.com/Devil-Training-Camp/ldk-cli/commit/24be031a2d48bdda7d1fb291ebede7f4d4ffd355))
 * **sync:** sync publish ([2500006](https://github.com/Devil-Training-Camp/ldk-cli/commit/250000643be2e8f9df5b19ad837b7d12937ba304))
 
-# Changelog
+
 
 ## 0.4.2
 
