@@ -9,14 +9,9 @@
   "type": "module",
   "files": [
     "lib",
-    "template"
+    "template",
+    "template/.gitignore"
   ],
-  "publishConfig": {
-    "include": [
-      "lib",
-      "template"
-    ]
-  },
   "scripts": {
     "dev": "tsc -w",
     "build": "rimraf ./lib && tsc",
