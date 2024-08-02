@@ -2,8 +2,9 @@ import { join } from 'path';
 
 import { CACHE_DIR } from '@ldk-cli/shared';
 
-export const BUILD_IN_PLUGINS = ['@ldk-cli/cli-plugin-base'];
+export const BUILD_IN_PLUGINS: string[] = [];
 export const OFFICIAL_PLUGINS = [
+  '@ldk-cli/cli-plugin-base',
   '@ldk-cli/cli-plugin-eslint',
   '@ldk-cli/cli-plugin-prettier',
   '@ldk-cli/cli-plugin-vue',
