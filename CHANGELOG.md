@@ -1,5 +1,22 @@
 
 
+## [0.4.4](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.4.3...0.4.4) (2024-7-31)
+
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **cli-plugin-base:** ignore file ([afe9ec1](https://github.com/Devil-Training-Camp/ldk-cli/commit/afe9ec195811ef9edf338b169c3ffed3cb243cca))
+
+# Changelog
+
+## 0.4.4
+
+### &nbsp;&nbsp;&nbsp;Bug Fixes
+
+- **cli-plugin-base**: Ignore file &nbsp;-&nbsp; by **grey-coat** [<samp>(afe9e)</samp>](https://github.com/Devil-Training-Camp/ldk-cli/commit/afe9ec1)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.4.3...dev)
+
 ## [0.4.3](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.4.2...0.4.3) (2024-7-31)
 
 
@@ -7,7 +24,7 @@
 
 * **plugin-core:** 插件不执行 ([c7f6876](https://github.com/Devil-Training-Camp/ldk-cli/commit/c7f6876b5ae8fc1b7f8e30d9a6a4c4cc29cd848c))
 
-# Changelog
+
 
 ## 0.4.3
 
