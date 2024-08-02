@@ -1,6 +1,6 @@
 {
   "name": "@ldk-cli/plugin-helper",
-  "version": "0.4.4",
+  "version": "0.5.0",
   "private": false,
   "description": "a vue cli",
   "main": "lib/index.js",

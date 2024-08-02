@@ -1,5 +1,22 @@
 
 
+## [0.5.0](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.4.4...0.5.0) (2024-8-2)
+
+
+### ✨ Features | 新功能
+
+* **command help:** command help and custom plugin ([cfc6251](https://github.com/Devil-Training-Camp/ldk-cli/commit/cfc6251cf7501852fa154dc8d38a62e53f9308df))
+
+# Changelog
+
+## 0.5.0
+
+### &nbsp;&nbsp;&nbsp;Features
+
+- **command help**: Command help and custom plugin &nbsp;-&nbsp; by **grey-coat** [<samp>(cfc62)</samp>](https://github.com/Devil-Training-Camp/ldk-cli/commit/cfc6251)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.4.4...dev)
+
 ## [0.4.4](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.4.3...0.4.4) (2024-7-31)
 
 
@@ -7,7 +24,7 @@
 
 * **cli-plugin-base:** ignore file ([afe9ec1](https://github.com/Devil-Training-Camp/ldk-cli/commit/afe9ec195811ef9edf338b169c3ffed3cb243cca))
 
-# Changelog
+
 
 ## 0.4.4
 
