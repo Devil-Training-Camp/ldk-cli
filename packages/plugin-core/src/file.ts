@@ -108,8 +108,8 @@ export async function writeProjectFiles() {
 
 // 通过这种方法可以稳定获取 render 函数执行的位置，无论它在 onRender hook 中嵌套多少层
 // eg. 如下 render 函数在 renderFiles.forEach 函数当中执行
-// onRender(({ render, options }) => {
-//   if (options.global.typescript) {
+// onRender(({ render }) => {
+//   if (context.options.typescript) {
 //     render('../template');
 //     return;
 //   }

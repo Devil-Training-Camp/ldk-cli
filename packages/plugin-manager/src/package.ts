@@ -69,7 +69,7 @@ export async function installPkgs(configs: PluginConfig[]) {
   );
   jsonHelper.injectDependencies(deps, true);
   await fse.writeFile(PLUGIN_PKG_FILE, jsonHelper.tryStringify());
-  await execa(localConfig.pkgManager as string, ['i'], {
+  await execa(localConfig.pkgManager as string, ['update'], {
     cwd: PLUGIN_CACHE_DIR,
     stdout: 'ignore',
   });

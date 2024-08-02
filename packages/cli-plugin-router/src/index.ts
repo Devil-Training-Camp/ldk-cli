@@ -1,8 +1,8 @@
 import { onInvokeStart, onRender, onTransform, type PluginFn } from '@ldk-cli/plugin-core';
 
-const plugin: PluginFn = async () => {
+const plugin: PluginFn = async context => {
   onInvokeStart(async ({ options, inquirer }) => {
-    if (!options.global.vue) return;
+    if (!context.options.vue) return;
     const { router } = await inquirer.prompt([
       {
         name: 'router',
@@ -20,15 +20,15 @@ const plugin: PluginFn = async () => {
         ],
       },
     ]);
-    options.plugin.router = router;
+    options.router = router;
   });
   onRender(({ render, options }) => {
-    if (options.plugin.router) {
+    if (options.router) {
       render('../template');
     }
   });
   onTransform(({ file, helper, options }) => {
-    if (!options.plugin.router) {
+    if (!options.router) {
       return;
     }
     const { id } = file;
@@ -44,7 +44,7 @@ const plugin: PluginFn = async () => {
       jsHelper.addImports([`import router from './router'`]);
       file.code = jsHelper.getCode();
     }
-    if (options.global.typescript) {
+    if (context.options.typescript) {
       const renamePaths = ['router'];
       if (helper.pathMatcher(renamePaths, id)) {
         file.path = file.path.replace('.js', '.ts');

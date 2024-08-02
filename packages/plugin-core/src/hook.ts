@@ -13,10 +13,7 @@ import { render } from './file.js';
 type BaseHookContext = {
   helper: typeof Helper;
   projectPath: string;
-  options: {
-    global: GlobalOptions;
-    plugin: Record<string, unknown>;
-  };
+  options: Record<string, unknown>;
   [key: string]: unknown;
 };
 type ExtraHookContext<T> = T extends PluginHookTypes.TRANSFORM
@@ -64,14 +61,13 @@ export async function invokeHook(type: PluginHookTypes) {
   if (curPluginCoreIns === null) return;
   try {
     const context = curPluginCoreIns.context;
-    const { files, projectPath, plugins, options } = context;
+    const { files, projectPath, plugins } = context;
     const hookContext = createHookContext({ projectPath });
-    hookContext.options.global = options;
 
     for (const plugin of plugins) {
       const hooks = plugin[type];
       setCurPlugin(plugin);
-      hookContext.options.plugin = plugin.options;
+      hookContext.options = plugin.options;
       if (type === PluginHookTypes.TRANSFORM) {
         for (const file of files) {
           hookContext.file = file;

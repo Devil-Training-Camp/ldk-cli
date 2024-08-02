@@ -3,8 +3,12 @@ import { getModuleEntry, loadModule } from '@ldk-cli/shared';
 
 import { PluginHookTypes } from './constant.js';
 import type { PluginHooks } from './hook.js';
+import { curPluginCoreIns, type GlobalOptions } from './create.js';
 
-export type PluginFn = () => void;
+type PluginContext = {
+  options: GlobalOptions;
+};
+export type PluginFn = (context: PluginContext) => void;
 export type RenderPath = {
   from: string;
   to: string;
@@ -65,10 +69,13 @@ export async function createPlugins(pluginConfigs: PluginConfig[]): Promise<Plug
   return plugins;
 }
 export async function invokePlugins(pluginInfos: Plugins) {
+  if (curPluginCoreIns === null) return;
+  const { context } = curPluginCoreIns;
+  const pluginContext = { options: context.options };
   for (const pluginInfo of pluginInfos) {
     const { fn } = pluginInfo;
     setCurPlugin(pluginInfo);
-    await fn();
+    await fn(pluginContext);
     setCurPlugin(null);
   }
 }

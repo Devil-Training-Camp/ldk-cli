@@ -81,7 +81,7 @@ export function parseRepoUrl(repoUrl: string) {
   const url = new URL(repoUrl);
   const branch = url.hash.slice(1);
   const temp = url.searchParams.get('temp') || '';
-  const title = `${basename(temp || url.pathname)}${DEFAULT_BRANCH === branch ? '' : `(${branch})`}`;
+  const title = `${basename(temp || url.pathname)}(${branch})`;
 
   return {
     branch,

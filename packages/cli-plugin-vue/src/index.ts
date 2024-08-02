@@ -14,8 +14,9 @@ interface TsConfig {
   }[];
 }
 
-const plugin: PluginFn = async () => {
-  onInvokeStart(async ({ options, inquirer }) => {
+const plugin: PluginFn = async context => {
+  if (context.options.bundler !== 'vite') return;
+  onInvokeStart(async ({ inquirer }) => {
     const { vue } = await inquirer.prompt([
       {
         name: 'vue',
@@ -33,15 +34,15 @@ const plugin: PluginFn = async () => {
         ],
       },
     ]);
-    options.global.vue = vue;
+    context.options.vue = vue;
   });
-  onRender(({ render, options }) => {
-    if (options.global.vue) {
+  onRender(({ render }) => {
+    if (context.options.vue) {
       render('../template');
     }
   });
-  onTransform(({ projectPath, file, helper, options }) => {
-    if (!options.global.vue) {
+  onTransform(({ projectPath, file, helper }) => {
+    if (!context.options.vue) {
       return;
     }
     const { id } = file;
@@ -57,7 +58,7 @@ const plugin: PluginFn = async () => {
       jsHelper.viteAddPlugins(['vue()']);
       file.code = jsHelper.getCode();
     }
-    if (options.global.typescript) {
+    if (context.options.typescript) {
       if (/package.json/.test(id)) {
         const pkgHelper = helper.parseJson(file.code);
         const name = basename(projectPath);
@@ -82,7 +83,7 @@ const plugin: PluginFn = async () => {
         file.code = file.code.replace(`src="/src/main.js"`, `src="/src/main.ts"`);
       }
     }
-    if (options.global.eslint) {
+    if (context.options.eslint) {
       if (/package.json/.test(id)) {
         const pkgHelper = helper.parseJson(file.code);
         pkgHelper.injectDevDependencies({

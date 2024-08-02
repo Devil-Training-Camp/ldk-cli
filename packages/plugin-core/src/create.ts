@@ -21,6 +21,7 @@ export type GlobalOptions = Record<string, unknown> & {
   typescript: boolean;
   vue: boolean;
   eslint: boolean;
+  bundler: string;
 };
 export type CoreContext = {
   files: TempFiles;
@@ -44,6 +45,7 @@ function createCoreContext(context?: Partial<CoreContext>): CoreContext {
       typescript: false,
       vue: false,
       eslint: false,
+      bundler: 'vite',
     },
     ...context,
   };
