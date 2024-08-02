@@ -1,5 +1,22 @@
 
 
+## [0.6.0](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.5.0...0.6.0) (2024-8-2)
+
+
+### ✨ Features | 新功能
+
+* **create:** create default ([2cf6fe8](https://github.com/Devil-Training-Camp/ldk-cli/commit/2cf6fe87991e7690b1380b899405cfaecbde2218))
+
+# Changelog
+
+## 0.6.0
+
+### &nbsp;&nbsp;&nbsp;Features
+
+- **create**: Create default &nbsp;-&nbsp; by **grey-coat** [<samp>(2cf6f)</samp>](https://github.com/Devil-Training-Camp/ldk-cli/commit/2cf6fe8)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.5.0...dev)
+
 ## [0.5.0](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.4.4...0.5.0) (2024-8-2)
 
 
@@ -7,7 +24,7 @@
 
 * **command help:** command help and custom plugin ([cfc6251](https://github.com/Devil-Training-Camp/ldk-cli/commit/cfc6251cf7501852fa154dc8d38a62e53f9308df))
 
-# Changelog
+
 
 ## 0.5.0
 
