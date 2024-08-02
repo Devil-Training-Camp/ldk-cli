@@ -1,5 +1,89 @@
 
 
+## [0.6.0](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.5.0...0.6.0) (2024-8-2)
+
+
+### ✨ Features | 新功能
+
+* **create:** create default ([2cf6fe8](https://github.com/Devil-Training-Camp/ldk-cli/commit/2cf6fe87991e7690b1380b899405cfaecbde2218))
+
+# Changelog
+
+## 0.6.0
+
+### &nbsp;&nbsp;&nbsp;Features
+
+- **create**: Create default &nbsp;-&nbsp; by **grey-coat** [<samp>(2cf6f)</samp>](https://github.com/Devil-Training-Camp/ldk-cli/commit/2cf6fe8)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.5.0...dev)
+
+## [0.5.0](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.4.4...0.5.0) (2024-8-2)
+
+
+### ✨ Features | 新功能
+
+* **command help:** command help and custom plugin ([cfc6251](https://github.com/Devil-Training-Camp/ldk-cli/commit/cfc6251cf7501852fa154dc8d38a62e53f9308df))
+
+
+
+## 0.5.0
+
+### &nbsp;&nbsp;&nbsp;Features
+
+- **command help**: Command help and custom plugin &nbsp;-&nbsp; by **grey-coat** [<samp>(cfc62)</samp>](https://github.com/Devil-Training-Camp/ldk-cli/commit/cfc6251)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.4.4...dev)
+
+## [0.4.4](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.4.3...0.4.4) (2024-7-31)
+
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **cli-plugin-base:** ignore file ([afe9ec1](https://github.com/Devil-Training-Camp/ldk-cli/commit/afe9ec195811ef9edf338b169c3ffed3cb243cca))
+
+
+
+## 0.4.4
+
+### &nbsp;&nbsp;&nbsp;Bug Fixes
+
+- **cli-plugin-base**: Ignore file &nbsp;-&nbsp; by **grey-coat** [<samp>(afe9e)</samp>](https://github.com/Devil-Training-Camp/ldk-cli/commit/afe9ec1)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.4.3...dev)
+
+## [0.4.3](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.4.2...0.4.3) (2024-7-31)
+
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **plugin-core:** 插件不执行 ([c7f6876](https://github.com/Devil-Training-Camp/ldk-cli/commit/c7f6876b5ae8fc1b7f8e30d9a6a4c4cc29cd848c))
+
+
+
+## 0.4.3
+
+### &nbsp;&nbsp;&nbsp;Bug Fixes
+
+- **plugin-core**: 插件不执行 &nbsp;-&nbsp; by **grey-coat** [<samp>(c7f68)</samp>](https://github.com/Devil-Training-Camp/ldk-cli/commit/c7f6876)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.4.2...dev)
+
+## [0.4.2](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.4.1...0.4.2) (2024-7-30)
+
+
+### 🔧 Continuous Integration | CI 配置
+
+* **ci:** github action ([24be031](https://github.com/Devil-Training-Camp/ldk-cli/commit/24be031a2d48bdda7d1fb291ebede7f4d4ffd355))
+* **sync:** sync publish ([2500006](https://github.com/Devil-Training-Camp/ldk-cli/commit/250000643be2e8f9df5b19ad837b7d12937ba304))
+
+
+
+## 0.4.2
+
+*No significant changes*
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.4.1...dev)
+
 ## [0.4.1](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.4.0...0.4.1) (2024-7-29)
 
 
@@ -7,7 +91,7 @@
 
 * **build:** build ([bf375b2](https://github.com/Devil-Training-Camp/ldk-cli/commit/bf375b24da3046927837479181af823482a99c8e))
 
-# Changelog
+
 
 ## 0.4.1
 

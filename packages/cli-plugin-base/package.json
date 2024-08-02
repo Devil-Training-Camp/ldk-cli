@@ -1,6 +1,6 @@
 {
   "name": "@ldk-cli/cli-plugin-base",
-  "version": "0.4.1",
+  "version": "0.6.0",
   "private": false,
   "description": "a vue cli",
   "main": "lib/index.js",
@@ -9,14 +9,9 @@
   "type": "module",
   "files": [
     "lib",
-    "template"
+    "template",
+    "template/.gitignore"
   ],
-  "publishConfig": {
-    "include": [
-      "lib",
-      "template"
-    ]
-  },
   "scripts": {
     "dev": "tsc -w",
     "build": "rimraf ./lib && tsc",

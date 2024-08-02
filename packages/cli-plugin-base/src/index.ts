@@ -2,8 +2,9 @@ import { basename } from 'path';
 
 import { onInvokeStart, onRender, onTransform, type PluginFn } from '@ldk-cli/plugin-core';
 
-const plugin: PluginFn = async () => {
-  onInvokeStart(async ({ options, inquirer }) => {
+const plugin: PluginFn = async context => {
+  if (context.options.bundler !== 'vite') return;
+  onInvokeStart(async ({ inquirer }) => {
     const { typescript } = await inquirer.prompt([
       {
         name: 'typescript',
@@ -21,10 +22,10 @@ const plugin: PluginFn = async () => {
         ],
       },
     ]);
-    options.global.typescript = typescript;
+    context.options.typescript = typescript;
   });
-  onRender(({ render, options }) => {
-    if (options.global.typescript) {
+  onRender(({ render }) => {
+    if (context.options.typescript) {
       render('../template');
       return;
     }
@@ -39,9 +40,9 @@ const plugin: PluginFn = async () => {
       render(from, to);
     });
   });
-  onTransform(({ projectPath, file, helper, options }) => {
+  onTransform(({ projectPath, file, helper }) => {
     const { id, code } = file;
-    if (options.global.typescript) {
+    if (context.options.typescript) {
       if (/package.json/.test(id)) {
         const pkgHelper = helper.parseJson(code);
         const name = basename(projectPath);

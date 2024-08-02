@@ -76,7 +76,7 @@ export class TemplateManager extends Action<TemplateConfig> {
   }
   async addTemplate(nameOrPath: string) {
     const tempConfig = await this.genTemplate(nameOrPath);
-    const { url, temp, name } = tempConfig;
+    const { url, temp, name, branch } = tempConfig;
     let { local, path } = tempConfig;
     if (!isRemotePath(name)) {
       tempConfig.local = local = name;
@@ -84,7 +84,7 @@ export class TemplateManager extends Action<TemplateConfig> {
       console.log('success');
       return tempConfig;
     }
-    tempConfig.local = local = join(TEMPLATE_CACHE_DIR, basename(url));
+    tempConfig.local = local = join(TEMPLATE_CACHE_DIR, basename(url), branch);
     tempConfig.path = path = join(local, temp);
     if (existsSync(local)) {
       await updateRepoWithOra(tempConfig, !existsSync(path));

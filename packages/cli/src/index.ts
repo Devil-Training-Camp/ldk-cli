@@ -6,7 +6,7 @@ export interface CreateOptions {
   template?: string;
   force: boolean;
 }
-const program = new Command();
+const program = new Command('ldk-cli');
 
 program.version(`@ldk-cli/cli ${CLI_VERSION}`);
 
@@ -25,8 +25,19 @@ export type ManageAction = (typeof manageActions)[number];
 
 program
   .command('temp <action> [nameOrPath]')
-  .description('Manage templates')
   .allowUnknownOption()
+  .description('Manage templates')
+  .usage('<action> [nameOrPath]')
+  .addHelpText(
+    'after',
+    `
+<action>:
+  --add  Add template
+  --remove  Remove template
+  --update  Update template
+  --show  Show template
+  `,
+  )
   .action(async (action: ManageAction, nameOrPath?: string) => {
     const { template } = await import('./commands/template.js');
     template(action, nameOrPath);
@@ -34,8 +45,20 @@ program
 
 program
   .command('plugin <action> [nameOrPath]')
-  .description('Manage plugins')
   .allowUnknownOption()
+  .description('Manage plugins')
+  .usage('<action> [nameOrPath]')
+  .addHelpText(
+    'after',
+    `
+<action>:
+  --add  Add plugin
+  --remove  Remove plugin
+  --update  Update plugin
+  --show  Show plugin
+  `,
+  )
+  .helpOption(true)
   .action(async (action: ManageAction, nameOrPath?: string) => {
     const { plugin } = await import('./commands/plugin.js');
     plugin(action, nameOrPath);

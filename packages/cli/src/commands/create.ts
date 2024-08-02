@@ -89,6 +89,11 @@ export async function create(projectName: string, options: CreateOptions) {
   const template = await templatePrompt(templateManager.templates);
   // const template = '';
 
+  if (template !== '') {
+    await templateManager.invokeTemplate(template);
+    return;
+  }
+
   const pluginManager = new PluginManager();
   await pluginManager.init();
 

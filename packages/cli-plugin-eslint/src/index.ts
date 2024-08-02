@@ -1,8 +1,8 @@
 import { onInvokeStart, onRender, onTransform, type PluginFn } from '@ldk-cli/plugin-core';
 import type { Linter } from 'eslint';
 
-const plugin: PluginFn = async () => {
-  onInvokeStart(async ({ options, inquirer }) => {
+const plugin: PluginFn = async context => {
+  onInvokeStart(async ({ inquirer }) => {
     const { eslint } = await inquirer.prompt([
       {
         name: 'eslint',
@@ -20,15 +20,15 @@ const plugin: PluginFn = async () => {
         ],
       },
     ]);
-    options.global.eslint = eslint;
+    context.options.eslint = eslint;
   });
-  onRender(({ render, options }) => {
-    if (options.global.eslint) {
+  onRender(({ render }) => {
+    if (context.options.eslint) {
       render('../template');
     }
   });
-  onTransform(async ({ file, helper, options }) => {
-    if (!options.global.eslint) {
+  onTransform(async ({ file, helper }) => {
+    if (!context.options.eslint) {
       return;
     }
     const { code, id } = file;
@@ -38,7 +38,7 @@ const plugin: PluginFn = async () => {
         'eslint-config-standard': '^17.1.0',
         'eslint-plugin-import': '^2.28.1',
       };
-      if (options.global.typescript) {
+      if (context.options.typescript) {
         defaultDeps = {
           ...defaultDeps,
           'eslint-import-resolver-typescript': '^3.6.1',
@@ -53,7 +53,7 @@ const plugin: PluginFn = async () => {
     if (/.eslintrc.json/.test(id)) {
       const eslintConfig = JSON.parse(file.code) as Linter.Config;
       let newConfig = eslintConfig;
-      if (options.global.typescript) {
+      if (context.options.typescript) {
         newConfig = {
           ...eslintConfig,
           parserOptions: {

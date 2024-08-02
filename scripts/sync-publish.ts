@@ -18,8 +18,8 @@ async function sync() {
   for (const pkgName of pkgNames) {
     try {
       const encodedPkgName = encodeURIComponent(pkgName);
-      const response = await axios.post(
-        `https://npmmirror.com/sync/${encodedPkgName}?sync_upstream=true`,
+      const response = await axios.put(
+        `https://registry-direct.npmmirror.com/-/package/${encodedPkgName}/syncs`,
       );
       console.log(`Synced ${pkgName}: ${response.status}`);
     } catch (error) {

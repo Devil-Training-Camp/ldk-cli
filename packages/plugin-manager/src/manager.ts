@@ -2,7 +2,7 @@ import type { ActionTargetConfig } from '@ldk-cli/shared';
 import { Action, getCacheConfig } from '@ldk-cli/shared';
 import chalk from 'chalk';
 
-import { OFFICIAL_PLUGINS } from './constant.js';
+import { OFFICIAL_PLUGINS, isOfficialPlugin } from './constant.js';
 import { installPkgsWithOra, parsePluginPath } from './package.js';
 
 export interface PluginConfig extends ActionTargetConfig {}
@@ -27,6 +27,9 @@ export class PluginManager extends Action<PluginConfig> {
   }
   async genPlugin(nameOrPath: string) {
     const { name, version, local } = await parsePluginPath(nameOrPath);
+    if (!isOfficialPlugin(nameOrPath) && this.has(name)) {
+      return this.get(name);
+    }
     const pluginConfig = {
       name,
       title: name,

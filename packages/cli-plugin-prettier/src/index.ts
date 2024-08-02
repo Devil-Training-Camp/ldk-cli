@@ -1,8 +1,8 @@
 import { onInvokeStart, onRender, onTransform, type PluginFn } from '@ldk-cli/plugin-core';
 
-const plugin: PluginFn = async () => {
+const plugin: PluginFn = async context => {
   onInvokeStart(async ({ options, inquirer }) => {
-    if (!options.global.eslint) return;
+    if (!context.options.eslint) return;
     const { prettier } = await inquirer.prompt([
       {
         name: 'prettier',
@@ -20,16 +20,16 @@ const plugin: PluginFn = async () => {
         ],
       },
     ]);
-    options.plugin.prettier = prettier;
+    options.prettier = prettier;
   });
   onRender(({ render, options }) => {
-    if (options.plugin.prettier) {
+    if (options.prettier) {
       render('../template');
     }
   });
   onTransform(({ file, helper, options }) => {
     const { id } = file;
-    if (!options.plugin.prettier) {
+    if (!options.prettier) {
       return;
     }
     if (/package.json/.test(id)) {
