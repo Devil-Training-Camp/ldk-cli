@@ -5,7 +5,7 @@ A CLI that can be extended arbitrarily.
 - Manage [Templates][1]
 - Extend with [plugins][2]
 
-You can specify any online Git repository or a directory or local directory of the repository as a template, and ldk cli will install and manage them. LDK CLI also provides a plugin system to extend CLI.
+You can specify any online Git repository or a directory or local directory of the repository as a template, and `ldk-cli` will install and manage them. `ldk-cli` also provides a plugin system to extend CLI.
 
 ## Installation
 
