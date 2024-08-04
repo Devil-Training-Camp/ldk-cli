@@ -1,6 +1,6 @@
 {
   "name": "@ldk-cli/cli-plugin-router",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "private": false,
   "description": "Vue router plugin with vite for ldk-cli",
   "main": "lib/index.js",

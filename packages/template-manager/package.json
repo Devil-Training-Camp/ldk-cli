@@ -1,6 +1,6 @@
 {
   "name": "@ldk-cli/template-manager",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "private": false,
   "description": "Template manager of @ldk-cli/cli",
   "main": "lib/index.js",

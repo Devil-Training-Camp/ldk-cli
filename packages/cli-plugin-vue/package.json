@@ -1,6 +1,6 @@
 {
   "name": "@ldk-cli/cli-plugin-vue",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "private": false,
   "description": "Vue plugin with vite for ldk-cli",
   "main": "lib/index.js",

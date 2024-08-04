@@ -1,6 +1,6 @@
 {
   "name": "@ldk-cli/shared",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "private": false,
   "description": "Internal utils shared across @ldk-cli packages",
   "main": "lib/index.js",
