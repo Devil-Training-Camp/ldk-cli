@@ -113,9 +113,9 @@ You can add plugins to extend CLI, these are some official plugins currently sup
 
 [1]: #template
 [2]: #plugin
-[3]: ./docs/assets/ldk-cli-create.gif
-[4]: ./docs/assets/ldk-cli-temp-add.gif
-[5]: ./docs/assets/ldk-cli-create-temp.gif
+[3]: /docs/assets/ldk-cli-create.gif
+[4]: /docs/assets/ldk-cli-temp-add.gif
+[5]: /docs/assets/ldk-cli-create-temp.gif
 [6]: /packages/template-manager/README.md
 [7]: /packages/cli-plugin-base/README.md
 [8]: /packages/cli-plugin-eslint/README.md
