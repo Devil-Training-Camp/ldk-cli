@@ -2,7 +2,7 @@
   "name": "@ldk-cli/plugin-helper",
   "version": "0.6.0",
   "private": false,
-  "description": "a vue cli",
+  "description": "Some plugin helper functions of @ldk-cli/cli",
   "main": "lib/index.js",
   "module": "lib/index.js",
   "types": "lib/index.d.ts",

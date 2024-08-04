@@ -30,7 +30,7 @@ yarn global add @ldk-cli/cli
 Check if the installation was successful.
 
 ```bash
-pnpm ldk-cli -V
+ldk-cli -V
 ```
 
 ## Usage
@@ -48,7 +48,7 @@ ldk-cli create ./my-project -t https://github.com/Devil-Training-Camp/virtual-sc
 
 ```
 
-If you run `ldk-cli create ./online-test6`
+If you run `ldk-cli create ./online-test6`:
 
 ![create][3]
 
@@ -67,8 +67,59 @@ Options:
 
 ## Template
 
+Add a template:
+
+```bash
+ldk-cli temp --add https://github.com/Devil-Training-Camp/virtual-scroll-list-liudingkang.git
+
+# Specify branch
+ldk-cli temp --add https://github.com/Devil-Training-Camp/ldk-cli#dev
+
+# Specific directory
+ldk-cli temp --add https://github.com/Devil-Training-Camp/ldk-cli?temp=packages/cli#main
+
+# Simplify a URL
+ldk-cli temp --add Devil-Training-Camp/ldk-cli?temp=packages/cli#dev
+
+# Add local template
+ldk-cli temp --add  D:\develop\vue3\ldk-cli\packages\cli
+```
+
+Online templates and local templates can be specified, and online templates will be automatically cached.
+
+If you run `ldk-cli temp --add https://github.com/Devil-Training-Camp/virtual-scroll-list-liudingkang.git`:
+
+![temp][4]
+
+The added template will be available for selection when executing the create command:
+
+![create-temp][5]
+
+→ See [templates][6] for more details.
+
 ## Plugin
+
+You can add plugins to extend CLI, these are some official plugins currently supported:
+
+| Plugin                            | Description                             |
+| --------------------------------- | --------------------------------------- |
+| [@ldk-cli/cli-plugin-base][7]     | Vite and Typescript plugin for ldk-cli  |
+| [@ldk-cli/cli-plugin-eslint][8]   | ESLint plugin for ldk-cli               |
+| [@ldk-cli/cli-plugin-prettier][9] | Prettier plugin for ldk-cli             |
+| [@ldk-cli/cli-plugin-vue][10]     | Vue plugin with vite for ldk-cli        |
+| [@ldk-cli/cli-plugin-router][11]  | Vue router plugin with vite for ldk-cli |
+
+→ See [plugins][12] for documentation to write plugins.
 
 [1]: #template
 [2]: #plugin
 [3]: ./docs/assets/ldk-cli-create.gif
+[4]: ./docs/assets/ldk-cli-temp-add.gif
+[5]: ./docs/assets/ldk-cli-create-temp.gif
+[6]: /packages/template-manager/README.md
+[7]: /packages/cli-plugin-base/README.md
+[8]: /packages/cli-plugin-eslint/README.md
+[9]: /packages/cli-plugin-prettier/README.md
+[10]: /packages/cli-plugin-vue/README.md
+[11]: /packages/cli-plugin-router/README.md
+[12]: /packages/plugin-manager/README.md
