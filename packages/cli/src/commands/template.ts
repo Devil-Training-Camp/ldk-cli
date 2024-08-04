@@ -75,7 +75,6 @@ export async function template(action: ManageAction, nameOrPath?: string) {
     return;
   }
   const templateManager = new TemplateManager();
-  console.log(action, nameOrPath);
   await templateManager.init();
   if (nameOrPath) {
     await withNameOrPath(templateManager, action, nameOrPath);
