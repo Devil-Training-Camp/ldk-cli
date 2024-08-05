@@ -1,6 +1,6 @@
 {
   "name": "@ldk-cli/plugin-helper",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "private": false,
   "description": "Some plugin helper functions of @ldk-cli/cli",
   "main": "lib/index.js",

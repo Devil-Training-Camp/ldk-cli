@@ -1,5 +1,27 @@
 
 
+## [0.6.2](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.6.1...0.6.2) (2024-8-5)
+
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **plugin-manager:** plugin manager choose pkg manager ([6ca45a0](https://github.com/Devil-Training-Camp/ldk-cli/commit/6ca45a024759059eec312f257c9eb91446031797))
+
+
+### 📝 Documentation | 文档
+
+* **docs:** docs ([5cdda01](https://github.com/Devil-Training-Camp/ldk-cli/commit/5cdda019ad4571157849722d11cc11d23d879ab0))
+
+# Changelog
+
+## 0.6.2
+
+### &nbsp;&nbsp;&nbsp;Bug Fixes
+
+- **plugin-manager**: Plugin manager choose pkg manager &nbsp;-&nbsp; by **grey_coat** [<samp>(6ca45)</samp>](https://github.com/Devil-Training-Camp/ldk-cli/commit/6ca45a0)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.6.1...dev)
+
 ## [0.6.1](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.6.0...0.6.1) (2024-8-4)
 
 
@@ -10,7 +32,7 @@
 * **docs:** docs ([6f0338c](https://github.com/Devil-Training-Camp/ldk-cli/commit/6f0338c081ca9c964a0231e687474564e7e1b95b))
 * **docs:** project doc ([2f5e713](https://github.com/Devil-Training-Camp/ldk-cli/commit/2f5e713f4f32db2ef99b679815f64aa86b46713e))
 
-# Changelog
+
 
 ## 0.6.1
 
