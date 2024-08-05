@@ -109,17 +109,19 @@ You can add plugins to extend CLI, these are some official plugins currently sup
 | [@ldk-cli/cli-plugin-vue][10]     | Vue plugin with vite for ldk-cli        |
 | [@ldk-cli/cli-plugin-router][11]  | Vue router plugin with vite for ldk-cli |
 
-→ See [plugins][12] for documentation to write plugins.
+→ See [plugins][12] for documentation to manage plugins.
+→ See [custom plugins][13] for documentation to write plugins.
 
 [1]: #template
 [2]: #plugin
-[3]: /docs/assets/ldk-cli-create.gif
-[4]: /docs/assets/ldk-cli-temp-add.gif
-[5]: /docs/assets/ldk-cli-create-temp.gif
-[6]: /packages/template-manager/README.md
-[7]: /packages/cli-plugin-base/README.md
-[8]: /packages/cli-plugin-eslint/README.md
-[9]: /packages/cli-plugin-prettier/README.md
-[10]: /packages/cli-plugin-vue/README.md
-[11]: /packages/cli-plugin-router/README.md
-[12]: /packages/plugin-manager/README.md
+[3]: ../../docs/assets/ldk-cli-create.gif
+[4]: ../../docs/assets/ldk-cli-temp-add.gif
+[5]: ../../docs/assets/ldk-cli-create-temp.gif
+[6]: ../template-manager/README.md
+[7]: ../cli-plugin-base/README.md
+[8]: ../cli-plugin-eslint/README.md
+[9]: ../cli-plugin-prettier/README.md
+[10]: ../cli-plugin-vue/README.md
+[11]: ../cli-plugin-router/README.md
+[12]: ../plugin-manager/README.md
+[13]: ../plugin-core/README.md

@@ -11,6 +11,7 @@ export function parseJs(code: string) {
   const root = j(code);
 
   return {
+    root,
     addImports: function (importStatements: string[]) {
       importStatements.forEach(importStatement => {
         root.find(j.Program).get('body', 0).insertBefore(importStatement);
