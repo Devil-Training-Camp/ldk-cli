@@ -1,6 +1,6 @@
 {
   "name": "@ldk-cli/plugin-core",
-  "version": "0.6.0",
+  "version": "0.6.2",
   "private": false,
   "description": "The plugin core of @ldk-cli/cli",
   "main": "lib/index.js",

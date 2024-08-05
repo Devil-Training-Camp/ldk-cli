@@ -27,6 +27,7 @@ export class PluginManager extends Action<PluginConfig> {
   }
   async genPlugin(nameOrPath: string) {
     const { name, version, local } = await parsePluginPath(nameOrPath);
+    // 非官方插件如果存在直接返回插件，官方插件可能会调试本地和线上切换，需要重新加载
     if (!isOfficialPlugin(nameOrPath) && this.has(name)) {
       return this.get(name);
     }

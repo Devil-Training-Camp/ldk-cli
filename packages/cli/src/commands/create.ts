@@ -2,7 +2,6 @@ import path from 'path';
 import { existsSync } from 'fs';
 
 import inquirer from 'inquirer';
-import type { PkgManager } from '@ldk-cli/shared';
 import { CWD, getLocalConfig, setLocalConfigAsync, transToPromptChoices } from '@ldk-cli/shared';
 import type { TemplateConfig } from '@ldk-cli/template-manager';
 import { TemplateManager } from '@ldk-cli/template-manager';
@@ -11,7 +10,7 @@ import { PluginManager, BUILD_IN_PLUGINS, isBuildInPlugin } from '@ldk-cli/plugi
 import { createPluginCore } from '@ldk-cli/plugin-core';
 
 import type { CreateOptions } from '../index.js';
-import { getLocalManagers } from '../manager.js';
+import { pkgManagerPrompt } from '../manager.js';
 
 export async function templatePrompt(temps: TemplateConfig[]) {
   const { template }: { template: string } = await inquirer.prompt([
@@ -50,21 +49,6 @@ export async function pluginPrompt(allPlugins: PluginConfig[]) {
     },
   ]);
   return plugins;
-}
-export async function pkgManagerPrompt() {
-  const localManagers = await getLocalManagers();
-  if (localManagers.length == 1) {
-    return localManagers[0];
-  }
-  const { pkgManager }: { pkgManager: PkgManager } = await inquirer.prompt([
-    {
-      name: 'pkgManager',
-      type: 'list',
-      message: `Choose package manager?`,
-      choices: localManagers.map(manager => ({ name: manager, value: manager })),
-    },
-  ]);
-  return pkgManager;
 }
 
 // e.g pnpm c:create

@@ -29,7 +29,7 @@ type ModuleTypeMap = typeof moduleTypeMap;
 type ModuleType = keyof ModuleTypeMap;
 
 export async function getModuleEntry(path: string, type: ModuleType = 'esm') {
-  const moduleType = moduleTypeMap[type];
+  const moduleType = moduleTypeMap[type] || moduleTypeMap.cjs;
   const pkg = await loadModule<Record<string, string>>(path, './package.json');
   return pkg[moduleType];
 }

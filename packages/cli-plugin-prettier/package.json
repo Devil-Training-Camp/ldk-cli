@@ -1,6 +1,6 @@
 {
   "name": "@ldk-cli/cli-plugin-prettier",
-  "version": "0.6.0",
+  "version": "0.6.2",
   "private": false,
   "description": "Prettier plugin for ldk-cli",
   "main": "lib/index.js",

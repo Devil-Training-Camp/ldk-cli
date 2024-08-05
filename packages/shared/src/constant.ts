@@ -22,6 +22,7 @@ export type PkgManager = (typeof pkgManagers)[number];
 export type LocalConfig = {
   cacheDir: string;
   pkgManager?: PkgManager;
+  pluginPkgManager?: PkgManager;
 } & Record<string, string>;
 const defaultLocalConfig: LocalConfig = {
   cacheDir: DEFAULT_CACHE_DIR,
