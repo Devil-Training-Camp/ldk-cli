@@ -2,10 +2,16 @@ import chalk from 'chalk';
 import inquirer from 'inquirer';
 import { PluginManager } from '@ldk-cli/plugin-manager';
 import type { PluginConfig } from '@ldk-cli/plugin-manager';
-import { setCacheConfigAsync, transToPromptChoices } from '@ldk-cli/shared';
+import {
+  getLocalConfig,
+  setCacheConfigAsync,
+  setLocalConfigAsync,
+  transToPromptChoices,
+} from '@ldk-cli/shared';
 
 import { manageActions } from '../index.js';
 import type { ManageAction } from '../index.js';
+import { getLocalManagers } from '../manager.js';
 
 async function pluginsPrompt(tempArr: PluginConfig[]) {
   const { plugins }: { plugins: string[] } = await inquirer.prompt([
@@ -74,6 +80,16 @@ export async function plugin(action: ManageAction, nameOrPath?: string) {
   }
   const pluginManager = new PluginManager();
   await pluginManager.init();
+
+  const localConfig = getLocalConfig();
+  if (!localConfig.pluginPkgManager) {
+    const localManagers = await getLocalManagers();
+    // pnpm first
+    const pkgManager = localManagers.includes('pnpm') ? 'pnpm' : localManagers[0];
+    localConfig.pluginPkgManager = pkgManager;
+    await setLocalConfigAsync();
+  }
+
   if (nameOrPath) {
     await withNameOrPath(pluginManager, action, nameOrPath);
   } else {

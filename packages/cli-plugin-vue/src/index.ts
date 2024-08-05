@@ -15,8 +15,8 @@ interface TsConfig {
 }
 
 const plugin: PluginFn = async context => {
-  if (context.options.bundler !== 'vite') return;
   onInvokeStart(async ({ inquirer }) => {
+    if (context.options.bundler !== 'vite') return;
     const { vue } = await inquirer.prompt([
       {
         name: 'vue',

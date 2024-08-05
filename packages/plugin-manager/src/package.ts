@@ -48,7 +48,7 @@ async function initPkgDir() {
     await fse.remove(PLUGIN_CACHE_DIR);
   }
   await fse.ensureDir(PLUGIN_CACHE_DIR);
-  await execa(localConfig.pkgManager as string, ['init'], {
+  await execa(localConfig.pluginPkgManager as string, ['init'], {
     cwd: PLUGIN_CACHE_DIR,
     stdout: 'ignore',
   });
@@ -69,7 +69,7 @@ export async function installPkgs(configs: PluginConfig[]) {
   );
   jsonHelper.injectDependencies(deps, true);
   await fse.writeFile(PLUGIN_PKG_FILE, jsonHelper.tryStringify());
-  await execa(localConfig.pkgManager as string, ['update'], {
+  await execa(localConfig.pluginPkgManager as string, ['update'], {
     cwd: PLUGIN_CACHE_DIR,
     stdout: 'ignore',
   });
