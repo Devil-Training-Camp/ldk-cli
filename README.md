@@ -109,7 +109,7 @@ You can add plugins to extend CLI, these are some official plugins currently sup
 | [@ldk-cli/cli-plugin-vue][10]     | Vue plugin with vite for ldk-cli        |
 | [@ldk-cli/cli-plugin-router][11]  | Vue router plugin with vite for ldk-cli |
 
-→ See [plugins][12] for documentation to write plugins.
+→ See [plugins][12] for documentation to manage plugins.
 → See [custom plugins][13] for documentation to write plugins.
 
 [1]: #template

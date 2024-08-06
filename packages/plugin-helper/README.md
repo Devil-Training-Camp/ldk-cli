@@ -110,7 +110,7 @@ export declare function parseJson(code: string | Partial<PkgJson>): {
 
 ## pathMatcher
 
-If the `path` can match a part of any of the `subPaths`, return `true`.
+If a part of the `path` can match any of the `subPaths`, return `true`.
 
 ```ts
 export declare function pathMatcher(subPaths: string[], path: string): boolean;
