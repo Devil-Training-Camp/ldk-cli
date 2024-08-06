@@ -1,6 +1,6 @@
 {
   "name": "@ldk-cli/cli",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "private": false,
   "description": "A CLI that can be extended arbitrarily.",
   "main": "lib/index.js",

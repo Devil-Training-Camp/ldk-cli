@@ -1,6 +1,12 @@
 import { resolve, basename, normalize } from 'path';
 
-import { PACKAGES_RIR, getLocalConfig, isDev, loadModule } from '@ldk-cli/shared';
+import {
+  PACKAGES_RIR,
+  getLocalConfig,
+  isDev,
+  loadModule,
+  setCacheConfigAsync,
+} from '@ldk-cli/shared';
 import fse from 'fs-extra';
 import type { PkgJson } from '@ldk-cli/plugin-helper';
 import { parseJson } from '@ldk-cli/plugin-helper';
@@ -86,6 +92,7 @@ export async function installPkgsWithOra(configs: PluginConfig[]) {
       failText: `Failed to install plugins`,
       text: 'Loading install',
     });
+    await setCacheConfigAsync();
   } catch (error) {
     console.error(chalk.bgRed('ERROR') + chalk.red(' Failed to install plugins:'), error);
   }

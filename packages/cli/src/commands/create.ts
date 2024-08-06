@@ -10,7 +10,7 @@ import { PluginManager, BUILD_IN_PLUGINS, isBuildInPlugin } from '@ldk-cli/plugi
 import { createPluginCore } from '@ldk-cli/plugin-core';
 
 import type { CreateOptions } from '../index.js';
-import { pkgManagerPrompt } from '../manager.js';
+import { pkgManagerPrompt, setPluginPkgManager } from '../manager.js';
 
 export async function templatePrompt(temps: TemplateConfig[]) {
   const { template }: { template: string } = await inquirer.prompt([
@@ -92,12 +92,15 @@ export async function create(projectName: string, options: CreateOptions) {
 
   await Promise.all(plugins.map(pluginManager.addPlugin.bind(pluginManager)));
 
+  await setPluginPkgManager();
+
+  await pluginManager.installPlugins();
+
   const localConfig = getLocalConfig();
   if (!localConfig.pkgManager) {
     const pkgManager = await pkgManagerPrompt();
     localConfig.pkgManager = pkgManager;
   }
-  await pluginManager.installPlugins();
 
   const pluginConfigs = plugins.map(pluginManager.get.bind(pluginManager)) as PluginConfig[];
   const tempConfig = templateManager.getTemplate(template);
