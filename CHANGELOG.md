@@ -1,5 +1,22 @@
 
 
+## [0.6.3](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.6.2...0.6.3) (2024-8-6)
+
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **plugin-manager:** cache ([8bbeb3e](https://github.com/Devil-Training-Camp/ldk-cli/commit/8bbeb3e8329cbc06f1bf546d382b268b3244baa6))
+
+# Changelog
+
+## 0.6.3
+
+### &nbsp;&nbsp;&nbsp;Bug Fixes
+
+- **plugin-manager**: Cache &nbsp;-&nbsp; by **grey-coat** [<samp>(8bbeb)</samp>](https://github.com/Devil-Training-Camp/ldk-cli/commit/8bbeb3e)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.6.2...dev)
+
 ## [0.6.2](https://github.com/Devil-Training-Camp/ldk-cli/compare/0.6.1...0.6.2) (2024-8-5)
 
 
@@ -12,7 +29,7 @@
 
 * **docs:** docs ([5cdda01](https://github.com/Devil-Training-Camp/ldk-cli/commit/5cdda019ad4571157849722d11cc11d23d879ab0))
 
-# Changelog
+
 
 ## 0.6.2
 

@@ -1,6 +1,6 @@
 {
   "name": "@ldk-cli/cli-plugin-base",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "private": false,
   "description": "Vite and Typescript plugin for ldk-cli",
   "main": "lib/index.js",
