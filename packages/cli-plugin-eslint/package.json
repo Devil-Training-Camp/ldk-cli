@@ -1,6 +1,6 @@
 {
   "name": "@ldk-cli/cli-plugin-eslint",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "private": false,
   "description": "ESLint plugin for ldk-cli",
   "main": "lib/index.js",
