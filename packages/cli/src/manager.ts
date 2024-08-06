@@ -1,4 +1,4 @@
-import { pkgManagers, type PkgManager } from '@ldk-cli/shared';
+import { pkgManagers, type PkgManager, getLocalConfig, setLocalConfigAsync } from '@ldk-cli/shared';
 import inquirer from 'inquirer';
 import { execa } from 'execa';
 
@@ -30,4 +30,15 @@ export async function pkgManagerPrompt() {
     },
   ]);
   return pkgManager;
+}
+
+export async function setPluginPkgManager() {
+  const localConfig = getLocalConfig();
+  if (!localConfig.pluginPkgManager) {
+    const localManagers = await getLocalManagers();
+    // pnpm first
+    const pkgManager = localManagers.includes('pnpm') ? 'pnpm' : localManagers[0];
+    localConfig.pluginPkgManager = pkgManager;
+    await setLocalConfigAsync();
+  }
 }
